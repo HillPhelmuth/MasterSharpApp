@@ -3,10 +3,14 @@
 <MatH4 Class="text-center">Test your knowledge with C# code challenges</MatH4>
 @if (!isUserAdded)
 {
+<div class="text-center">
     <hr />
     <MatH6>Add a user name to attach to the challenge</MatH6>
     <MatTextField Label="User Name" @bind-Value="username"></MatTextField>
     <MatButton Raised="true" OnClick="AddUser">Create Challenge</MatButton>
+    <hr />
+    <div style="background-image: url('Icons/newChallengeIcon.png'); height: 512px; width:512px; margin-left:auto; margin-right:auto"></div>
+</div>
 }
 else
 {

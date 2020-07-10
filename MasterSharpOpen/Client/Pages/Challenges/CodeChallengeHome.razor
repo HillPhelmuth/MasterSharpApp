@@ -28,7 +28,10 @@
             </div>
 
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-
+                @if (!takeChallenge && selectedChallenge == null)
+                {
+                    <div style="background-image: url('Icons/challengeIcon.png'); height: 512px; width:512px; margin-left:auto; margin-right:auto"></div>
+                }
                 @if (!takeChallenge && selectedChallenge != null)
                 {
                     <div class="text-center">
@@ -41,7 +44,7 @@
                 {
                     <hr />
                     <MatH4 Class="text-center" Style="color:blue">Executing...</MatH4>
-                    <SpinKitFadingCircle/>
+                    <SpinKitFadingCircle />
                 }
                 @if (takeChallenge)
                 {

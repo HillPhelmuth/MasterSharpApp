@@ -23,12 +23,7 @@ namespace MasterSharpOpen.Shared.CodeServices
         protected int submissionIndex = 0;
         public EventCallback<string> CodeOutputChanged { get; set; }
         public string CodeOutput { get; set; }
-
-        public Task Init(string code, IEnumerable<MetadataReference> references)
-        {
-            var initCode = "Console.WriteLine(\"Compiling and running code\");";
-            return RunSubmission(initCode, references);
-        }
+        
         public async Task<bool> SubmitSolution(string code, IEnumerable<MetadataReference> references, string testAgainst = "true")
         {
             Console.WriteLine("Compiling and running code");

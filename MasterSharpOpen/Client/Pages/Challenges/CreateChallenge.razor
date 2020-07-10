@@ -96,15 +96,16 @@
 
     @if (isSolved)
     {
-        <MatH3>Api Server says @apiResponse</MatH3>
+        <MatH3>@apiResponse</MatH3>
         <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
 
     }
     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
     <div class="text-left">
+
         <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="create challenge"
                                    ConstructionOptions="EditorOptionsPuzzle"
-                                   OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+                                   OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
     </div>
 
 </div>
