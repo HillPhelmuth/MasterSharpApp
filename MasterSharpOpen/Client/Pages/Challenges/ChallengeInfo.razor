@@ -1,0 +1,16 @@
+﻿
+@((MarkupString) description)
+<br />
+<p>
+    <MatH5>Examples</MatH5>
+</p>
+<p style="background-color: black; color: white">
+    @((MarkupString) examples)
+</p>
+
+@code {
+    [Parameter]
+    public string description { get; set; }
+    [Parameter]
+    public string examples { get; set; }
+}

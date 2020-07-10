@@ -1,0 +1,102 @@
+﻿
+<div>
+    <div class="text-center">
+        <div>
+            <MatAccordion Multi="true">
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                        <MatExpansionPanelHeader>Difficulty: Easy</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <MatList SingleSelection="true">
+                                @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easy"))
+                                {
+                                    <MatListDivider></MatListDivider>
+                                    <MatListItem>
+                                        <MatButton @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton>
+                                    </MatListItem>
+                    
+                                }
+                            </MatList>
+                        </MatExpansionPanelDetails>
+                    
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                    <MatExpansionPanelHeader>Difficulty: Medium</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <MatList SingleSelection="true">
+                                @foreach (var medium in CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
+                                {
+                                    <MatListDivider></MatListDivider>
+                                    <MatListItem><MatButton @onclick="@(() => SelectChallenge(medium))">@medium.Name</MatButton></MatListItem>
+                   
+                                }
+                            </MatList>
+                        </MatExpansionPanelDetails>
+                   
+                </MatExpansionPanel>
+                <MatExpansionPanel>
+                    <MatExpansionPanelSummary>
+                    <MatExpansionPanelHeader>Difficulty: Hard</MatExpansionPanelHeader>
+                    </MatExpansionPanelSummary>
+                        <MatExpansionPanelDetails>
+                            <MatList SingleSelection="true">
+                                @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
+                                {
+                                    <MatListDivider></MatListDivider>
+                                    <MatListItem> <MatButton @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton></MatListItem>
+                   
+                                }
+                            </MatList>
+                        </MatExpansionPanelDetails>
+                   
+                </MatExpansionPanel>
+            </MatAccordion>
+            @*<MatH5>Easy</MatH5>
+            <MatList SingleSelection="true">
+                @foreach (var easy in CodeChallenges.Challenges.Where(x => x.Difficulty == "Easy"))
+                {
+                    <MatListDivider></MatListDivider>
+                    <MatListItem><MatButton @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton></MatListItem>
+                    
+                }
+            </MatList>
+        </div>
+        <div class="mat-layout-grid-cell">
+            <MatH5>Medium</MatH5>
+            <MatList SingleSelection="true">
+                @foreach (var medium in CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
+                {
+                    <MatListDivider></MatListDivider>
+                    <MatListItem><MatButton @onclick="@(() => SelectChallenge(medium))">@medium.Name</MatButton></MatListItem>
+                   
+                }
+            </MatList>
+        </div>
+        <div class="mat-layout-grid-cell">
+            <MatH5>Hard</MatH5>
+            <MatList SingleSelection="true">
+                @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
+                {
+                    <MatListDivider></MatListDivider>
+                    <MatListItem> <MatButton @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton></MatListItem>
+                   
+                }
+            </MatList>*@
+        </div>
+    </div>
+</div>
+
+@*@if (isChallengeSelected)
+{
+    @((MarkupString) description)
+    <br />
+    <p>
+        <MatH5>Examples</MatH5>
+    </p>
+    <p style="background-color: black; color: white">
+        @((MarkupString) examples)
+    </p>
+}*@

@@ -1,0 +1,25 @@
+﻿@inject AppStateService AppStateService
+
+<MatH4 Class="text-center">Test your knowledge with C# code challenges</MatH4>
+@if (!isUserAdded)
+{
+    <hr />
+    <MatH6>Add a user name to attach to the challenge</MatH6>
+    <MatTextField Label="User Name" @bind-Value="username"></MatTextField>
+    <MatButton Raised="true" OnClick="AddUser">Create Challenge</MatButton>
+}
+else
+{
+    <CreateChallenge/>
+}
+
+@code {
+    string username;
+    bool isUserAdded;
+    void AddUser()
+    {
+        AppStateService.UpdateUserName(username);
+        isUserAdded = true;
+        StateHasChanged();
+    }
+}

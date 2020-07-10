@@ -1,0 +1,114 @@
+﻿<MatH4 Class="text-center">Create a New Challenge</MatH4>
+@if (!solveTest)
+{
+    <div class="mat-layout-grid text-center" style="max-width:800px">
+        <div class="mat-layout-grid-inner text-center">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12 text-center">
+                <MatH6>Provide a name, difficulty level and a method signature for your challenge</MatH6>
+                <br />
+                
+                <p class="@validationCss">@validationText</p>
+            </div>
+
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <p>Name:</p>
+                <MatTextField Required="true" Label="Challenge Name" @bind-Value="@NewChallenge.Name"></MatTextField>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <p>Difficulty:</p>
+                <MatSelect Label="Difficulty level" @bind-Value="@NewChallenge.Difficulty">
+                    <MatOptionString></MatOptionString>
+                    <MatOptionString Value="Easy">Easy</MatOptionString>
+                    <MatOptionString Value="Mid">Medium</MatOptionString>
+                    <MatOptionString Value="Hard">Hard</MatOptionString>
+                </MatSelect>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6 text-center">
+                <p>Method Name + Inputs</p>
+                <MatTextField Required="true" Label="ex: IsPrime(int input)" @bind-Value="@nameAndInputs"></MatTextField>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <p>Type:</p>
+                <MatSelect Label="Method Return Type" @bind-Value="@returnType">
+                    <MatOptionString></MatOptionString>
+                    <MatOptionString Value="bool">bool</MatOptionString>
+                    <MatOptionString Value="byte">byte</MatOptionString>
+                    <MatOptionString Value="char">char</MatOptionString>
+                    <MatOptionString Value="decimal">decimal</MatOptionString>
+                    <MatOptionString Value="int">int32</MatOptionString>
+                    <MatOptionString Value="long">long(int64)</MatOptionString>
+                    <MatOptionString Value="string">string</MatOptionString>
+                </MatSelect>
+            </div>
+
+        </div>
+        <div class="mat-layout-grid-inner text-center">
+            @*mat-layout-grid-cell-span-6*@
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <p>Provide the details and expectations of your challenge</p>
+                <MatTextField Style="width:100%" Outlined="true" TextArea="true" Required="true" Label="Description" @bind-Value="@NewChallenge.Description"></MatTextField>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <p>Provide some examples to supplement your description</p>
+                <MatTextField Style="width:100%" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@NewChallenge.Examples"></MatTextField>
+            </div>
+        </div>
+
+        <div class="mat-layout-grid-inner text-center">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <MatH6>Provide at least two tests to determine success/failure</MatH6>
+                <p>Only 2 are required, but 4+ tests is recommended for accuracy</p>
+                <MatButton Raised="true" Label="Submit and Add tests" OnClick="AddTests"></MatButton>
+                @if (addTests)
+                {
+                    <MatButton Icon="note_add" OnClick="NewTest">Add Test</MatButton><br />
+                    <div class="mat-layout-grid-inner text-center">
+                        @foreach (var test in NewTests)
+                        {
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                                <MatH6>Return Input</MatH6>
+                                <MatTextField Required="true" Label="Method with Input" @bind-Value="@test.Append"></MatTextField>
+                            </div>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                                <p style="font-weight: 600; font-size:1.5em; margin-top:2em">Should equal =></p>
+                            </div>
+                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                                <MatH6>Result</MatH6>
+                                <MatTextField Required="true" Label="Expected Result" @bind-Value="@test.TestAgainst"></MatTextField>
+                            </div>
+                        }
+                    </div>
+                    <MatButton Raised="true" OnClick="SubmitForm" Label="Submit Challenge"></MatButton>
+                }
+            </div>
+        </div>
+
+    </div>
+}
+@if (solveTest)
+{
+<div style="max-width: 800px">
+
+    <MatH6 Class="text-center">You can submit it if you can solve it</MatH6>
+    <MatButton OnClick="@(() => solveTest = !solveTest)">Return to form</MatButton>
+    <MatButton></MatButton>
+    <hr />
+
+    @if (isSolved)
+    {
+        <MatH3>Api Server says @apiResponse</MatH3>
+        <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
+
+    }
+    <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
+    <div class="text-left">
+        <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="create challenge"
+                                   ConstructionOptions="EditorOptionsPuzzle"
+                                   OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+    </div>
+
+</div>
+}
+@code {
+
+}

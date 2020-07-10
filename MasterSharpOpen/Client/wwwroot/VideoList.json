@@ -1,0 +1,338 @@
+{
+  "videosList": [
+    {
+      "name": "Strings",
+      "subHeader": "Basics",
+      "videos": [
+        {
+          "title": "The Basics of Strings",
+          "videoId": "JSpC7Cz64h0",
+          "preferenceId": 0
+        },
+        {
+          "title": "C# for Beginners - Part 12 - C# Strings Tutorial",
+          "videoId": "tzJjrrOe69c",
+          "preferenceId": 1
+        },
+        {
+          "title": "C# Tutorial 21 - introduction To string",
+          "videoId": "hwbsz29hbPE",
+          "preferenceId": 3
+        },
+        {
+          "title": "Intro to C# 02 - Working with strings",
+          "videoId": "p7JafPO1_RU",
+          "preferenceId": 4
+        }
+      ]
+    },
+    {
+      "name": "Strings",
+      "subHeader": "Intermediate",
+      "videos": [
+        {
+          "title": "C#.Net Tutorial 5 - Constants, Strings, and String Functions",
+          "videoId": "1_nV-OHsnqE",
+          "preferenceId": 0
+        },
+        {
+          "title": "Interpolated Strings in C# - Quick Tip",
+          "videoId": "xQYmSVbacG4",
+          "preferenceId": 1
+        },
+        {
+          "title": "Learn How To Program In C# Part 28 - String Manipulation",
+          "videoId": "afY8t4Iv-nc",
+          "preferenceId": 3
+        },
+        {
+          "title": "18: String Class Methods in C# | String Methods",
+          "videoId": "-G-yY_EQcL0",
+          "preferenceId": 4
+        }
+      ]
+    },
+    {
+      "name": "Strings",
+      "subHeader": "Advanced",
+      "videos": [
+        {
+          "title": "C# Tutorial - Encrypt and Decrypt a String",
+          "videoId": "ysxC6-AFEYg",
+          "preferenceId": 0
+        },
+        {
+          "title": "C# Tutorial 49: Encrypt data from simple string in C#",
+          "videoId": "cYLX94DR8_Q",
+          "preferenceId": 1
+        },
+        {
+          "title": "Part 60 C# Tutorial Difference between String and StringBuilder",
+          "videoId": "4lFAs6FYTXg",
+          "preferenceId": 3
+        },
+        {
+          "title": "Regular Expressions (Regex) Tutorial: How to Match Any Pattern of Text",
+          "videoId": "sa-TUpSx1JA",
+          "preferenceId": 4
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "subHeader": "Basics",
+      "videos": [
+        {
+          "title": "Introduction To Collections in C#",
+          "videoId": "9Kiya120DwM",
+          "preferenceId": 0
+        },
+        {
+          "title": "Arrays, List, and Collections",
+          "videoId": "qLeF_wpnVto",
+          "preferenceId": 1
+        },
+        {
+          "title": "What are the different types of collection in .NET and c#",
+          "videoId": "hDykzD-3z8k",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "subHeader": "Intermediate",
+      "videos": [
+        {
+          "title": "Collections - Dictionary, SortedDictionary and Sorted List ",
+          "videoId": "6h16PkezFik",
+          "preferenceId": 0
+        },
+        {
+          "title": " Collections - Hashtable and Dictionary in C#",
+          "videoId": "ozytGcfwcnc",
+          "preferenceId": 1
+        },
+        {
+          "title": "Create a Dictionary Using Collections in C#",
+          "videoId": "Dke0dlCgFSk",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "subHeader": "Advanced",
+      "videos": [
+        {
+          "title": "Advanced - SortedList Generic Collection",
+          "videoId": "kZBWqIpyUCc",
+          "preferenceId": 0
+        },
+        {
+          "title": "Advanced - Stack Generic Collection",
+          "videoId": "bWoEN1HHUK8",
+          "preferenceId": 1
+        },
+        {
+          "title": "Advanced - SortedDictionary Generic Collection",
+          "videoId": "EtmqZCAn1wo",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Conditionals",
+      "subHeader": "Basics",
+      "videos": [
+        {
+          "title": "Conditional Statements In C# | If, Else if, Else",
+          "videoId": "IzzNzSXkCMM",
+          "preferenceId": 0
+        },
+        {
+          "title": "C# - Switch Statement",
+          "videoId": "gJhhWFtM21Q",
+          "preferenceId": 1
+        },
+        {
+          "title": "C# - Enum and Switch Statement Example",
+          "videoId": "KJuavIJ72sg",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Loops",
+      "subHeader": "Basics",
+      "videos": [
+        {
+          "title": "Do while loop in c#",
+          "videoId": "s7fVZZeNXec",
+          "preferenceId": 0
+        },
+        {
+          "title": "While Loops ",
+          "videoId": "uqMbyuATj2Y",
+          "preferenceId": 1
+        },
+        {
+          "title": "C# - For Loop",
+          "videoId": "s6Yn7k3adAQ",
+          "preferenceId": 2
+        },
+        {
+          "title": "C# - Foreach Loop",
+          "videoId": "ymgp77c2aR0",
+          "preferenceId": 3
+        },
+        {
+          "title": "C# Lesson - Nested Loops",
+          "videoId": "Fzyr94qBBKs",
+          "preferenceId": 4
+        }
+      ]
+    },
+    {
+      "name": "Classes and Objects",
+      "subHeader": "Basics",
+      "videos": [
+        {
+          "title": "Introduction to Classes and Objects in C#",
+          "videoId": "wuxVSdBzDJg",
+          "preferenceId": 0
+        },
+        {
+          "title": "C# Classes and Objects - Beginners",
+          "videoId": "F1UbHiyqlD4",
+          "preferenceId": 1
+        },
+        {
+          "title": "Intro to C# classes and Objects",
+          "videoId": "getvS3Yu9G4",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "subHeader": "Intermediate",
+      "videos": [
+        {
+          "title": "Different kinds of Variables in a class",
+          "videoId": "pVTEwRmjV50",
+          "preferenceId": 0
+        },
+        {
+          "title": "Difference between classes and structs in c#",
+          "videoId": "AGNW0jH1sn0",
+          "preferenceId": 1
+        },
+        {
+          "title": "C# - Creating Basic Classes, Methods, and Properties",
+          "videoId": "L-NIkOMlocg",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "subHeader": "Advanced Tutorials",
+      "videos": [
+        {
+          "title": "C# Object-Oriented Design - Restaurant Class Example",
+          "videoId": "RR4Strzb8Q0",
+          "preferenceId": 0
+        },
+        {
+          "title": "Advanced C# Tutorial - How to Create Class and Object",
+          "videoId": "E8zzHG4hesI",
+          "preferenceId": 1
+        },
+        {
+          "title": "C# Exercise: Vending Machine (OOP, Objects, Classes, Methods)",
+          "videoId": "33czhZrH51s",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "Blazor",
+      "subHeader": "Blazor Videos",
+      "videos": [
+        {
+          "title": "Blazor server-side vs client-side (WebAssembly)",
+          "videoId": "HFvPKmS2gig",
+          "preferenceId": 0
+        },
+        {
+          "title": "Building Full-stack C# Web Apps with Blazor in .NET Core",
+          "videoId": "MetcuX1OHD0",
+          "preferenceId": 1
+        },
+        {
+          "title": "How to add Authentication in Server-side Blazor",
+          "videoId": "ntmV9nj4N2Y",
+          "preferenceId": 1
+        },
+        {
+          "title": "Blazor Server Components - Making Razor Components Easy to Use",
+          "videoId": "JE0tQ4tx0Nc",
+          "preferenceId": 2
+        }
+      ]
+    },
+    {
+      "name": "Asp.net core",
+      "subHeader": "MVC and Razor pages",
+      "videos": [
+        {
+          "title": "Learn ASP.NET Core 3.1 - Full Course for Beginners",
+          "videoId": "C5cnZ-gZy2I",
+          "preferenceId": 0
+        },
+        {
+          "title": "Introduction to ASP.NET MVC in C#: Basics, Advanced Topics...",
+          "videoId": "phyV-OQNeRM",
+          "preferenceId": 1
+        },
+        {
+          "title": "Building an ASP.NET Core App from Start to Finish",
+          "videoId": "l2wE6KQuYRc",
+          "preferenceId": 2
+        },
+        {
+          "title": "Intro to ASP.NET Core Razor Pages - From Start to Published",
+          "videoId": "68towqYcQlY",
+          "preferenceId": 3
+        }
+      ]
+    },
+    {
+      "name": "C# Careers",
+      "subHeader": "Advance your career with C#",
+      "videos": [
+        {
+          "title": "Top 50 C# Interview Questions and Answers",
+          "videoId": "ipYKV3U8SyM",
+          "preferenceId": 0
+        },
+        {
+          "title": "How Do I Get a C# Developer Job? How Do I Prepare? Do I Need a Portfolio?",
+          "videoId": "JnTw3VBz3rg",
+          "preferenceId": 1
+        },
+        {
+          "title": "The MANY things you can build with C#",
+          "videoId": "S3tTkd3_dzQ",
+          "preferenceId": 2
+        },
+        {
+          "title": "How to become a .net developer?",
+          "videoId": "cPTLI5gsYyc",
+          "preferenceId": 3
+        }
+      ]
+    }
+  ] 
+}
