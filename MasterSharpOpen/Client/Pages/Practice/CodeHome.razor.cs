@@ -16,7 +16,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         private bool isAnimate = true;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
-        protected string CodeOutput;
+        protected string CodeOutput = "";
         protected string codeSnippet;
         protected override Task OnInitializedAsync()
         {
@@ -25,7 +25,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         }
         protected void HandleOutputChange(string output)
         {
-            CodeOutput = output;
+            CodeOutput += $"<p>{output}</p>";
             isAnimate = true;
             StateHasChanged();
         }

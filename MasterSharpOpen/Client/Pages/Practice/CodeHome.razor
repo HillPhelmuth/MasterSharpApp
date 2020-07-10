@@ -1,7 +1,7 @@
 ﻿@page "/codeHome"
 @using MasterSharpOpen.Shared.CodeModels
 <MatH4 Class="text-center">Practice your C#</MatH4>
-@if (!string.IsNullOrWhiteSpace(CodeOutput))
+@*@if (!string.IsNullOrWhiteSpace(CodeOutput))
 {
     <div class="codeOut">
         <Animation Effect="Effect.ZoomIn" Speed="Speed.Slow" Enabled="isAnimate" OnAnimationEnd="ToggleAnimation">
@@ -9,7 +9,7 @@
 
         </Animation>
     </div>
-}
+}*@
 <MatAccordion>
     <MatExpansionPanel>
         <MatExpansionPanelSummary>
@@ -67,7 +67,19 @@
             </MatTabGroup>
             @if (!string.IsNullOrEmpty(codeSnippet) && isMonacoOpen)
             {
-                <MonacoEdit CodeSnippet="@codeSnippet" OnOutputChange="HandleOutputChange" />
+                <div class="mat-layout-grid">
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+                            <MonacoEdit CodeSnippet="@codeSnippet" OnOutputChange="HandleOutputChange"/>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                            <MatH6 Class="text-center">Output</MatH6>
+                            <div style="background-color: black; color:white">
+                                @((MarkupString) CodeOutput)
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </MatExpansionPanelDetails>
     </MatExpansionPanel>
