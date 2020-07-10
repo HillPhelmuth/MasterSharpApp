@@ -1,15 +1,36 @@
 ﻿@inherits LayoutComponentBase
-
 @*<div class="sidebar">
-    <NavMenu />
-</div>*@
+        <NavMenu />
+    </div>*@
 
 <div class="main">
     @*<div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-    </div>*@
-
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>*@
+    <MatThemeProvider Theme="theme">
+        <MatAppBarContainer>
+            <MatAppBar Fixed="true" Style="position:sticky">
+                <MatAppBarRow>
+                    <MatAppBarSection>
+                        <MatAppBarTitle>MasterSharp - C# Learning and practice tools</MatAppBarTitle>
+                    </MatAppBarSection>
+                    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                        <MatIconButton Link="https://github.com/HillPhelmuth/MasterSharpOpen">
+                            <i class="githubIcon"></i>
+                        </MatIconButton>
+                    </MatAppBarSection>
+                </MatAppBarRow>
+            </MatAppBar>
+        </MatAppBarContainer>
+    </MatThemeProvider>
     <div class="content px-4">
         @Body
     </div>
 </div>
+
+@code {
+    MatTheme theme = new MatTheme()
+    {
+        Primary = "#4fc3f7",
+    };
+}

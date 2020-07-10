@@ -16,8 +16,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
     {
         [Inject]
         public IJSRuntime jsRuntime { get; set; }
-        //[Inject]
-        //protected HttpClient Http { get; set; }
+        
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
         [Inject]
@@ -31,22 +30,13 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected string ValueToSet { get; set; }
         protected IEnumerable<MetadataReference> References;
         [Parameter]
-        public EventCallback<string> OnCodeSubmit { get; set; }
-        [Parameter]
         public EventCallback<string> OnOutputChange { get; set; }
         [Parameter]
         public string CodeSnippet { get; set; }
-        [Parameter]
-        public bool IsConsole { get; set; }
-        [Parameter]
-        public string CssClass { get; set; }
+       
 
         protected override Task OnInitializedAsync()
         {
-            if (string.IsNullOrEmpty(CssClass))
-            {
-                CssClass = "editor";
-            }
             Editor = new MonacoEditor();
             References = AppState.References;
             CodeEditorService.OnChange += StateHasChanged;
@@ -56,14 +46,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         public async Task SubmitCode()
         {
             var code = await Editor.GetValue();
-            if (IsConsole)
-            {
-                await OnCodeSubmit.InvokeAsync(code);
-                return;
-            }
             var output = await CompilerService.SubmitCode(code, References);
             await OnOutputChange.InvokeAsync(output);
-            //CodeEditorService.EvaluateCode(code);
         }
 
         protected async Task UpdateSnippet()

@@ -31,7 +31,7 @@ namespace MasterSharpOpen.Client
 
         public async Task<Videos> GetVideos()
         {
-            var videosString = await Client.GetStringAsync("VideoList.json");
+            var videosString = await Client.GetStringAsync("VideoList1.json");
             return JsonConvert.DeserializeObject<Videos>(videosString);
         }
 
