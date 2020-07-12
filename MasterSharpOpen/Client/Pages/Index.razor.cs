@@ -27,31 +27,13 @@ namespace MasterSharpOpen.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             var codeChallenges = await PublicClient.GetChallenges();
-            Console.WriteLine($"challenges from Server: {string.Join(", ", codeChallenges.Challenges.Select(x => x.Name))}");
-
             references = await GetMetadataReferences();
             AppStateService.SetAssemblyAndCodeData(codeChallenges, references);
             isPageReady = true;
             StateHasChanged();
             
         }
-        //private async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferences()
-        //{
-        //    var sw = Stopwatch.StartNew();
-        //    var refs = AppDomain.CurrentDomain.GetAssemblies();
-
-        //    var narrowedRefs = refs.Where(x =>
-        //        !x.IsDynamic && !string.IsNullOrWhiteSpace(x.Location) &&
-        //        (x.GetName().Name == "System" || x.GetName().Name == "System.Core" || x.GetName().Name == "System.Numerics" || x.GetName().Name == "mscorlib" || x.GetName().Name == "netstandard"));
-
-        //    var assemblyNames = narrowedRefs.Select(x => x.GetName().Name).Distinct().ToList();
-        //    var streams = await PublicClient.GetAssemblyStreams(assemblyNames);
-        //    var assemblyRefs = streams.Select(x => MetadataReference.CreateFromStream(x.Value));
-        //    sw.Stop();
-        //    Console.WriteLine("MetadataReferences Done in " + sw.ElapsedMilliseconds + "ms");
-        //    return assemblyRefs;
-
-        //}
+       
         private async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferences()
         {
             var sw = Stopwatch.StartNew();

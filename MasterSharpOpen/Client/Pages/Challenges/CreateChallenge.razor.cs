@@ -113,6 +113,10 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
             var apiResult = await PublicClient.PostChallenge(NewChallenge);
             apiResponse = apiResult ? "Submission Successful!" : "Sorry, something went wrong. Submission failed";
+            if (apiResult)
+            {
+                AppStateService.UpdateChallenges(NewChallenge);
+            }
             StateHasChanged();
         }
 

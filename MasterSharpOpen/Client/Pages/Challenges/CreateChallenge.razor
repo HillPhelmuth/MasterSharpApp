@@ -91,13 +91,14 @@
 
     <MatH6 Class="text-center">You can submit it if you can solve it</MatH6>
     <MatButton OnClick="@(() => solveTest = !solveTest)">Return to form</MatButton>
-    <MatButton></MatButton>
+    
     <hr />
 
     @if (isSolved)
     {
         <MatH3>@apiResponse</MatH3>
         <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
+        <hr />
 
     }
     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>

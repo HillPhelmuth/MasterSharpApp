@@ -16,7 +16,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
         protected bool IsCodeAlong;
         protected override async Task OnInitializedAsync()
         {
-            Videos = await PublicClient.GetVideos();
+            Videos ??= await PublicClient.GetVideos();
             IsPageVideosReady = true;
         }
         protected void HandleVideoEnd(bool isEnd)

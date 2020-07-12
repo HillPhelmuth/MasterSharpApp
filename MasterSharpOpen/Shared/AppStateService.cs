@@ -20,6 +20,11 @@ namespace MasterSharpOpen.Shared
             NotifyStateHasChanged();
         }
 
+        public void UpdateChallenges(Challenge challenge)
+        {
+            CodeChallenges.Challenges.Add(challenge);
+            NotifyStateHasChanged();
+        }
         public void UpdateUserName(string name)
         {
             UserName = name;
