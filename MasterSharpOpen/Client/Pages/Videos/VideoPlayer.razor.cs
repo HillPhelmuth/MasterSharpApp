@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MasterSharpOpen.Client.JSExtensions;
+using MasterSharpOpen.Client.ExtensionMethods;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

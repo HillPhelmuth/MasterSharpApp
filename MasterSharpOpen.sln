@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterSharpOpen.Server", "MasterSharpOpen\Server\MasterSharpOpen.Server.csproj", "{1CC5D0EB-E26C-4C01-8210-4243E2B875F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterSharpOpen.Server", "MasterSharpOpen\Server\MasterSharpOpen.Server.csproj", "{1CC5D0EB-E26C-4C01-8210-4243E2B875F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterSharpOpen.Client", "MasterSharpOpen\Client\MasterSharpOpen.Client.csproj", "{A9AAD2DC-3935-414E-A51A-8F22F604273A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterSharpOpen.Client", "MasterSharpOpen\Client\MasterSharpOpen.Client.csproj", "{A9AAD2DC-3935-414E-A51A-8F22F604273A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterSharpOpen.Shared", "MasterSharpOpen\Shared\MasterSharpOpen.Shared.csproj", "{D913FBC6-5ABC-4331-9532-12ED2E788B79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterSharpOpen.Shared", "MasterSharpOpen\Shared\MasterSharpOpen.Shared.csproj", "{D913FBC6-5ABC-4331-9532-12ED2E788B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -34,5 +34,11 @@ namespace MasterSharpOpen.Client.Pages.Videos
             IsVideoReady = true;
             StateHasChanged();
         }
+
+        protected Task HandleTryPlay(string videoId)
+        {
+            selectedVideoId = videoId;
+            return PlayVideos();
+        }
     }
 }

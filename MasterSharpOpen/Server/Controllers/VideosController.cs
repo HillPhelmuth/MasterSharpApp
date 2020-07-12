@@ -5,9 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using MasterSharpOpen.Server.Data;
+using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.VideoModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Server.Controllers
@@ -16,23 +19,37 @@ namespace MasterSharpOpen.Server.Controllers
     [ApiController]
     public class VideosController : ControllerBase
     {
-        [HttpGet]
-        public Task<Videos> GetVideos()
+        private readonly ChallengeContext context;
+
+        public VideosController(ChallengeContext context)
         {
-            var sw = new Stopwatch();
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = assembly.GetManifestResourceNames()
-                .SingleOrDefault(s => s.EndsWith("VideoList1.json"));
-            string result = "";
-            using var stream = assembly.GetManifestResourceStream(resourceName);
-            using (var reader = new StreamReader(stream))
+            this.context = context;
+        }
+
+        [HttpGet]
+        public async Task<Videos> GetVideos()
+        {
+            var sections = await context.VideoSections.ToListAsync();
+            var videos = await context.Videos.ToListAsync();
+            foreach (var section in sections)
             {
-                result = reader.ReadToEnd();
+                section.Videos = videos.Where(x => x.VideoSectionID == section.ID).ToList();
             }
-            var videos = JsonConvert.DeserializeObject<Videos>(result);
-            sw.Stop();
-            Console.WriteLine($"videos from server: {sw.ElapsedMilliseconds}ms");
-            return Task.FromResult(videos);
+            return new Videos {VideoSections = sections};
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddVideo([FromBody] Video video)
+        {
+            if (video.ID > 0)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+            video.VideoSectionID = await context.VideoSections.Where(x => x.Name == "User Videos").Select(x => x.ID).FirstOrDefaultAsync();
+           
+            await context.Videos.AddAsync(video);
+            await context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

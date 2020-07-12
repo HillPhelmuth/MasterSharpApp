@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-namespace MasterSharpOpen.Client.JSExtensions
+namespace MasterSharpOpen.Client.ExtensionMethods
 {
     public static class YouTubeInterop
     {

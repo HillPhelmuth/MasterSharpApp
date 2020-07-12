@@ -7,7 +7,7 @@
             @if (IsPageVideosReady)
             {
                 <MatAccordion Multi="true">
-                    @foreach (var videos in Videos.VideosList)
+                    @foreach (var videos in Videos.VideoSections)
                     {
                         <div @onmouseover="@(e => videos.IsVisible = true)" @onmouseout="@(e => videos.IsVisible = false)">
                             <MatExpansionPanel Expanded="videos.IsVisible">
@@ -35,32 +35,32 @@
             {
                 <SpinKitCubeGrid />
             }
-            </div>
+        </div>
         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
             <div style="margin: auto" class="text-center">
 
                 @if (IsVideoReady)
                 {
-                <MatButton Raised="true" Style="margin-left: auto; margin-right: auto; margin-top: -46px" @onclick="@(() => HandleVideoEnd(true))">Close</MatButton>
-                <VideoPlayer VideoId="@selectedVideoId" VideoEnded="HandleVideoEnd" />
+                    <MatButton Raised="true" Style="margin-left: auto; margin-right: auto; margin-top: -46px" @onclick="@(() => HandleVideoEnd(true))">Close</MatButton>
+                    <VideoPlayer VideoId="@selectedVideoId" VideoEnded="HandleVideoEnd" />
                 }
                 else
                 {
-                <MatH4>Select a video</MatH4>
-                <div class="mainIcon" style="background-image: url('Icons/videoIcon.png')"></div>
+                    <MatH4>Select a video</MatH4>
+                    <div class="mainIcon" style="background-image: url('Icons/videoIcon.png')"></div>
 
                 }
                 <hr />
                 <div class="text-center">
-                    <MatButton OnClick="@(() => IsCodeAlong = !IsCodeAlong)">Code Along?</MatButton>
+                    <MatButton OnClick="@(() => IsCodeAlong = !IsCodeAlong)">Add Video</MatButton>
                 </div>
                 @if (IsCodeAlong)
                 {
-                <CodeHome />
+                    <AddVideo TryPlayVideo="HandleTryPlay" />
                 }
             </div>
 
         </div>
-        
+
     </div>
 </div>

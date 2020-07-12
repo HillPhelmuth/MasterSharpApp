@@ -1,22 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Shared.VideoModels
 {
-    public class VideoModel
-    {
-        public string Title { get; set; }
-        public string VideoID { get; set; }
-        public int PreferenceID { get; set; }
-    }
     public class Videos
     {
         [JsonProperty("videosList")]
-        public List<VideosList> VideosList { get; set; }
+        public List<VideoSection> VideoSections { get; set; }
     }
-
-    public class VideosList
+    [Serializable]
+    public class VideoSection
     {
+        [JsonIgnore]
+        public int ID { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("subHeader")]
@@ -24,18 +22,21 @@ namespace MasterSharpOpen.Shared.VideoModels
         [JsonProperty("videos")]
         public List<Video> Videos { get; set; }
         [JsonIgnore]
+        [NotMapped]
         public bool IsVisible { get; set; }
     }
 
     public class Video
     {
+        [JsonIgnore]
+        public int ID { get; set; }
+        [JsonIgnore]
+        public int VideoSectionID { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
 
         [JsonProperty("videoId")]
         public string VideoId { get; set; }
 
-        [JsonProperty("preferenceId")]
-        public long PreferenceId { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MasterSharpOpen.Shared.CodeModels;
+using MasterSharpOpen.Shared.VideoModels;
 using Microsoft.CodeAnalysis;
 
 namespace MasterSharpOpen.Shared
@@ -30,6 +32,7 @@ namespace MasterSharpOpen.Shared
             UserName = name;
             NotifyStateHasChanged();
         }
+
         public void CloseConsole() => OnCloseConsole?.Invoke();
        
         private void NotifyStateHasChanged() => OnChange?.Invoke();

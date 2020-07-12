@@ -52,5 +52,11 @@ namespace MasterSharpOpen.Client
             return apiResult.IsSuccessStatusCode;
         }
 
+        public async Task<bool> PostVideo(Video video)
+        {
+            var apiResult = await Client.PostAsJsonAsync("api/videos", video);
+            return apiResult.IsSuccessStatusCode;
+        }
+
     }
 }

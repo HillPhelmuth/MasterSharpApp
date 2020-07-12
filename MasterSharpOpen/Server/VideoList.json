@@ -328,6 +328,17 @@
           "preferenceId": 3
         }
       ]
+    },
+    {
+      "name": "User Videos",
+      "subHeader": "Added by app users",
+      "videos": [
+        {
+          "title": "Intro to gRPC in C# - How To Get Started",
+          "videoId": "QyxCX2GYHxk",
+          "preferenceId": 0
+        }
+      ]
     }
   ] 
 }
