@@ -27,7 +27,7 @@ namespace MasterSharpOpen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<Videos> GetVideos()
+        public async Task<List<VideoSection>> GetVideos()
         {
             var sections = await context.VideoSections.ToListAsync();
             var videos = await context.Videos.ToListAsync();
@@ -35,7 +35,7 @@ namespace MasterSharpOpen.Server.Controllers
             {
                 section.Videos = videos.Where(x => x.VideoSectionID == section.ID).ToList();
             }
-            return new Videos {VideoSections = sections};
+            return sections;
         }
 
         [HttpPost]
@@ -46,8 +46,24 @@ namespace MasterSharpOpen.Server.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
             video.VideoSectionID = await context.VideoSections.Where(x => x.Name == "User Videos").Select(x => x.ID).FirstOrDefaultAsync();
-           
+
             await context.Videos.AddAsync(video);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("section")]
+        public async Task<IActionResult> AddVideosSection([FromBody] VideoSection section)
+        {
+            if (section.ID > 0)
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            await context.VideoSections.AddAsync(section);
+            foreach (var video in section.Videos)
+            {
+                video.VideoSectionID = section.ID;
+                await context.Videos.AddAsync(video);
+            }
             await context.SaveChangesAsync();
             return Ok();
         }

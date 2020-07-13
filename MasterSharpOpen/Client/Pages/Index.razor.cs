@@ -10,6 +10,8 @@ using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
+using VideoModels = MasterSharpOpen.Shared.VideoModels;
 
 namespace MasterSharpOpen.Client.Pages
 {
@@ -31,8 +33,8 @@ namespace MasterSharpOpen.Client.Pages
             AppStateService.SetAssemblyAndCodeData(codeChallenges, references);
             isPageReady = true;
             StateHasChanged();
-            
         }
+
        
         private async Task<IEnumerable<PortableExecutableReference>> GetMetadataReferences()
         {
