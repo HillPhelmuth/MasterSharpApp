@@ -25,6 +25,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected AppStateService AppState { get; set; }
         [Inject]
         public IClipboard Clipboard { get; set; }
+        [Inject]
+        public PublicClient PublicClient { get; set; }
         protected bool IsCodeReady { get; set; }
         protected MonacoEditor Editor { get; set; }
         protected string ValueToSet { get; set; }
@@ -46,7 +48,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         public async Task SubmitCode()
         {
             var code = await Editor.GetValue();
-            var output = await CompilerService.SubmitCode(code, References);
+            var output = await PublicClient.SubmitCode(code);
             await OnOutputChange.InvokeAsync(output);
         }
 

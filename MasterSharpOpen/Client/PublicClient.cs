@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.VideoModels;
@@ -17,6 +18,7 @@ namespace MasterSharpOpen.Client
     public class PublicClient
     {
         private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
+        private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net";
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)
@@ -57,6 +59,19 @@ namespace MasterSharpOpen.Client
             var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);
             return apiResult.IsSuccessStatusCode;
         }
+        public async Task<bool> SubmitChallenge(Challenge challenge)
+        {
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/challenge", challenge);
+            var result = await apiResult.Content.ReadAsStringAsync();
+            return result.Contains("True") || result.Contains("true"); /*https://compilefunction.azurewebsites.net/api/challenge*/
+        }
 
+        public async Task<string> SubmitCode(string code)
+        {
+            var challenge = new Challenge {Solution = code};
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code?code=1aEpiGp9clVlKNa5FXZav5SAzL2UBrGcuGz3W21vFD1quqii9YgFfg==", challenge);
+            var result = await apiResult.Content.ReadAsStringAsync();
+            return result;
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.CodeAnalysis.CSharp;
 using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Shared.CodeModels
@@ -34,7 +36,10 @@ namespace MasterSharpOpen.Shared.CodeModels
         public virtual List<Test> Tests { get; set; }
         
         public string AddedBy { get; set; }
-        
+        [NotMapped]
+        [JsonProperty("compilation")]
+        public CSharpCompilation Compilation { get; set; }
+
     }
     public class Test
     {

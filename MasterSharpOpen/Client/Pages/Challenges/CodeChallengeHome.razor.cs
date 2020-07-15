@@ -23,6 +23,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public AppStateService AppStateService { get; set; }
         [Inject]
         public IClipboard Clipboard { get; set; }
+        [Inject]
+        public PublicClient PublicClient { get; set; }
 
         public CodeChallenges CodeChallenges { get; set; }
         public Challenge selectedChallenge { get; set; }
@@ -67,17 +69,23 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public async Task HandleCodeSubmit()
         {
             var code = await Editor.GetValue();
-            var results = new List<bool>();
-            foreach (var test in selectedChallenge.Tests)
-            {
-                var appendCode = code + test.Append;
-                var result = await CompilerService.SubmitSolution(appendCode, References, test.TestAgainst);
-                Console.WriteLine($"against: {test.TestAgainst} result: {result}");
-                results.Add(result);
-            }
+            //var results = new List<bool>();
+            //foreach (var test in selectedChallenge.Tests)
+            //{
+            //    var appendCode = code + test.Append;
+            //    var result = await CompilerService.SubmitSolution(appendCode, References, test.TestAgainst);
+            //    Console.WriteLine($"against: {test.TestAgainst} result: {result}");
+            //    results.Add(result);
+            //}
 
-            isChallengeFail = results.Any(x => x == false);
-            isChallengeSucceed = !isChallengeFail;
+            //isChallengeFail = results.Any(x => x == false);
+            var submitChallenge = new Challenge
+            {
+                Solution = code,
+                Tests = selectedChallenge.Tests
+            };
+            isChallengeSucceed = await PublicClient.SubmitChallenge(submitChallenge);
+            isChallengeFail = !isChallengeSucceed;
             isCodeCompiling = false;
             StateHasChanged();
 
