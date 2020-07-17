@@ -7,10 +7,12 @@
     flex-direction:column
 }
 .console {
-    height: 30em;
+    min-height: 30em;
+    width:100%;
     flex-direction: column;
     background-color: black;
-    color:white
+    color: white;
+    text-align:left
 }
 /*TEMP CSS FOR REPL CONSOLE*/
 #outer-screen {

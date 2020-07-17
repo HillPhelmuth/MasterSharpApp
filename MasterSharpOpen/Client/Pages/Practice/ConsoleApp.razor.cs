@@ -51,7 +51,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         }
         private Task BeginConsoleApp()
         {
-            CodeSnippet = CodeSnippets.DefaultInput;
+            CodeSnippet = CodeSnippets.ConsoleInput;
             CodeEditorService.UpdateSnippet(CodeSnippet);
             codeReady = true;
             StateHasChanged();

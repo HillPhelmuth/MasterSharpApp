@@ -1,34 +1,13 @@
 ﻿@page "/codeHome"
 @using MasterSharpOpen.Shared.CodeModels
 <MatH4 Class="text-center">Practice your C#</MatH4>
-@*@if (!string.IsNullOrWhiteSpace(CodeOutput))
-{
-    <div class="codeOut">
-        <Animation Effect="Effect.ZoomIn" Speed="Speed.Slow" Enabled="isAnimate" OnAnimationEnd="ToggleAnimation">
-            Code Output: @CodeOutput
 
-        </Animation>
-    </div>
-}*@
 <MatAccordion>
-    <MatExpansionPanel>
+   
+    <MatExpansionPanel Expanded="true">
         <MatExpansionPanelSummary>
             <MatExpansionPanelHeader>
-                Console App
-            </MatExpansionPanelHeader>
-            <MatExpansionPanelSubHeader>
-                Execute c# from a Console Application
-            </MatExpansionPanelSubHeader>
-        </MatExpansionPanelSummary>
-        <MatExpansionPanelDetails>
-            <ConsoleApp/>
-            @*<ReplShell CodeOutputChanged="HandleOutputChange" />*@
-        </MatExpansionPanelDetails>
-    </MatExpansionPanel>
-    <MatExpansionPanel ExpandedChanged="MonacoClose">
-        <MatExpansionPanelSummary>
-            <MatExpansionPanelHeader>
-                Code Editor
+                Code Editor - <span style="font-style:italic">Click to begin</span>
             </MatExpansionPanelHeader>
             <MatExpansionPanelSubHeader>
                 Add or select and modify a full c# code block, then execute
@@ -43,12 +22,7 @@
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
                     }
-                    @*<MatButton Label="ArrayList" @onmousedown="@(() => codeSnippet = CodeSnippets.ARRAYLIST)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Stack" @onmousedown="@(() => codeSnippet = CodeSnippets.STACK)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Queue" @onmousedown="@(() => codeSnippet = CodeSnippets.QUEUE)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="HashTable" @onmousedown="@(() => codeSnippet = CodeSnippets.HASHTABLE)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="List" @onmousedown="@(() => codeSnippet = CodeSnippets.LIST)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Dictionary" @onmousedown="@(() => codeSnippet = CodeSnippets.DICTIONARY)" @onmouseup="UpdateCodeSnippet" />*@
+
                 </MatTab>
                 <MatTab Label="Strings">
                     <hr />
@@ -56,12 +30,7 @@
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
                     }
-                    @*<MatButton Label="Concatenation" @onmousedown="@(() => codeSnippet = CodeSnippets.CONCATENATION)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="String.Format" @onmousedown="@(() => codeSnippet = CodeSnippets.FORMAT)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Interpolation" @onmousedown="@(() => codeSnippet = CodeSnippets.INTERPOLATION)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="SubString" @onmousedown="@(() => codeSnippet = CodeSnippets.SUBSTRING)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Array to string" @onmousedown="@(() => codeSnippet = CodeSnippets.ARRAYTOSTRING)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="String to array" @onmousedown="@(() => codeSnippet = CodeSnippets.STRINGTOARRAY)" @onmouseup="UpdateCodeSnippet" />*@
+
                 </MatTab>
                 <MatTab Label="Conditionals and Loops">
                     <hr />
@@ -69,12 +38,14 @@
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
                     }
-                    @*<MatButton Label="If Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.IFCONDITIONAL)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="If-Else Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.IFELSE)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="If-Else if-Else Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.ELSEIF)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Switch Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.SWITCH)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="For Loop" @onmousedown="@(() => codeSnippet = CodeSnippets.FORLOOP)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Foreach Loop" @onmousedown="@(() => codeSnippet = CodeSnippets.FOREACHLOOP)" @onmouseup="UpdateCodeSnippet" />*@
+
+                </MatTab>
+                <MatTab Label="Console App">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.ConsoleSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value, true))"></MatButton>
+                    }
                 </MatTab>
                 <hr />
             </MatTabGroup>
@@ -89,11 +60,11 @@
                                 <MatH4 Class="text-center" Style="color:blue">Executing...</MatH4>
                                 <SpinKitFadingCircle />
                             }
-                            <MonacoEdit IsConsole="@isConsoleOpen" OnIsCodeCompiling="HandleIsCodeCompiling" CodeSnippet="@codeSnippet" OnOutputChange="HandleOutputChange"/>
+                            <MonacoEdit CodeSnippet="@codeSnippet" OnCodeSubmit="HandeSubmit" />
                         </div>
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                             <MatH6 Class="text-center">Output</MatH6>
-                            <div style="background-color: black; color:white">
+                            <div class="console">
                                 @((MarkupString) CodeOutput)
                             </div>
                         </div>
@@ -102,6 +73,6 @@
             }
         </MatExpansionPanelDetails>
     </MatExpansionPanel>
-    
+
 </MatAccordion>
 <div class="mainIcon" style="background-image: url('Icons/practiceIcon.png')"></div>

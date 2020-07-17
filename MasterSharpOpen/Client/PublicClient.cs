@@ -68,9 +68,11 @@ namespace MasterSharpOpen.Client
 
         public async Task<string> SubmitCode(string code)
         {
+            Console.WriteLine("On Submit Http start");
             var challenge = new Challenge {Solution = code};
             var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
+            Console.Write($"Http return: {result}");
             return result;
         }
 
