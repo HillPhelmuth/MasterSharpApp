@@ -12,7 +12,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         public CodeEditorService CodeEditorService { get; set; }
         [Inject]
         public AppStateService AppState { get; set; }
-        
+
+        private bool isCodeCompiling;
         private bool isAnimate = true;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
@@ -26,7 +27,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected void HandleOutputChange(string output)
         {
             CodeOutput += $"<p>{output}</p>";
-            isAnimate = true;
+            isCodeCompiling = false;
             StateHasChanged();
         }
 
@@ -41,15 +42,20 @@ namespace MasterSharpOpen.Client.Pages.Practice
             StateHasChanged();
             //AppState.CloseConsole();
         }
-        protected Task UpdateCodeSnippet()
+        protected Task UpdateCodeSnippet(string snippet)
         {
-            CodeEditorService.UpdateSnippet(codeSnippet);
+            CodeEditorService.UpdateSnippet(snippet);
+            codeSnippet = snippet;
             StateHasChanged();
             
             return Task.CompletedTask;
         }
 
-        protected void ToggleAnimation() => isAnimate = false;
+        protected void HandleIsCodeCompiling(bool isCompiling)
+        {
+            isCodeCompiling = isCompiling;
+            StateHasChanged();
+        }
 
         public void Dispose()
         {

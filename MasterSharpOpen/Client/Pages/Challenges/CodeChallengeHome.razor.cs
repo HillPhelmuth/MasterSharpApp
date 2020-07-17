@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
@@ -8,7 +6,7 @@ using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using TextCopy;
 
 namespace MasterSharpOpen.Client.Pages.Challenges
@@ -17,8 +15,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        [Inject]
-        public CompilerService CompilerService { get; set; }
+        //[Inject]
+        //public CompilerService CompilerService { get; set; }
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
@@ -35,14 +33,14 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         protected bool isChallengeSucceed;
         protected bool isChallengeFail;
         protected bool isChallengeReady;
-        protected IEnumerable<MetadataReference> References;
+        //protected IEnumerable<MetadataReference> References;
         [Parameter] 
         public EventCallback<int> OnNotReady { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            References = AppStateService.References;
-            Console.WriteLine($"refs: {References}");
+            //References = AppStateService.References;
+            //Console.WriteLine($"refs: {References}");
             CodeChallenges = AppStateService.CodeChallenges;
             AppStateService.OnChange += StateHasChanged;
             if ((CodeChallenges?.Challenges) == null)
@@ -96,6 +94,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             Console.WriteLine($"Challenge from handler: {challenge.Name}");
             selectedChallenge = challenge;
             await UpdateSnippet();
+            takeChallenge = false;
             StateHasChanged();
         }
         protected Task UpdateSnippet()

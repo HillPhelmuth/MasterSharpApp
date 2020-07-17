@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using Blazor.ModalDialog;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -23,9 +24,10 @@ namespace MasterSharpOpen.Client
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
             builder.Services.AddSingleton<CodeEditorService>();
-            builder.Services.AddSingleton<CompilerService>();
+            //builder.Services.AddSingleton<CompilerService>();
             builder.Services.AddSingleton<AppStateService>();
             builder.Services.InjectClipboard();
+            builder.Services.AddModalDialog();
             await builder.Build().RunAsync();
         }
     }

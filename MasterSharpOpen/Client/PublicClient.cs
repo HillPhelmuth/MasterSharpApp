@@ -69,7 +69,15 @@ namespace MasterSharpOpen.Client
         public async Task<string> SubmitCode(string code)
         {
             var challenge = new Challenge {Solution = code};
-            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code?code=1aEpiGp9clVlKNa5FXZav5SAzL2UBrGcuGz3W21vFD1quqii9YgFfg==", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code", challenge);
+            var result = await apiResult.Content.ReadAsStringAsync();
+            return result;
+        }
+
+        public async Task<string> SubmitConsole(string code)
+        {
+            var challenge = new Challenge { Solution = code };
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/console", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             return result;
         }

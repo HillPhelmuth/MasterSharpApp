@@ -14,14 +14,15 @@
     <MatExpansionPanel>
         <MatExpansionPanelSummary>
             <MatExpansionPanelHeader>
-                Interactive Shell
+                Console App
             </MatExpansionPanelHeader>
             <MatExpansionPanelSubHeader>
-                Dynamically compile and run c# line-by-line
+                Execute c# from a Console Application
             </MatExpansionPanelSubHeader>
         </MatExpansionPanelSummary>
         <MatExpansionPanelDetails>
-            <ReplShell CodeOutputChanged="HandleOutputChange" />
+            <ConsoleApp/>
+            @*<ReplShell CodeOutputChanged="HandleOutputChange" />*@
         </MatExpansionPanelDetails>
     </MatExpansionPanel>
     <MatExpansionPanel ExpandedChanged="MonacoClose">
@@ -38,30 +39,42 @@
 
                 <MatTab Label="Collections">
                     <hr />
-                    <MatButton Label="ArrayList" @onmousedown="@(() => codeSnippet = CodeSnippets.ARRAYLIST)" @onmouseup="UpdateCodeSnippet" />
+                    @foreach (var snippet in (CodeSnippets.CollectionsSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                    }
+                    @*<MatButton Label="ArrayList" @onmousedown="@(() => codeSnippet = CodeSnippets.ARRAYLIST)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="Stack" @onmousedown="@(() => codeSnippet = CodeSnippets.STACK)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="Queue" @onmousedown="@(() => codeSnippet = CodeSnippets.QUEUE)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="HashTable" @onmousedown="@(() => codeSnippet = CodeSnippets.HASHTABLE)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="List" @onmousedown="@(() => codeSnippet = CodeSnippets.LIST)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Dictionary" @onmousedown="@(() => codeSnippet = CodeSnippets.DICTIONARY)" @onmouseup="UpdateCodeSnippet" />
+                    <MatButton Label="Dictionary" @onmousedown="@(() => codeSnippet = CodeSnippets.DICTIONARY)" @onmouseup="UpdateCodeSnippet" />*@
                 </MatTab>
                 <MatTab Label="Strings">
                     <hr />
-                    <MatButton Label="Concatenation" @onmousedown="@(() => codeSnippet = CodeSnippets.CONCATENATION)" @onmouseup="UpdateCodeSnippet" />
+                    @foreach (var snippet in (CodeSnippets.StringsSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                    }
+                    @*<MatButton Label="Concatenation" @onmousedown="@(() => codeSnippet = CodeSnippets.CONCATENATION)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="String.Format" @onmousedown="@(() => codeSnippet = CodeSnippets.FORMAT)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="Interpolation" @onmousedown="@(() => codeSnippet = CodeSnippets.INTERPOLATION)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="SubString" @onmousedown="@(() => codeSnippet = CodeSnippets.SUBSTRING)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="Array to string" @onmousedown="@(() => codeSnippet = CodeSnippets.ARRAYTOSTRING)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="String to array" @onmousedown="@(() => codeSnippet = CodeSnippets.STRINGTOARRAY)" @onmouseup="UpdateCodeSnippet" />
+                    <MatButton Label="String to array" @onmousedown="@(() => codeSnippet = CodeSnippets.STRINGTOARRAY)" @onmouseup="UpdateCodeSnippet" />*@
                 </MatTab>
                 <MatTab Label="Conditionals and Loops">
                     <hr />
-                    <MatButton Label="If Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.IFCONDITIONAL)" @onmouseup="UpdateCodeSnippet" />
+                    @foreach (var snippet in (CodeSnippets.ConditionalSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                    }
+                    @*<MatButton Label="If Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.IFCONDITIONAL)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="If-Else Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.IFELSE)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="If-Else if-Else Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.ELSEIF)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="Switch Statement" @onmousedown="@(() => codeSnippet = CodeSnippets.SWITCH)" @onmouseup="UpdateCodeSnippet" />
                     <MatButton Label="For Loop" @onmousedown="@(() => codeSnippet = CodeSnippets.FORLOOP)" @onmouseup="UpdateCodeSnippet" />
-                    <MatButton Label="Foreach Loop" @onmousedown="@(() => codeSnippet = CodeSnippets.FOREACHLOOP)" @onmouseup="UpdateCodeSnippet" />
+                    <MatButton Label="Foreach Loop" @onmousedown="@(() => codeSnippet = CodeSnippets.FOREACHLOOP)" @onmouseup="UpdateCodeSnippet" />*@
                 </MatTab>
                 <hr />
             </MatTabGroup>
@@ -70,7 +83,13 @@
                 <div class="mat-layout-grid">
                     <div class="mat-layout-grid-inner">
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-                            <MonacoEdit CodeSnippet="@codeSnippet" OnOutputChange="HandleOutputChange"/>
+                            @if (isCodeCompiling)
+                            {
+                                <hr />
+                                <MatH4 Class="text-center" Style="color:blue">Executing...</MatH4>
+                                <SpinKitFadingCircle />
+                            }
+                            <MonacoEdit IsConsole="@isConsoleOpen" OnIsCodeCompiling="HandleIsCodeCompiling" CodeSnippet="@codeSnippet" OnOutputChange="HandleOutputChange"/>
                         </div>
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                             <MatH6 Class="text-center">Output</MatH6>

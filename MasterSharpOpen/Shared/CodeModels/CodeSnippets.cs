@@ -1,7 +1,25 @@
-﻿namespace MasterSharpOpen.Shared.CodeModels
+﻿using System.Collections.Generic;
+using System.Dynamic;
+
+namespace MasterSharpOpen.Shared.CodeModels
 {
-    public static class CodeSnippets
+    public class CodeSnippets
     {
+        public static readonly Dictionary<string, string> CollectionsSnippets = new Dictionary<string, string>
+        {
+            {"ArrayList", ARRAYLIST}, {"Stack", STACK}, {"Queue", QUEUE},
+            {"HashTable", HASHTABLE},{"List", LIST},{"Dictionary", DICTIONARY}
+        };
+        public static readonly Dictionary<string, string> StringsSnippets = new Dictionary<string, string>
+        {
+            {"Concatenation", CONCATENATION},{"String.Format", FORMAT},{"Interpolation", INTERPOLATION},{"SubString", SUBSTRING},{"Array to string", ARRAYTOSTRING},{"String to array", STRINGTOARRAY}
+        };
+
+        public static readonly Dictionary<string, string> ConditionalSnippets = new Dictionary<string, string>
+        {
+            {"If Statement", IFCONDITIONAL}, {"If-Else Statement", IFELSE}, {"If-Else if-Else Statement", ELSEIF},
+            {"Switch Statement", SWITCH}, {"For Loop", FORLOOP}, {"Foreach Loop", FOREACHLOOP}
+        };
         public const string ARRAYLIST =
             "ArrayList al = new ArrayList();\nal.Add(1);\nal.Add(\"Example\");\nal.Add(true);\nreturn al;";
         
@@ -51,5 +69,8 @@ class Program
 
         public const string DefaultInput = "using System;\n\nclass Program\n{\n\tpublic static void Main()\n\t{\n\t\tstring input = Console.ReadLine();\n\t\tstring additional = \" was your input\";\n\t\tConsole.WriteLine(input);\n\t\tstring newOutput = input + additional;\n\t\tConsole.WriteLine(newOutput);\n\t}\n}";
     }
+    
+    
+    
     
 }
