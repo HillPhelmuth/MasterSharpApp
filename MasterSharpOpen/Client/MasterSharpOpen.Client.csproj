@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
     <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Practice\ConsoleApp.razor" />
     <Content Remove="Pages\Practice\ReplShell.razor" />
   </ItemGroup>
 

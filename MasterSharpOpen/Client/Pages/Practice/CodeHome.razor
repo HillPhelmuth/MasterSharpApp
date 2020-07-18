@@ -40,6 +40,14 @@
                     }
 
                 </MatTab>
+                <MatTab Label="Extension Methods">
+                    <hr />
+                    @foreach (var snippet in (CodeSnippets.ExtensionSnippets))
+                    {
+                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                    }
+
+                </MatTab>
                 <MatTab Label="Console App">
                     <hr />
                     @foreach (var snippet in (CodeSnippets.ConsoleSnippets))
