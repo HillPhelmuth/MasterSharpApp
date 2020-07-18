@@ -53,7 +53,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
                 videoUrl = "";
                 Video = null;
                 StateHasChanged();
-                await Task.Delay(5000);
+                await Task.Delay(3000);
                 isSubmitReady = !isSubmitReady;
                 StateHasChanged();
             }
