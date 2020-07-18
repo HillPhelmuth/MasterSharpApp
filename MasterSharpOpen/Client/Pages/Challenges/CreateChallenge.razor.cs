@@ -15,13 +15,13 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 {
     public partial class CreateChallenge
     {
-        [Inject]
-        public CompilerService CompilerService { get; set; }
+        //[Inject]
+        //public CompilerService CompilerService { get; set; }
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        private List<MetadataReference> References { get; set; }
+        //private List<MetadataReference> References { get; set; }
         private Challenge NewChallenge { get; set; } = new Challenge();
         private List<Test> NewTests { get; set; } = new List<Test>();
         private bool addTests;
@@ -36,7 +36,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private string userName;
         protected override Task OnInitializedAsync()
         {
-            References = AppStateService.References.ToList();
+            //References = AppStateService.References.ToList();
             return Task.CompletedTask;
         }
 
@@ -70,8 +70,12 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 return;
             }
 
+            foreach (var test in NewTests)
+            {
+                test.Append = $"{test.Append}";
+            }
             NewChallenge.Tests = NewTests;
-            NewChallenge.Snippet = $"public {returnType} {nameAndInputs}" + "\n{\n\t//solution here\n}";
+            NewChallenge.Snippet = $"public static {returnType} {nameAndInputs}" + "\n{\n\t//solution here\n}";
             solveTest = true;
             StateHasChanged();
 
@@ -79,25 +83,20 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private async Task SubmitCode()
         {
-
+            NewChallenge.Solution = await Editor.GetValue();
             userName = AppStateService.UserName;
-            var refs = AppStateService.References.ToList();
-            var code = await Editor.GetValue();
-            var results = new List<bool>();
+           
             var sw = new Stopwatch();
             sw.Start();
-            foreach (var test in NewChallenge.Tests)
-            {
-                
-                var appendCode = code + test.Append;
-                var result = await CompilerService.SubmitSolution(appendCode, refs, test.TestAgainst);
-                Console.WriteLine($"against: {test.TestAgainst} result: {result}");
-                results.Add(result);
-            }
             
+            var output = await PublicClient.SubmitChallenge(NewChallenge);
+            isSolved = output.Outputs.All(x => x.TestResult);
+            foreach (var result in output.Outputs)
+            {
+                Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
+            }
             sw.Stop();
             Console.WriteLine($"Unit tests took {sw.ElapsedMilliseconds}ms");
-            isSolved = results.All(x => x);
             if (isSolved)
             {
                 NewChallenge.AddedBy = userName;
@@ -129,7 +128,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 string.IsNullOrEmpty(NewChallenge.Difficulty) || string.IsNullOrEmpty(nameAndInputs) || string.IsNullOrEmpty(returnType))
             {
                 validationText =
-                    "You are missing at least one required field. Please provide a Name, Description, Difficulty level, and method name, and method return type.";
+                    "You are missing at least one required field. Please provide a Name, Description, Difficulty level, method name, and method return type.";
                 return false;
             }
 
@@ -150,7 +149,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
             if (NewTests.Any(x => !x.Append.Contains("return ") || !x.Append.Contains(";")))
             {
-                validationText = "Tests must be in format: return MethodName(<Type> input);  Please adjust your tests";
+                validationText = "Tests must be in format: return MethodName(<Input>);  Please adjust your tests";
                 return false;
             }
 

@@ -6,7 +6,6 @@ using BlazorMonaco.Bridge;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis;
 using Microsoft.JSInterop;
 using TextCopy;
 
@@ -19,8 +18,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        [Inject]
-        public CompilerService CompilerService { get; set; }
+        //[Inject]
+        //public CompilerService CompilerService { get; set; }
         [Inject]
         protected AppStateService AppState { get; set; }
         [Inject]
@@ -30,31 +29,37 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected bool IsCodeReady { get; set; }
         protected MonacoEditor Editor { get; set; }
         protected string ValueToSet { get; set; }
-        protected IEnumerable<MetadataReference> References;
+        //protected IEnumerable<MetadataReference> References;
         [Parameter]
         public EventCallback<string> OnOutputChange { get; set; }
         [Parameter]
         public string CodeSnippet { get; set; }
-       
+        [Parameter]
+        public EventCallback<string> OnCodeSubmit { get; set; }
+        [Parameter]
+        public EventCallback<bool> OnIsCodeCompiling { get; set; }
+        [Parameter]
+        public bool IsConsole { get; set; }
 
+        private string currentCode = "";
         protected override Task OnInitializedAsync()
         {
             Editor = new MonacoEditor();
-            References = AppState.References;
-            CodeEditorService.OnChange += StateHasChanged;
             CodeEditorService.OnSnippetChange += UpdateSnippet;
             return Task.CompletedTask;
         }
         public async Task SubmitCode()
         {
-            var code = await Editor.GetValue();
-            var output = await PublicClient.SubmitCode(code);
-            await OnOutputChange.InvokeAsync(output);
+
+            currentCode = await Editor.GetValue(); 
+            await OnCodeSubmit.InvokeAsync(currentCode);
+           
         }
 
         protected async Task UpdateSnippet()
         {
             CodeSnippet = CodeEditorService.CodeSnippet;
+            currentCode = CodeSnippet;
             await Editor.SetValue(CodeSnippet);
             Console.WriteLine("Snippet Updated");
             StateHasChanged();
@@ -108,7 +113,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         public void Dispose()
         {
             Console.WriteLine("MonacoEdit.razor Disposed");
-            CodeEditorService.OnChange -= StateHasChanged;
+            //CodeEditorService.OnChange -= StateHasChanged;
             CodeEditorService.OnSnippetChange -= UpdateSnippet;
         }
     }

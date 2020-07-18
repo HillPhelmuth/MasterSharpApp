@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorMonaco;
@@ -8,7 +7,7 @@ using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using TextCopy;
 
 namespace MasterSharpOpen.Client.Pages.Challenges
@@ -17,8 +16,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        [Inject]
-        public CompilerService CompilerService { get; set; }
+        //[Inject]
+        //public CompilerService CompilerService { get; set; }
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
@@ -35,14 +34,14 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         protected bool isChallengeSucceed;
         protected bool isChallengeFail;
         protected bool isChallengeReady;
-        protected IEnumerable<MetadataReference> References;
+        //protected IEnumerable<MetadataReference> References;
         [Parameter] 
         public EventCallback<int> OnNotReady { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            References = AppStateService.References;
-            Console.WriteLine($"refs: {References}");
+            //References = AppStateService.References;
+            //Console.WriteLine($"refs: {References}");
             CodeChallenges = AppStateService.CodeChallenges;
             AppStateService.OnChange += StateHasChanged;
             if ((CodeChallenges?.Challenges) == null)
@@ -69,22 +68,18 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public async Task HandleCodeSubmit()
         {
             var code = await Editor.GetValue();
-            //var results = new List<bool>();
-            //foreach (var test in selectedChallenge.Tests)
-            //{
-            //    var appendCode = code + test.Append;
-            //    var result = await CompilerService.SubmitSolution(appendCode, References, test.TestAgainst);
-            //    Console.WriteLine($"against: {test.TestAgainst} result: {result}");
-            //    results.Add(result);
-            //}
-
-            //isChallengeFail = results.Any(x => x == false);
+            
             var submitChallenge = new Challenge
             {
                 Solution = code,
                 Tests = selectedChallenge.Tests
             };
-            isChallengeSucceed = await PublicClient.SubmitChallenge(submitChallenge);
+            var output = await PublicClient.SubmitChallenge(submitChallenge);
+            foreach (var result in output.Outputs)
+            {
+                Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
+            }
+            isChallengeSucceed = output.Outputs.All(x => x.TestResult);
             isChallengeFail = !isChallengeSucceed;
             isCodeCompiling = false;
             StateHasChanged();
@@ -96,6 +91,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             Console.WriteLine($"Challenge from handler: {challenge.Name}");
             selectedChallenge = challenge;
             await UpdateSnippet();
+            takeChallenge = false;
             StateHasChanged();
         }
         protected Task UpdateSnippet()

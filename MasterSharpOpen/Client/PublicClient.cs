@@ -59,17 +59,30 @@ namespace MasterSharpOpen.Client
             var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);
             return apiResult.IsSuccessStatusCode;
         }
-        public async Task<bool> SubmitChallenge(Challenge challenge)
+        public async Task<CodeOutputModel> SubmitChallenge(Challenge challenge)
         {
-            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/challenge", challenge);
+            var apiResult = await Client.PostAsJsonAsync("https://compilefunction.azurewebsites.net/api/challenge", challenge);
+            //http://localhost:7071/api/newChallenge  https://compilefunction.azurewebsites.net/api/challenge 
             var result = await apiResult.Content.ReadAsStringAsync();
-            return result.Contains("True") || result.Contains("true"); /*https://compilefunction.azurewebsites.net/api/challenge*/
+            var output = JsonConvert.DeserializeObject<CodeOutputModel>(result);
+            return output;
+            //return result.Contains("True") || result.Contains("true"); 
         }
 
         public async Task<string> SubmitCode(string code)
         {
+            Console.WriteLine("On Submit Http start");
             var challenge = new Challenge {Solution = code};
-            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code?code=1aEpiGp9clVlKNa5FXZav5SAzL2UBrGcuGz3W21vFD1quqii9YgFfg==", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code", challenge);
+            var result = await apiResult.Content.ReadAsStringAsync();
+            Console.Write($"Http return: {result}");
+            return result;
+        }
+
+        public async Task<string> SubmitConsole(string code)
+        {
+            var challenge = new Challenge { Solution = code };
+            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/console", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             return result;
         }

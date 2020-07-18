@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Microsoft.CodeAnalysis.CSharp;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Shared.CodeModels

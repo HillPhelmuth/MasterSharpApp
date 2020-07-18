@@ -101,6 +101,11 @@
         <hr />
 
     }
+    @if (isFailed)
+    {
+        <MatH3>Oops!</MatH3>
+        <MatH6>It looks like something went wrong. Either your solution failed to compile, or one of your tests failed. Click "Return to form" and be sure your inputs correctly correspond to your expected results. (ex IsPrime(3); => true)</MatH6>
+    }
     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
     <div class="text-left">
 
