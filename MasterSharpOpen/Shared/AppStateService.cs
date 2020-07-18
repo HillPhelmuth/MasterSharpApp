@@ -10,6 +10,7 @@ namespace MasterSharpOpen.Shared
     public class AppStateService
     {
         public CodeChallenges CodeChallenges { get; private set; }
+        public Videos Videos { get; private set; }
         //public IEnumerable<MetadataReference> References { get; private set; }
         public string UserName { get; private set; }
         public event Action OnChange;
@@ -22,6 +23,11 @@ namespace MasterSharpOpen.Shared
             NotifyStateHasChanged();
         }
 
+        public void SetVideos(Videos videos)
+        {
+            Videos = videos;
+            NotifyStateHasChanged();
+        }
         public void UpdateChallenges(Challenge challenge)
         {
             CodeChallenges.Challenges.Add(challenge);

@@ -18,7 +18,7 @@ namespace MasterSharpOpen.Client
     public class PublicClient
     {
         private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
-        private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net";
+        private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net/api";
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)
@@ -57,13 +57,18 @@ namespace MasterSharpOpen.Client
         public async Task<bool> PostVideo(Video video)
         {
             var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);
+            //var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);https://challengefunction.azurewebsites.net/api/video
             return apiResult.IsSuccessStatusCode;
         }
         public async Task<CodeOutputModel> SubmitChallenge(Challenge challenge)
         {
-            var apiResult = await Client.PostAsJsonAsync("https://compilefunction.azurewebsites.net/api/challenge", challenge);
+            var sw = new Stopwatch();
+            sw.Start();
+            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/challenge", challenge);
             //http://localhost:7071/api/newChallenge  https://compilefunction.azurewebsites.net/api/challenge 
             var result = await apiResult.Content.ReadAsStringAsync();
+            sw.Stop();
+            Console.WriteLine($"challenge submit too {sw.ElapsedMilliseconds}ms");
             var output = JsonConvert.DeserializeObject<CodeOutputModel>(result);
             return output;
             //return result.Contains("True") || result.Contains("true"); 
@@ -71,19 +76,23 @@ namespace MasterSharpOpen.Client
 
         public async Task<string> SubmitCode(string code)
         {
-            Console.WriteLine("On Submit Http start");
+            var sw = new Stopwatch();
+            sw.Start();
             var challenge = new Challenge {Solution = code};
-            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/code", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/code", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
-            Console.Write($"Http return: {result}");
+            Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
         }
 
         public async Task<string> SubmitConsole(string code)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             var challenge = new Challenge { Solution = code };
-            var apiResult = await Client.PostAsJsonAsync($"https://compilefunction.azurewebsites.net/api/console", challenge);
+            var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/console", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
+            Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
         }
     }

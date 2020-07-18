@@ -1,22 +1,30 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using MasterSharpOpen.Shared;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using VideoModels = MasterSharpOpen.Shared.VideoModels.Videos;
 
 namespace MasterSharpOpen.Client.Pages.Videos
 {
-    public partial class VideoHome
+    public partial class VideoHome : IDisposable
     {
-        
+
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        public MasterSharpOpen.Shared.VideoModels.Videos Videos { get; set; }
+        [Inject]
+        protected AppStateService AppStateService { get; set; }
+        public VideoModels Videos { get; set; }
         protected string selectedVideoId { get; set; }
         protected bool IsVideoReady;
         protected bool IsPageVideosReady;
         protected bool IsCodeAlong;
         protected override async Task OnInitializedAsync()
         {
+            Videos = AppStateService.Videos;
             Videos ??= await PublicClient.GetVideos();
+            AppStateService.SetVideos(Videos);
+            AppStateService.OnChange += StateHasChanged;
             IsPageVideosReady = true;
         }
         protected void HandleVideoEnd(bool isEnd)
@@ -39,6 +47,12 @@ namespace MasterSharpOpen.Client.Pages.Videos
         {
             selectedVideoId = videoId;
             return PlayVideos();
+        }
+
+        public void Dispose()
+        {
+            Console.WriteLine("VideoHome.razor disposed");
+            AppStateService.OnChange -= StateHasChanged;
         }
     }
 }
