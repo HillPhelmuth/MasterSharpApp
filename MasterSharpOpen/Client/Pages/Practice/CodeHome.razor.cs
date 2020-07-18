@@ -75,6 +75,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
                 string code = await ReplaceConsoleInput(codeInput);
                 sw.Start();
                 result = await PublicClient.SubmitConsole(code);
+
                 CodeOutput += $"<p>{result}</p>";
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");

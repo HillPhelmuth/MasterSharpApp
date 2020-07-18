@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorMonaco;
 using BlazorMonaco.Bridge;
@@ -67,22 +68,18 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public async Task HandleCodeSubmit()
         {
             var code = await Editor.GetValue();
-            //var results = new List<bool>();
-            //foreach (var test in selectedChallenge.Tests)
-            //{
-            //    var appendCode = code + test.Append;
-            //    var result = await CompilerService.SubmitSolution(appendCode, References, test.TestAgainst);
-            //    Console.WriteLine($"against: {test.TestAgainst} result: {result}");
-            //    results.Add(result);
-            //}
-
-            //isChallengeFail = results.Any(x => x == false);
+            
             var submitChallenge = new Challenge
             {
                 Solution = code,
                 Tests = selectedChallenge.Tests
             };
-            isChallengeSucceed = await PublicClient.SubmitChallenge(submitChallenge);
+            var output = await PublicClient.SubmitChallenge(submitChallenge);
+            foreach (var result in output.Outputs)
+            {
+                Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
+            }
+            isChallengeSucceed = output.Outputs.All(x => x.TestResult);
             isChallengeFail = !isChallengeSucceed;
             isCodeCompiling = false;
             StateHasChanged();

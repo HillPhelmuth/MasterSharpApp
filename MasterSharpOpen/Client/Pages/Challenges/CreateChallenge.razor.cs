@@ -72,10 +72,10 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
             foreach (var test in NewTests)
             {
-                test.Append = $"\n{test.Append}";
+                test.Append = $"{test.Append}";
             }
             NewChallenge.Tests = NewTests;
-            NewChallenge.Snippet = $"public {returnType} {nameAndInputs}" + "\n{\n\t//solution here\n}";
+            NewChallenge.Snippet = $"public static {returnType} {nameAndInputs}" + "\n{\n\t//solution here\n}";
             solveTest = true;
             StateHasChanged();
 
@@ -83,24 +83,18 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private async Task SubmitCode()
         {
-
+            NewChallenge.Solution = await Editor.GetValue();
             userName = AppStateService.UserName;
-            //var refs = AppStateService.References.ToList();
-            //var code = await Editor.GetValue();
-            //var results = new List<bool>();
+           
             var sw = new Stopwatch();
             sw.Start();
-            //foreach (var test in NewChallenge.Tests)
-            //{
-                
-            //    var appendCode = code + test.Append;
-            //    var result = await PublicClient.SubmitChallenge(NewChallenge);
-            //    Console.WriteLine($"against: {test.TestAgainst} result: {result}");
-            //    results.Add(result);
-            //}
             
-            
-            isSolved = await PublicClient.SubmitChallenge(NewChallenge);
+            var output = await PublicClient.SubmitChallenge(NewChallenge);
+            isSolved = output.Outputs.All(x => x.TestResult);
+            foreach (var result in output.Outputs)
+            {
+                Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
+            }
             sw.Stop();
             Console.WriteLine($"Unit tests took {sw.ElapsedMilliseconds}ms");
             if (isSolved)
