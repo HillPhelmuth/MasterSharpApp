@@ -265,3 +265,11 @@ app {
 .githubIcon {
     content: url('GitHub-Mark-32px.png')
 }
+.testFail {
+    background-color:red;
+    color:white;
+}
+.testPass {
+    background-color: green;
+    color:black
+}

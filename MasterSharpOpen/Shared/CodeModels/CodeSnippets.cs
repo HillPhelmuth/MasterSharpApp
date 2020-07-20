@@ -3,7 +3,7 @@ using System.Dynamic;
 
 namespace MasterSharpOpen.Shared.CodeModels
 {
-    public class CodeSnippets
+    public static class CodeSnippets
     {
         public static readonly Dictionary<string, string> CollectionsSnippets = new Dictionary<string, string>
         {

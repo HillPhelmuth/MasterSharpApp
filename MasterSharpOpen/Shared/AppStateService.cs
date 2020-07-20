@@ -13,6 +13,7 @@ namespace MasterSharpOpen.Shared
         public Videos Videos { get; private set; }
         //public IEnumerable<MetadataReference> References { get; private set; }
         public string UserName { get; private set; }
+        public CodeOutputModel CodeOutput { get; private set; }
         public event Action OnChange;
         public event Action OnCloseConsole;
 
@@ -39,8 +40,17 @@ namespace MasterSharpOpen.Shared
             NotifyStateHasChanged();
         }
 
-        public void CloseConsole() => OnCloseConsole?.Invoke();
-       
+        public void UpdateCodeOutput(CodeOutputModel codeOutput)
+        {
+            foreach (var output in codeOutput.Outputs ?? new List<Output>())
+            {
+                output.CssClass = output.TestResult ? "testPass" : "testFail";
+            }
+            CodeOutput = codeOutput;
+            Console.WriteLine($"Output State Updated");
+            NotifyStateHasChanged();
+        }
+      
         private void NotifyStateHasChanged() => OnChange?.Invoke();
     }
 }

@@ -19,6 +19,7 @@ namespace MasterSharpOpen.Client
     {
         private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
         private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net/api";
+
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)
@@ -57,7 +58,7 @@ namespace MasterSharpOpen.Client
         public async Task<bool> PostVideo(Video video)
         {
             var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);
-            //var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/video", video);https://challengefunction.azurewebsites.net/api/video
+            
             return apiResult.IsSuccessStatusCode;
         }
         public async Task<CodeOutputModel> SubmitChallenge(Challenge challenge)
@@ -71,7 +72,7 @@ namespace MasterSharpOpen.Client
             Console.WriteLine($"challenge submit too {sw.ElapsedMilliseconds}ms");
             var output = JsonConvert.DeserializeObject<CodeOutputModel>(result);
             return output;
-            //return result.Contains("True") || result.Contains("true"); 
+            
         }
 
         public async Task<string> SubmitCode(string code)

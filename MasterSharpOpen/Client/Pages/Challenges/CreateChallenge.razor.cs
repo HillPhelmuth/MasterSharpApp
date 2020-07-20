@@ -24,22 +24,25 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         //private List<MetadataReference> References { get; set; }
         private Challenge NewChallenge { get; set; } = new Challenge();
         private List<Test> NewTests { get; set; } = new List<Test>();
+        private CodeOutputModel outputModel;
         private bool addTests;
         private bool solveTest;
         private bool isSolved;
         private bool isFailed;
+        private bool isCodeCompiling;
         private string apiResponse;
         private string validationText = "";
         private string validationCss;
-        private string nameAndInputs;
+        private string methodName;
+        private string methodInputs;
         private string returnType;
+        private string[] returnTypeItems = Enum.GetNames(typeof(InputType)).Select(x => x.ToLower()).ToArray();
         private string userName;
-        protected override Task OnInitializedAsync()
-        {
-            //References = AppStateService.References.ToList();
-            return Task.CompletedTask;
-        }
+        private InputCollectionType returnCollectionType;
 
+        private InputCollectionType[] returnCollectionTypes =
+            Enum.GetValues(typeof(InputCollectionType)).Cast<InputCollectionType>().ToArray();
+        
         private void AddTests()
         {
             if (!IsFormValid())
@@ -48,7 +51,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 StateHasChanged();
                 return;
             }
-            var test = new Test { Append = $"return {nameAndInputs};", TestAgainst = "" };
+            var test = new Test { Append = "", TestAgainst = "" };
             NewTests.Add(test);
             addTests = true;
             StateHasChanged();
@@ -56,7 +59,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private void NewTest()
         {
-            var test = new Test { Append = $"return {nameAndInputs};", TestAgainst = "" };
+            var test = new Test { Append = "", TestAgainst = "" };
             NewTests.Add(test);
             StateHasChanged();
         }
@@ -72,17 +75,46 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
             foreach (var test in NewTests)
             {
-                test.Append = $"{test.Append}";
+                test.Append = $"return {methodName}({test.Append});";
             }
+
+            var returnTypeFull = GetFormReturnType();
             NewChallenge.Tests = NewTests;
-            NewChallenge.Snippet = $"public static {returnType} {nameAndInputs}" + "\n{\n\t//solution here\n}";
+            NewChallenge.Snippet = $"public static {returnTypeFull} {methodName}({methodInputs})" + "\n{\n\t//solution here\n}";
             solveTest = true;
             StateHasChanged();
 
         }
+        private string GetFormReturnType() =>
+            returnCollectionType switch
+            {
+                InputCollectionType.Array => $"{returnType}[]",
+                InputCollectionType.List => $"List<{returnType}>",
+                InputCollectionType.Generic => $"IEnumerable<{returnType}>",
+                _ => returnType
+            };
 
+        private void ClearTests()
+        {
+            NewTests = new List<Test>();
+            AddTests();
+            StateHasChanged();
+        }
+
+        private void ClearForm()
+        {
+            NewChallenge = new Challenge();
+            methodName = null;
+            methodInputs = null;
+            returnType = null;
+            ClearTests();
+            StateHasChanged();
+        }
         private async Task SubmitCode()
         {
+            outputModel = new CodeOutputModel();
+            isCodeCompiling = true;
+            StateHasChanged();
             NewChallenge.Solution = await Editor.GetValue();
             userName = AppStateService.UserName;
            
@@ -90,6 +122,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             sw.Start();
             
             var output = await PublicClient.SubmitChallenge(NewChallenge);
+            AppStateService.UpdateCodeOutput(output);
             isSolved = output.Outputs.All(x => x.TestResult);
             foreach (var result in output.Outputs)
             {
@@ -103,6 +136,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 NewChallenge.Description = $"<p>{NewChallenge.Description}</p>";
             }
             isFailed = !isSolved;
+            isCodeCompiling = false;
             StateHasChanged();
 
         }
@@ -125,7 +159,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private bool IsFormValid()
         {
             if (string.IsNullOrEmpty(NewChallenge.Name) || string.IsNullOrEmpty(NewChallenge.Description) ||
-                string.IsNullOrEmpty(NewChallenge.Difficulty) || string.IsNullOrEmpty(nameAndInputs) || string.IsNullOrEmpty(returnType))
+                string.IsNullOrEmpty(NewChallenge.Difficulty) || string.IsNullOrEmpty(methodName) || string.IsNullOrEmpty(returnType))
             {
                 validationText =
                     "You are missing at least one required field. Please provide a Name, Description, Difficulty level, method name, and method return type.";
@@ -147,11 +181,11 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 return false;
             }
 
-            if (NewTests.Any(x => !x.Append.Contains("return ") || !x.Append.Contains(";")))
-            {
-                validationText = "Tests must be in format: return MethodName(<Input>);  Please adjust your tests";
-                return false;
-            }
+            //if (NewTests.Any(x => !x.Append.Contains("return ") || !x.Append.Contains(";")))
+            //{
+            //    validationText = "Tests must be in format: return MethodName(<Input>);  Please adjust your tests";
+            //    return false;
+            //}
 
             if (NewTests.Any(x => string.IsNullOrEmpty(x.TestAgainst)))
             {
@@ -195,6 +229,20 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         protected void OnContextMenu(EditorMouseEvent eventArg)
         {
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
+        }
+
+        #endregion
+
+        #region Form Enums
+
+        public enum InputCollectionType
+        {
+            None, Single, Array, List, Generic
+        }
+
+        public enum InputType
+        {
+            Choose, Bool, Byte, Char, Decimal, Int, Long, String
         }
 
         #endregion

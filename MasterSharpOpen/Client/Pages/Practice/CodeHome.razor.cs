@@ -136,6 +136,11 @@ namespace MasterSharpOpen.Client.Pages.Practice
             return code;
         }
 
+        private void ClearOutput()
+        {
+            CodeOutput = "";
+            StateHasChanged();
+        }
         public void Dispose()
         {
             Console.WriteLine("CodeHome.razor Disposed");

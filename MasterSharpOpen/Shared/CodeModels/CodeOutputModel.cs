@@ -21,6 +21,8 @@ namespace MasterSharpOpen.Shared.CodeModels
 
         [JsonProperty("testResult")]
         public bool TestResult { get; set; }
+        [JsonIgnore]
+        public string CssClass { get; set; }
     }
 
    

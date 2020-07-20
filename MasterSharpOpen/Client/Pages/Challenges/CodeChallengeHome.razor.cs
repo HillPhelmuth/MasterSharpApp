@@ -16,8 +16,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        //[Inject]
-        //public CompilerService CompilerService { get; set; }
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
@@ -27,21 +25,19 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         public CodeChallenges CodeChallenges { get; set; }
         public Challenge selectedChallenge { get; set; }
-
+        protected CodeOutputModel outputModel;
         protected string CodeSnippet;
-        bool takeChallenge = false;
+        private bool takeChallenge = false;
         private bool isCodeCompiling;
         protected bool isChallengeSucceed;
         protected bool isChallengeFail;
         protected bool isChallengeReady;
-        //protected IEnumerable<MetadataReference> References;
+        
         [Parameter] 
         public EventCallback<int> OnNotReady { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            //References = AppStateService.References;
-            //Console.WriteLine($"refs: {References}");
             CodeChallenges = AppStateService.CodeChallenges;
             AppStateService.OnChange += StateHasChanged;
             if ((CodeChallenges?.Challenges) == null)
@@ -50,7 +46,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 return;
             }
             isChallengeReady = true;
-           
         }
 
         private void SolveChallenge() => takeChallenge = !takeChallenge;
@@ -75,6 +70,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 Tests = selectedChallenge.Tests
             };
             var output = await PublicClient.SubmitChallenge(submitChallenge);
+            AppStateService.UpdateCodeOutput(output);
             foreach (var result in output.Outputs)
             {
                 Console.WriteLine($"test: {result.TestIndex}, result: {result.TestResult}, output: {result.Codeout}");
@@ -86,7 +82,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         }
 
-        protected async Task HandleChallengeChanged(MasterSharpOpen.Shared.CodeModels.Challenge challenge)
+        protected async Task HandleChallengeChanged(Challenge challenge)
         {
             Console.WriteLine($"Challenge from handler: {challenge.Name}");
             selectedChallenge = challenge;

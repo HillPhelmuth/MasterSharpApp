@@ -6,7 +6,7 @@
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12 text-center">
                 <MatH6>Provide a name, difficulty level and a method signature for your challenge</MatH6>
                 <br />
-                
+
                 <p class="@validationCss">@validationText</p>
             </div>
 
@@ -18,29 +18,29 @@
                 <p>Difficulty:</p>
                 <MatSelect Label="Difficulty level" @bind-Value="@NewChallenge.Difficulty">
                     <MatOptionString></MatOptionString>
-                    <MatOptionString Value="Easy">Easy</MatOptionString>
-                    <MatOptionString Value="Mid">Medium</MatOptionString>
-                    <MatOptionString Value="Hard">Hard</MatOptionString>
+                    <MatOptionString Value="@("Easy")">Easy</MatOptionString>
+                    <MatOptionString Value="@("Mid")">Medium</MatOptionString>
+                    <MatOptionString Value="@("Hard")">Hard</MatOptionString>
                 </MatSelect>
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6 text-center">
-                <p>Method Name + Inputs</p>
-                <MatTextField Required="true" Label="ex: IsPrime(int input)" @bind-Value="@nameAndInputs"></MatTextField>
+                <p>Method Name</p>
+                <MatTextField Required="true" Label="IsPrime" @bind-Value="@methodName"></MatTextField>
             </div>
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
-                <p>Type:</p>
-                <MatSelect Label="Method Return Type" @bind-Value="@returnType">
-                    <MatOptionString></MatOptionString>
-                    <MatOptionString Value="bool">bool</MatOptionString>
-                    <MatOptionString Value="byte">byte</MatOptionString>
-                    <MatOptionString Value="char">char</MatOptionString>
-                    <MatOptionString Value="decimal">decimal</MatOptionString>
-                    <MatOptionString Value="int">int32</MatOptionString>
-                    <MatOptionString Value="long">long(int64)</MatOptionString>
-                    <MatOptionString Value="string">string</MatOptionString>
-                </MatSelect>
+                <p>Method Inputs</p>
+                <span style="font-size:1.7em">(</span> <MatTextField Required="true" Label="ex: int in1, string in2" @bind-Value="@methodInputs"></MatTextField> <span style="font-size:1.7em">)</span>
             </div>
-
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <p>Instance Type</p>
+                <MatSelectItem Label="Method Return Type" @bind-Value="@returnType" Items="@returnTypeItems">
+                </MatSelectItem>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                <p>Collection</p>
+                <MatSelectItem Label="Collection Type" @bind-Value="@returnCollectionType" Items="@returnCollectionTypes">
+                </MatSelectItem>
+            </div>
         </div>
         <div class="mat-layout-grid-inner text-center">
             @*mat-layout-grid-cell-span-6*@
@@ -58,9 +58,11 @@
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                 <MatH6>Provide at least two tests to determine success/failure</MatH6>
                 <p>Only 2 are required, but 4+ tests is recommended for accuracy</p>
-                <MatButton Raised="true" Label="Submit and Add tests" OnClick="AddTests"></MatButton>
+                <MatButton Raised="true" Label="Submit and Add tests" OnClick="AddTests"></MatButton><br />
+                <MatButton Label="Clear Form" OnClick="ClearForm"></MatButton>
                 @if (addTests)
                 {
+                    <hr />
                     <MatButton Icon="note_add" OnClick="NewTest">Add Test</MatButton><br />
                     <div class="mat-layout-grid-inner text-center">
                         @foreach (var test in NewTests)
@@ -78,7 +80,8 @@
                             </div>
                         }
                     </div>
-                    <MatButton Raised="true" OnClick="SubmitForm" Label="Submit Challenge"></MatButton>
+                    <MatButton Raised="true" OnClick="SubmitForm" Label="Submit Challenge"></MatButton><br />
+                    <MatButton Style="font-size:.7em" Label="Clear Tests" OnClick="ClearTests"></MatButton>
                 }
             </div>
         </div>
@@ -87,34 +90,52 @@
 }
 @if (solveTest)
 {
-<div style="max-width: 800px">
+    <div class="mat-layout-grid">
 
-    <MatH6 Class="text-center">You can submit it if you can solve it</MatH6>
-    <MatButton OnClick="@(() => solveTest = !solveTest)">Return to form</MatButton>
-    
-    <hr />
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+                <MatH6 Class="text-center">You can submit it if you can solve it</MatH6>
+                <MatButton OnClick="@(() => solveTest = !solveTest)">Return to form</MatButton>
 
-    @if (isSolved)
-    {
-        <MatH3>@apiResponse</MatH3>
-        <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
-        <hr />
+                <hr />
 
-    }
-    @if (isFailed)
-    {
-        <MatH3>Oops!</MatH3>
-        <MatH6>It looks like something went wrong. Either your solution failed to compile, or one of your tests failed. Click "Return to form" and be sure your inputs correctly correspond to your expected results. (ex IsPrime(3); => true)</MatH6>
-    }
-    <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
-    <div class="text-left">
+                @if (isSolved)
+                {
+                    <MatH3>@apiResponse</MatH3>
+                    <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
+                    <hr />
 
-        <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="create challenge"
-                                   ConstructionOptions="EditorOptionsPuzzle"
-                                   OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                }
+                @if (isFailed)
+                {
+                    <MatH3>Oops!</MatH3>
+                    <MatH6>It looks like something went wrong. See Unit Test Results for more info</MatH6>
+                }
+                <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
+                <div class="text-left">
+
+                    <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="create challenge"
+                                               ConstructionOptions="EditorOptionsPuzzle"
+                                               OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
+                </div>
+            </div>
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                @if (isCodeCompiling)
+                {
+                    <hr />
+                    <MatH4 Class="text-center" Style="color:blue">Executing code and running tests...</MatH4>
+                    <SpinKitFadingCircle />
+                }
+                @if (isSolved || isFailed)
+                {
+                    <MatH4 Class="text-center">Unit Test Results</MatH4>
+                    <ChallengeOutput />
+                }
+
+            </div>
+        </div>
+        
     </div>
-
-</div>
 }
 @code {
 
