@@ -15,7 +15,7 @@ namespace MasterSharpOpen.Shared
         public string UserName { get; private set; }
         public CodeOutputModel CodeOutput { get; private set; }
         public event Action OnChange;
-        public event Action OnCloseConsole;
+        public event Action<int> OnTabChange;
 
         public void SetCodeChallenges(CodeChallenges codeChallenges/*, IEnumerable<MetadataReference> assemblyReferences*/)
         {
@@ -50,7 +50,8 @@ namespace MasterSharpOpen.Shared
             Console.WriteLine($"Output State Updated");
             NotifyStateHasChanged();
         }
-      
+
+        public void UpdateTabNavigation(int tab) => OnTabChange?.Invoke(tab);
         private void NotifyStateHasChanged() => OnChange?.Invoke();
     }
 }

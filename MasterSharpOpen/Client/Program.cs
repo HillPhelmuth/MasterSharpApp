@@ -24,7 +24,6 @@ namespace MasterSharpOpen.Client
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
             builder.Services.AddSingleton<CodeEditorService>();
-            //builder.Services.AddSingleton<CompilerService>();
             builder.Services.AddSingleton<AppStateService>();
             builder.Services.InjectClipboard();
             builder.Services.AddModalDialog();

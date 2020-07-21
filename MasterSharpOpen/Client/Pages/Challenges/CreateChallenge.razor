@@ -58,14 +58,14 @@
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                 <MatH6>Provide at least two tests to determine success/failure</MatH6>
                 <p>Only 2 are required, but 4+ tests is recommended for accuracy</p>
-                <MatButton Raised="true" Label="Submit and Add tests" OnClick="AddTests"></MatButton><br />
+                <MatButton Raised="true" Label="Submit and Add tests" OnClick="StartTests"></MatButton><br />
                 <MatButton Label="Clear Form" OnClick="ClearForm"></MatButton>
                 @if (addTests)
                 {
                     <hr />
                     <MatButton Icon="note_add" OnClick="NewTest">Add Test</MatButton><br />
                     <div class="mat-layout-grid-inner text-center">
-                        @foreach (var test in NewTests)
+                        @foreach (var test in InputTests)
                         {
                             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                                 <MatH6>Return Input</MatH6>
@@ -98,11 +98,14 @@
                 <MatButton OnClick="@(() => solveTest = !solveTest)">Return to form</MatButton>
 
                 <hr />
-
-                @if (isSolved)
+                @if (isSubmittedToDb)
                 {
                     <MatH3>@apiResponse</MatH3>
-                    <MatButton Style="font-size:1.3em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
+                    <MatButton Icon="tab" OnClick="GoToChallenges">Go see your challenge in the challenges list</MatButton>
+                }
+                @if (isSolved)
+                {
+                    <MatButton Style="font-size:1.5em" OnClick="@(async () => await AddChallengeToDb())">Publish Challenge!</MatButton>
                     <hr />
 
                 }

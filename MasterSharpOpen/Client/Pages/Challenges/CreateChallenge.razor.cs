@@ -15,35 +15,32 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 {
     public partial class CreateChallenge
     {
-        //[Inject]
-        //public CompilerService CompilerService { get; set; }
         [Inject]
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        //private List<MetadataReference> References { get; set; }
         private Challenge NewChallenge { get; set; } = new Challenge();
-        private List<Test> NewTests { get; set; } = new List<Test>();
-        private CodeOutputModel outputModel;
+        private List<Test> InputTests { get; set; } = new List<Test>();
         private bool addTests;
         private bool solveTest;
         private bool isSolved;
         private bool isFailed;
         private bool isCodeCompiling;
+        private bool isSubmittedToDb;
         private string apiResponse;
         private string validationText = "";
         private string validationCss;
         private string methodName;
         private string methodInputs;
         private string returnType;
-        private string[] returnTypeItems = Enum.GetNames(typeof(InputType)).Select(x => x.ToLower()).ToArray();
+        private readonly string[] returnTypeItems = Enum.GetNames(typeof(InputType)).Select(x => x.ToLower()).ToArray();
         private string userName;
         private InputCollectionType returnCollectionType;
 
-        private InputCollectionType[] returnCollectionTypes =
+        private readonly InputCollectionType[] returnCollectionTypes =
             Enum.GetValues(typeof(InputCollectionType)).Cast<InputCollectionType>().ToArray();
         
-        private void AddTests()
+        private void StartTests()
         {
             if (!IsFormValid())
             {
@@ -52,7 +49,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 return;
             }
             var test = new Test { Append = "", TestAgainst = "" };
-            NewTests.Add(test);
+            InputTests.Add(test);
             addTests = true;
             StateHasChanged();
         }
@@ -60,7 +57,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private void NewTest()
         {
             var test = new Test { Append = "", TestAgainst = "" };
-            NewTests.Add(test);
+            InputTests.Add(test);
             StateHasChanged();
         }
 
@@ -73,18 +70,20 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 return;
             }
 
-            foreach (var test in NewTests)
-            {
-                test.Append = $"return {methodName}({test.Append});";
-            }
-
+            SetUnitTests();
             var returnTypeFull = GetFormReturnType();
-            NewChallenge.Tests = NewTests;
+           
             NewChallenge.Snippet = $"public static {returnTypeFull} {methodName}({methodInputs})" + "\n{\n\t//solution here\n}";
             solveTest = true;
             StateHasChanged();
 
         }
+
+        private void SetUnitTests()
+        {
+            NewChallenge.Tests = InputTests.Select(test => new Test {TestAgainst = test.TestAgainst, Append = $"return {methodName}({test.Append});"}).ToList();
+        }
+
         private string GetFormReturnType() =>
             returnCollectionType switch
             {
@@ -96,8 +95,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private void ClearTests()
         {
-            NewTests = new List<Test>();
-            AddTests();
+            InputTests = new List<Test>();
+            StartTests();
             StateHasChanged();
         }
 
@@ -112,7 +111,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         }
         private async Task SubmitCode()
         {
-            outputModel = new CodeOutputModel();
             isCodeCompiling = true;
             StateHasChanged();
             NewChallenge.Solution = await Editor.GetValue();
@@ -149,10 +147,13 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             if (apiResult)
             {
                 AppStateService.UpdateChallenges(NewChallenge);
+                isSubmittedToDb = true;
             }
             StateHasChanged();
         }
 
+        private void GoToChallenges() => AppStateService.UpdateTabNavigation(1);
+        
        
         #region Form Validation
 
@@ -175,7 +176,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private bool AreTestsValid()
         {
-            if (NewTests.Count() < 2)
+            if (InputTests.Count() < 2)
             {
                 validationText = "Please provide at least two tests to validate submissions.";
                 return false;
@@ -187,7 +188,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             //    return false;
             //}
 
-            if (NewTests.Any(x => string.IsNullOrEmpty(x.TestAgainst)))
+            if (InputTests.Any(x => string.IsNullOrEmpty(x.TestAgainst)))
             {
                 validationText = "Please provide a value to test against.";
                 return false;
