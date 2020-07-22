@@ -5,7 +5,9 @@
     <!--<BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>-->
     <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
     <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
