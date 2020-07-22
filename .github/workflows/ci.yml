@@ -1,0 +1,28 @@
+name: 'Publish application'
+on: push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:        
+        - uses: actions/checkout@v2        
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 3.1.301
+
+      
+        # Generate the website
+        - name: Publish
+          run: dotnet publish MasterSharpOpen.sln --configuration Release --output build
+
+        # Publish the website
+        - name: GitHub Pages action
+          if: ${{ github.ref == 'refs/heads/master' }} # Publish only when the push is on master
+          uses: peaceiris/actions-gh-pages@v3.6.1
+          with:
+            GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+            BASE_BRANCH: master
+            BRANCH: gh-pages
+            FOLDER: build/wwwroot
+            CLEAN: true 
