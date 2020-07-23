@@ -84,11 +84,11 @@ class Program
         private const string ConsoleMutlitpeWrites =
             "using System;\n\nclass Program\n{\n\tpublic static void Main()\n\t{\n\t\tstring input = \"Foo\";\n\t\tstring additional = \" was not your input\";\n\t\tConsole.WriteLine(input);\n\t\tstring newOutput = input + additional;\n\t\tConsole.WriteLine(newOutput);\n\t}\n}";
 
-        private const string ShuffleGeneric = "public static void Shuffle<T>(this IList<T> cards)\n{\n\tvar rng = new Random();\n\tint n = cards.Count;\n\twhile (n > 1)\n\t{\n\t\tn--;\n\t\tint k = rng.Next(n + 1);\n\t\tT value = cards[k];\n\t\tcards[k] = cards[n];\n\t\tcards[n] = value;\n\t}\n}\n//Extend and shuffle a generic collection here";
-        private const string DoubleToText = "public static string ExtDoubleToText(this double dbl)\n{\n\treturn dbl switch\n\t{\n\t\t1.0 => \"Likely\",\n\t\t0.5 => \"So-so\",\n\t\t_ => \"Unlikely\"\n\t};\n}\n// Extend a double here";
-        private const string StringToWordCount = "public static int WordCount(this string words)\n{\n\tvar stringToArray = words.Split(' ');\n\tvar wordCount = stringToArray.Length;\n\treturn wordCount;\n}\n//extend a string here";
+        private const string ShuffleGeneric = "public static void Shuffle<T>(this IList<T> cards)\n{\n\tvar rng = new Random();\n\tint n = cards.Count;\n\twhile (n > 1)\n\t{\n\t\tn--;\n\t\tint k = rng.Next(n + 1);\n\t\tT value = cards[k];\n\t\tcards[k] = cards[n];\n\t\tcards[n] = value;\n\t}\n}\n\nvar list = new List<int> {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};\nlist.Shuffle();\nreturn list;";
+        private const string DoubleToText = "public static string ExtDoubleToText(this double dbl)\n{\n\tif (inp > .8)\n\t\treturn \"very likely\";\n\tif (inp > .5 && inp <= .8)\n\t\treturn \"somewhat likely\";\n\tif (inp > .25 && inp <= .5)\n\t\treturn \"somewhat unlikely\";\n\treturn \"very unlikely\";\n}\nvar myodds = .7;\nreturn myodds.ExtDoubleToText();";
+        private const string StringToWordCount = "public static int WordCount(this string words)\n{\n\tvar stringToArray = words.Split(' ');\n\tvar wordCount = stringToArray.Length;\n\treturn wordCount;\n}\nreturn \"How many words are here?\".WordCount();";
 
         private const string StringToCharIndexList =
-            "public static List<int> AllIndexesOf(this string str, string value)\n{\n\tif (string.IsNullOrEmpty(value))\n\t\treturn new List<int>();\n\tvar indexes = new List<int>();\n\tfor (int index = 0; ; index += value.Length)\n\t{\n\t\tindex = str.IndexOf(value, index, StringComparison.Ordinal);\n\t\tif (index == -1)\n\t\t\treturn indexes;\n\t\tindexes.Add(index);\n\t}\n}\n//Extend a string here";
+            "public static List<int> AllIndexesOf(this string str, string value)\n{\n\tif (string.IsNullOrEmpty(value))\n\t\treturn new List<int>();\n\tvar indexes = new List<int>();\n\tfor (int index = 0; ; index += value.Length)\n\t{\n\t\tindex = str.IndexOf(value, index, StringComparison.Ordinal);\n\t\tif (index == -1)\n\t\t\treturn indexes;\n\t\tindexes.Add(index);\n\t}\n}\nreturn \"i like it\".AllIndexesOf(\"i\");";
     }
 }
