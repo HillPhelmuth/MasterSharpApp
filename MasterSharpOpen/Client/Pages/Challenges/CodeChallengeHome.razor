@@ -6,13 +6,15 @@
 }
 @if (isChallengeSucceed)
 {
-    <Animation Effect="@Effect.Flash" Speed="@Speed.Slow" IterationCount="500">
+    <div class="blink_me">
         <MatH3 Style="color:blue">Success!</MatH3>
-    </Animation>
+    </div>
 }
 @if (isChallengeFail)
 {
-    <MatH3 Style="color:red">Fail!</MatH3>
+    <div class="blink_me">
+        <MatH3 Style="color: red">Fail!</MatH3>
+    </div>
 }
 @if (!isChallengeReady)
 {
