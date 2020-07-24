@@ -26,8 +26,8 @@ namespace MasterSharpOpen.Client.Pages
        
         protected override async Task OnInitializedAsync()
         {
-            var codeChallenges = await PublicClient.GetChallenges();
-            AppStateService.SetCodeChallenges(codeChallenges);
+            //var codeChallenges = await PublicClient.GetChallenges();
+            //AppStateService.SetCodeChallenges(codeChallenges);
             AppStateService.OnTabChange += HandleTabNavigation;
             isPageReady = true;
             StateHasChanged();

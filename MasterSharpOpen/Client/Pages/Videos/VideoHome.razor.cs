@@ -37,7 +37,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
             {
                 IsVideoReady = false;
                 StateHasChanged();
-                await Task.Delay(500);
+                await Task.Delay(200);
             }
             IsVideoReady = true;
             StateHasChanged();

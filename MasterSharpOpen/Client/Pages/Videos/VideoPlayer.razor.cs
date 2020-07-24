@@ -15,15 +15,20 @@ namespace MasterSharpOpen.Client.Pages.Videos
         public EventCallback<bool> VideoEnded { get; set; }
         [Parameter]
         public string VideoId { get; set; }
-        
+
+        private DotNetObjectReference<VideoPlayer> objectReference;
+
+        private int TrackVideoCalls = -1;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                var refThis = DotNetObjectReference.Create(this);
+                objectReference = DotNetObjectReference.Create(this);
                 await JSRuntime.StartYouTube();
                 await Task.Delay(500);
-                await JSRuntime.InvokeAsync<object>("getYouTube", refThis, VideoId);
+                await JSRuntime.InvokeAsync<object>("getYouTube", objectReference, VideoId);
+                TrackVideoCalls++;
             }
         }
         [JSInvokable]
@@ -36,8 +41,12 @@ namespace MasterSharpOpen.Client.Pages.Videos
         }
         public void Dispose()
         {
-            Console.WriteLine("VideoPlayer.razor Disposed");
             JSRuntime.RemoveYouTubePlayer();
+            
+            GC.SuppressFinalize(this);
+            objectReference?.Dispose();
+            Console.WriteLine("VideoPlayer.razor Disposed");
+
         }
     }
 }

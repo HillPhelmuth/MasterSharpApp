@@ -38,13 +38,15 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         protected override async Task OnInitializedAsync()
         {
+            CodeChallenges ??= await PublicClient.GetChallenges();
+            AppStateService.SetCodeChallenges(CodeChallenges);
             CodeChallenges = AppStateService.CodeChallenges;
             AppStateService.OnChange += StateHasChanged;
-            if ((CodeChallenges?.Challenges) == null)
-            {
-                await OnNotReady.InvokeAsync(0);
-                return;
-            }
+            //if ((CodeChallenges?.Challenges) == null)
+            //{
+            //    await OnNotReady.InvokeAsync(0);
+            //    return;
+            //}
             isChallengeReady = true;
         }
 

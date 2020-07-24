@@ -3,6 +3,8 @@
     elem.parentNode.removeChild(elem);
 }
 window.removeYouTube = () => {
+    var frameElement = document.querySelector('#iframe-demo');
+    frameElement.parentNode.removeChild(frameElement);
     var elem = document.querySelector('#player');
     elem.parentNode.removeChild(elem);
 }
