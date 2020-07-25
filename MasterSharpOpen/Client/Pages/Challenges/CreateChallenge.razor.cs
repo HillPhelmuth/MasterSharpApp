@@ -18,7 +18,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        private ChallengeForm NewChallengeForm { get; set; }
+        private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm();
         private Challenge Challenge { get; set; }
         private List<Test> InputTests { get; set; } = new List<Test>();
         private bool addTests;
