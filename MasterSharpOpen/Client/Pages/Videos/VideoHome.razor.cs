@@ -9,7 +9,6 @@ namespace MasterSharpOpen.Client.Pages.Videos
 {
     public partial class VideoHome : IDisposable
     {
-
         [Inject]
         protected PublicClient PublicClient { get; set; }
         [Inject]

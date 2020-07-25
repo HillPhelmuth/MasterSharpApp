@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace MasterSharpOpen.Client.Pages.Practice
 {
-    public partial class CodeHome:IDisposable
+    public partial class CodeHome : IDisposable
     {
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
@@ -34,7 +34,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         private string CodeOutput = "";
         private string codeSnippet;
         private string readlinePattern { get; set; } = "Console.ReadLine()";
-        
+
         //protected override Task OnInitializedAsync()
         //{
         //    CodeEditorService.OnChange += StateHasChanged;
@@ -67,7 +67,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected async Task OnSubmit(string codeInput)
         {
             Console.WriteLine("On Submit");
-            
+
             string result;
             var sw = new Stopwatch();
             if (codeInput.Contains(readlinePattern))
@@ -101,9 +101,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
             Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
             isCodeCompiling = false;
             StateHasChanged();
-            
         }
-        
+
         private async Task<string> ReplaceConsoleInput(string codeInput)
         {
             var tempCode = codeInput;

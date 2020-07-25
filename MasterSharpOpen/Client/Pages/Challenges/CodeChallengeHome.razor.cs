@@ -32,8 +32,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         protected bool isChallengeSucceed;
         protected bool isChallengeFail;
         protected bool isChallengeReady;
-        
-        [Parameter] 
+
+        [Parameter]
         public EventCallback<int> OnNotReady { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -65,7 +65,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public async Task HandleCodeSubmit()
         {
             var code = await Editor.GetValue();
-            
+
             var submitChallenge = new Challenge
             {
                 Solution = code,
@@ -81,7 +81,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             isChallengeFail = !isChallengeSucceed;
             isCodeCompiling = false;
             StateHasChanged();
-
         }
 
         protected async Task HandleChallengeChanged(Challenge challenge)
@@ -147,7 +146,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                     "return MyProgram();"
             };
         }
-
 
         protected async Task EditorOnDidInit(MonacoEditor editor)
         {

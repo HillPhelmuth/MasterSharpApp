@@ -42,11 +42,10 @@ namespace MasterSharpOpen.Client.Pages.Videos
         public void Dispose()
         {
             JSRuntime.RemoveYouTubePlayer();
-            
+
             GC.SuppressFinalize(this);
             objectReference?.Dispose();
             Console.WriteLine("VideoPlayer.razor Disposed");
-
         }
     }
 }

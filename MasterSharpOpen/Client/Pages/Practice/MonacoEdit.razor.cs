@@ -15,7 +15,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
     {
         [Inject]
         public IJSRuntime jsRuntime { get; set; }
-        
+
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
         //[Inject]
@@ -50,10 +50,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         }
         public async Task SubmitCode()
         {
-
-            currentCode = await Editor.GetValue(); 
+            currentCode = await Editor.GetValue();
             await OnCodeSubmit.InvokeAsync(currentCode);
-           
         }
 
         protected async Task UpdateSnippet()
@@ -64,7 +62,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
             Console.WriteLine("Snippet Updated");
             StateHasChanged();
         }
-       
+
         protected StandaloneEditorConstructionOptions EditorOptionsRoslyn(MonacoEditor editor)
         {
             return new StandaloneEditorConstructionOptions
@@ -83,7 +81,6 @@ namespace MasterSharpOpen.Client.Pages.Practice
             };
         }
 
-        
         protected async Task EditorOnDidInit(MonacoEditor editor)
         {
             await Editor.AddCommand((int)KeyMode.CtrlCmd | (int)KeyCode.KEY_H, (editor, keyCode) =>

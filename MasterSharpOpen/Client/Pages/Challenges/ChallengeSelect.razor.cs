@@ -15,8 +15,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public CodeChallenges CodeChallenges { get; set; }
         [Parameter]
         public EventCallback<MasterSharpOpen.Shared.CodeModels.Challenge> OnChallengeChanged { get; set; }
-        
-
 
         protected Task SelectChallenge(MasterSharpOpen.Shared.CodeModels.Challenge challenge)
         {
@@ -29,7 +27,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             Console.WriteLine($"Puzzle selected: {selectedChallenge.Name}");
             StateHasChanged();
             return Task.CompletedTask;
-
         }
     }
 }

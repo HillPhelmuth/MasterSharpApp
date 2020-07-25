@@ -9,7 +9,6 @@ using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.CodeServices;
 using Microsoft.AspNetCore.Components;
-using Microsoft.CodeAnalysis;
 
 namespace MasterSharpOpen.Client.Pages.Challenges
 {
@@ -19,7 +18,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        private Challenge NewChallenge { get; set; } = new Challenge();
+        private ChallengeForm NewChallengeForm { get; set; }
+        private Challenge Challenge { get; set; }
         private List<Test> InputTests { get; set; } = new List<Test>();
         private bool addTests;
         private bool solveTest;
@@ -29,25 +29,10 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private bool isSubmittedToDb;
         private string apiResponse;
         private string validationText = "";
-        private string validationCss;
-        private string methodName;
-        private string methodInputs;
-        private string returnType;
-        private readonly string[] returnTypeItems = Enum.GetNames(typeof(InputType)).Select(x => x.ToLower()).ToArray();
-        private string userName;
-        private InputCollectionType returnCollectionType;
 
-        private readonly InputCollectionType[] returnCollectionTypes =
-            Enum.GetValues(typeof(InputCollectionType)).Cast<InputCollectionType>().ToArray();
-        
         private void StartTests()
         {
-            if (!IsFormValid())
-            {
-                validationCss = "pageError";
-                StateHasChanged();
-                return;
-            }
+           
             var test = new Test { Append = "", TestAgainst = "" };
             InputTests.Add(test);
             addTests = true;
@@ -65,32 +50,37 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         {
             if (!AreTestsValid())
             {
-                validationCss = "pageError";
                 StateHasChanged();
                 return;
             }
-
+            var userName = AppStateService.UserName;
+            var returnTypeFull = GetSignatureReturnType();
+            Challenge = new Challenge
+            {
+                Name = NewChallengeForm.Name,
+                Difficulty = NewChallengeForm.Difficulty,
+                Description = $"<p>{NewChallengeForm.Description}</p>",
+                Examples = NewChallengeForm.Examples,
+                Snippet = $"public static {returnTypeFull} {NewChallengeForm.MethodName}({NewChallengeForm.MethodInputs})" + "\n{\n\t//solution here\n}",
+                AddedBy = userName
+            };
             SetUnitTests();
-            var returnTypeFull = GetFormReturnType();
-           
-            NewChallenge.Snippet = $"public static {returnTypeFull} {methodName}({methodInputs})" + "\n{\n\t//solution here\n}";
             solveTest = true;
             StateHasChanged();
-
         }
 
         private void SetUnitTests()
         {
-            NewChallenge.Tests = InputTests.Select(test => new Test {TestAgainst = test.TestAgainst, Append = $"return {methodName}({test.Append});"}).ToList();
+            Challenge.Tests = InputTests.Select(test => new Test { TestAgainst = test.TestAgainst, Append = $"return {NewChallengeForm.MethodName}({test.Append});" }).ToList();
         }
 
-        private string GetFormReturnType() =>
-            returnCollectionType switch
+        private string GetSignatureReturnType() =>
+            NewChallengeForm.ReturnCollectionType switch
             {
-                InputCollectionType.Array => $"{returnType}[]",
-                InputCollectionType.List => $"List<{returnType}>",
-                InputCollectionType.Generic => $"IEnumerable<{returnType}>",
-                _ => returnType
+                "Array" => $"{NewChallengeForm.ReturnType}[]",
+                "List" => $"List<{NewChallengeForm.ReturnType}>",
+                "Generic" => $"IEnumerable<{NewChallengeForm.ReturnType}>",
+                _ => NewChallengeForm.ReturnType
             };
 
         private void ClearTests()
@@ -102,10 +92,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         private void ClearForm()
         {
-            NewChallenge = new Challenge();
-            methodName = null;
-            methodInputs = null;
-            returnType = null;
+            NewChallengeForm = new ChallengeForm();
             ClearTests();
             StateHasChanged();
         }
@@ -113,13 +100,13 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         {
             isCodeCompiling = true;
             StateHasChanged();
-            NewChallenge.Solution = await Editor.GetValue();
-            userName = AppStateService.UserName;
-           
+            Challenge.Solution = await Editor.GetValue();
+            var userName = AppStateService.UserName;
+
             var sw = new Stopwatch();
             sw.Start();
-            
-            var output = await PublicClient.SubmitChallenge(NewChallenge);
+
+            var output = await PublicClient.SubmitChallenge(Challenge);
             AppStateService.UpdateCodeOutput(output);
             isSolved = output.Outputs.All(x => x.TestResult);
             foreach (var result in output.Outputs)
@@ -128,75 +115,40 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             }
             sw.Stop();
             Console.WriteLine($"Unit tests took {sw.ElapsedMilliseconds}ms");
-            if (isSolved)
-            {
-                NewChallenge.AddedBy = userName;
-                NewChallenge.Description = $"<p>{NewChallenge.Description}</p>";
-            }
+
             isFailed = !isSolved;
             isCodeCompiling = false;
             StateHasChanged();
-
         }
         private async Task AddChallengeToDb()
         {
-            NewChallenge.Solution = await Editor.GetValue();
+            Challenge.Solution = await Editor.GetValue();
 
-            var apiResult = await PublicClient.PostChallenge(NewChallenge);
+            var apiResult = await PublicClient.PostChallenge(Challenge);
             apiResponse = apiResult ? "Submission Successful!" : "Sorry, something went wrong. Submission failed";
             if (apiResult)
             {
-                AppStateService.UpdateChallenges(NewChallenge);
+                AppStateService.UpdateChallenges(Challenge);
                 isSubmittedToDb = true;
             }
             StateHasChanged();
         }
-
         private void GoToChallenges() => AppStateService.UpdateTabNavigation(1);
-        
-       
-        #region Form Validation
-
-        private bool IsFormValid()
-        {
-            if (string.IsNullOrEmpty(NewChallenge.Name) || string.IsNullOrEmpty(NewChallenge.Description) ||
-                string.IsNullOrEmpty(NewChallenge.Difficulty) || string.IsNullOrEmpty(methodName) || string.IsNullOrEmpty(returnType))
-            {
-                validationText =
-                    "You are missing at least one required field. Please provide a Name, Description, Difficulty level, method name, and method return type.";
-                return false;
-            }
-
-
-
-            validationText = "Submission Success";
-            validationCss = "pageSuccess";
-            return true;
-        }
-
         private bool AreTestsValid()
         {
-            if (InputTests.Count() < 2)
+            if (InputTests.Count < 2)
             {
                 validationText = "Please provide at least two tests to validate submissions.";
                 return false;
             }
-
-            //if (NewTests.Any(x => !x.Append.Contains("return ") || !x.Append.Contains(";")))
-            //{
-            //    validationText = "Tests must be in format: return MethodName(<Input>);  Please adjust your tests";
-            //    return false;
-            //}
-
             if (InputTests.Any(x => string.IsNullOrEmpty(x.TestAgainst)))
             {
                 validationText = "Please provide a value to test against.";
                 return false;
             }
-
             return true;
         }
-        #endregion
+
         #region Monaco Editor Settings
 
         protected MonacoEditor Editor { get; set; }
@@ -208,7 +160,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 AutoIndent = true,
                 HighlightActiveIndentGuide = true,
                 Language = "csharp",
-                Value = NewChallenge.Snippet ?? "private string MyProgram() \n" +
+                Value = Challenge.Snippet ?? "private string MyProgram() \n" +
                     "{\n" +
                     "    string input = \"this does not\"; \n" +
                     "    string modify = input + \" suck!\"; \n" +
@@ -217,7 +169,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                     "return MyProgram();"
             };
         }
-
 
         protected async Task EditorOnDidInit(MonacoEditor editor)
         {
@@ -234,18 +185,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
 
         #endregion
 
-        #region Form Enums
-
-        public enum InputCollectionType
-        {
-            None, Single, Array, List, Generic
-        }
-
-        public enum InputType
-        {
-            Choose, Bool, Byte, Char, Decimal, Int, Long, String
-        }
-
-        #endregion
+       
     }
 }

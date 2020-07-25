@@ -1,12 +1,11 @@
 ﻿@inject AppStateService AppStateService
 
-<MatH4 Class="text-center">Test your knowledge with C# code challenges</MatH4>
 @if (!isUserAdded)
 {
 <div class="text-center">
     <hr />
     <MatH6>Add a user name to attach to the challenge</MatH6>
-    <MatTextField Label="User Name" @bind-Value="username"></MatTextField>
+    <MatTextField Label="User Name" @bind-Value="username"></MatTextField><br />
     <MatButton Raised="true" OnClick="AddUser">Create Challenge</MatButton>
     <hr />
     <div class="mainIcon" style="background-image: url('Icons/newChallengeIcon.png')"></div>

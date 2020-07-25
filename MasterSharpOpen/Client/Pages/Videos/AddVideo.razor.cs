@@ -37,7 +37,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
                 userMessage = "<p class=\"pageError\">Please provide a full YouTube Url. </p>";
                 return;
             }
-            Video = new Video {Title = title, VideoId = videoId};
+            Video = new Video { Title = title, VideoId = videoId };
             isSubmitReady = true;
             TryPlayVideo.InvokeAsync(videoId);
             StateHasChanged();

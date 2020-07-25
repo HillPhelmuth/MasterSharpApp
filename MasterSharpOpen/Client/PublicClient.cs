@@ -46,7 +46,7 @@ namespace MasterSharpOpen.Client
             var videos = await Client.GetFromJsonAsync<List<VideoSection>>($"{CHALLENGE_FUNCTION_URL}/videos");
             sw.Stop();
             Console.WriteLine($"videos from server: {sw.ElapsedMilliseconds}ms");
-            return new Videos {VideoSections = videos};
+            return new Videos { VideoSections = videos };
         }
 
         public async Task<bool> PostChallenge(Challenge challenge)
@@ -70,14 +70,13 @@ namespace MasterSharpOpen.Client
             Console.WriteLine($"challenge submit too {sw.ElapsedMilliseconds}ms");
             var output = JsonConvert.DeserializeObject<CodeOutputModel>(result);
             return output;
-            
         }
 
         public async Task<string> SubmitCode(string code)
         {
             var sw = new Stopwatch();
             sw.Start();
-            var challenge = new Challenge {Solution = code};
+            var challenge = new Challenge { Solution = code };
             var apiResult = await Client.PostAsJsonAsync($"{COMPILE_FUNCTION_URL}/code", challenge);
             var result = await apiResult.Content.ReadAsStringAsync();
             Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");

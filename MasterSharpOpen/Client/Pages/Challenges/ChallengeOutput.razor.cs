@@ -13,7 +13,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         [Inject]
         public AppStateService AppStateService { get; set; }
 
-        protected CodeOutputModel CodeOutput => AppStateService.CodeOutput; 
+        protected CodeOutputModel CodeOutput => AppStateService.CodeOutput;
 
         protected override Task OnInitializedAsync()
         {

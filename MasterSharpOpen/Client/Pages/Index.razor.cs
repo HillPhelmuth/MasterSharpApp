@@ -23,7 +23,7 @@ namespace MasterSharpOpen.Client.Pages
         protected PublicClient PublicClient { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
-       
+
         protected override async Task OnInitializedAsync()
         {
             //var codeChallenges = await PublicClient.GetChallenges();
@@ -40,6 +40,5 @@ namespace MasterSharpOpen.Client.Pages
             tabIndex = tab;
             StateHasChanged();
         }
-
     }
 }

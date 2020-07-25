@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
@@ -15,12 +16,13 @@ namespace MasterSharpOpen.Shared.CodeModels
     {
         [JsonIgnore]
         public int ID { get; set; }
+        [Required]
         [JsonProperty("name")]
         public string Name { get; set; }
-
+        [Required]
         [JsonProperty("difficulty")]
         public string Difficulty { get; set; }
-
+        [Required]
         [JsonProperty("description")]
         public string Description { get; set; }
 
@@ -33,11 +35,8 @@ namespace MasterSharpOpen.Shared.CodeModels
         public string Solution { get; set; }
         [JsonProperty("tests")]
         public virtual List<Test> Tests { get; set; }
-        
         public string AddedBy { get; set; }
-        //[NotMapped]
-        //[JsonProperty("compilation")]
-        //public CSharpCompilation Compilation { get; set; }
+       
 
     }
     public class Test
