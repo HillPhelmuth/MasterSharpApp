@@ -22,6 +22,7 @@
   <ItemGroup>
     <Content Remove="Pages\Practice\ConsoleApp.razor" />
     <Content Remove="Pages\Practice\ReplShell.razor" />
+    <Content Remove="Shared\NavMenu.razor" />
     <Content Remove="wwwroot\online-education.png" />
   </ItemGroup>
 

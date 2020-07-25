@@ -9,13 +9,13 @@
         </div>*@
     <MatThemeProvider Theme="theme">
         <MatAppBarContainer>
-            <MatAppBar Fixed="true" Style="position:sticky">
+            <MatAppBar Class="mat-elevation-z12" Fixed="true" Style="position:sticky">
                 <MatAppBarRow>
                     <MatAppBarSection>
                         <MatAppBarTitle>MasterSharp - C# Learning and practice tools</MatAppBarTitle>
                     </MatAppBarSection>
                     <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                        <MatIconButton Link="https://github.com/HillPhelmuth/MasterSharpOpen">
+                        <MatIconButton Link="https://github.com/HillPhelmuth/MasterSharpApp">
                             <i class="githubIcon"></i>
                         </MatIconButton>
                     </MatAppBarSection>
@@ -31,6 +31,6 @@
 @code {
     MatTheme theme = new MatTheme()
     {
-        Primary = "#4fc3f7",
+        Primary = "#2196f3",
     };
 }
