@@ -52,7 +52,15 @@
                 }
                 <hr />
                 <div class="text-center">
-                    <MatButton OnClick="@(() => IsCodeAlong = !IsCodeAlong)">Add Video</MatButton>
+                    <AuthorizeView>
+                        <Authorized>
+                            <MatButton OnClick="@(() => IsCodeAlong = !IsCodeAlong)">Add Video</MatButton>
+                        </Authorized>
+                        <NotAuthorized>
+                            <MatButton Link="/login-providers">Log in</MatButton>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                   
                 </div>
                 @if (IsCodeAlong)
                 {

@@ -1,15 +1,5 @@
 ﻿@page "/"
 
-    <AuthorizeView>
-        <Authorized>
-            Hello, @context.User.Identity.Name!
-            <a href="/.auth/logout?post_logout_redirect_uri=/">Log out</a>
-        </Authorized>
-        <NotAuthorized>
-            <a href="/login-providers">Log in</a>
-        </NotAuthorized>
-    </AuthorizeView>
-
 @if (!isPageReady)
 {
     <MatH4 Class="text-center">Loading required assemblies</MatH4>
@@ -52,21 +42,34 @@ else
                             </MatListItemText>
                         </MatListItem>
                         <MatListDivider></MatListDivider>
-                        <MatListItem OnClick="@(() => tabIndex = 4)">
-                            <MatListItemText>
-                                <MatListItemPrimaryText Class="listPrimary">Create C# Challenge</MatListItemPrimaryText>
-                                <MatListItemSecondaryText>
-                                    <div class="listSecondary">Create and solve your own C# challenge, and add it to our database for others to solve</div>
-                                </MatListItemSecondaryText>
-                            </MatListItemText>
-                        </MatListItem>
+                        <AuthorizeView>
+                            <Authorized>
+                                <MatListItem OnClick="@(() => tabIndex = 4)">
+                                    <MatListItemText>
+                                        <MatListItemPrimaryText Class="listPrimary">Create C# Challenge</MatListItemPrimaryText>
+                                        <MatListItemSecondaryText>
+                                            <div class="listSecondary">Create and solve your own C# challenge, and add it to our database for others to solve</div>
+                                        </MatListItemSecondaryText>
+                                    </MatListItemText>
+                                </MatListItem>
+                            </Authorized>
+                            <NotAuthorized>
+                                <MatListItem OnClick="@(() => tabIndex = 4)">
+                                    <MatListItemText>
+                                        <MatListItemPrimaryText Class="listPrimary">Log-in for more</MatListItemPrimaryText>
+                                        <MatListItemSecondaryText>
+                                            <div class="listSecondary">Log-in to track your progress, unlock new challenges and lessons, and add your own c# challenges!</div>
+                                        </MatListItemSecondaryText>
+                                    </MatListItemText>
+                                </MatListItem>
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </MatList>
                 </div>
             </div>
         </MatTab>
         <MatTab Label="Code Challenges">
             <CodeChallengeHome />
-
         </MatTab>
         <MatTab Label="Practice C#(Shell and Monaco)">
             <CodeHome />
@@ -80,6 +83,11 @@ else
                     <ChallengeAddUser />
                 </MatTab>
             </Authorized>
+            <NotAuthorized>
+                <MatTab Label="Sign in">
+                    <LoginProvider/>
+                </MatTab>
+            </NotAuthorized>
         </AuthorizeView>
     </MatTabGroup>
 }

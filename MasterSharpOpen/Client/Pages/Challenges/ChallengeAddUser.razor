@@ -4,9 +4,18 @@
 {
 <div class="text-center">
     <hr />
-    <MatH6>Add a user name to attach to the challenge</MatH6>
-    <MatTextField Label="User Name" @bind-Value="username"></MatTextField><br />
-    <MatButton Raised="true" OnClick="AddUser">Create Challenge</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <MatH6>We will attribute the new challenge to @context.User.Identity.Name!</MatH6><br />
+            <MatButton Raised="true" OnClick="@(() => AddUser(@context.User.Identity.Name))">Create Challenge</MatButton><br />
+        </Authorized>
+        <NotAuthorized>
+            <MatH6>Log-in to add a challenge</MatH6>
+        </NotAuthorized>
+    </AuthorizeView>
+    
+    @*<MatTextField Label="User Name" @bind-Value="username"></MatTextField><br />*@
+    
     <hr />
     <div class="mainIcon" style="background-image: url('Icons/newChallengeIcon.png')"></div>
 </div>
@@ -19,8 +28,9 @@ else
 @code {
     string username;
     bool isUserAdded;
-    void AddUser()
+    void AddUser(string user)
     {
+        username = user;
         AppStateService.UpdateUserName(username);
         isUserAdded = true;
         StateHasChanged();

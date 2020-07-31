@@ -14,8 +14,23 @@
                     <MatAppBarSection>
                         <MatAppBarTitle Style="font-size:1.4em">MasterSharp - C# Learning and practice tools</MatAppBarTitle>
                     </MatAppBarSection>
+                    <MatAppBarSection>
+                    </MatAppBarSection>
                     <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                        <MatIconButton Link="https://github.com/HillPhelmuth/MasterSharpApp">
+                        <AuthorizeView>
+                            <Authorized>
+                                <div style="margin-right:1rem">
+                                    Hello, @context.User.Identity.Name!
+                                    <a href="/.auth/logout?post_logout_redirect_uri=/"> Log out</a>
+                                </div>
+                            </Authorized>
+                            <NotAuthorized>
+                                <div style="margin-right:1rem">
+                                     <a href="/login-providers" style="color: white">Log in</a>
+                                </div>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                        <MatIconButton Style="margin-left:5px" Link="https://github.com/HillPhelmuth/MasterSharpApp">
                             <i class="githubIcon"></i>
                         </MatIconButton>
                     </MatAppBarSection>
