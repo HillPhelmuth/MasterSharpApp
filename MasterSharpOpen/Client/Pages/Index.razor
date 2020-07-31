@@ -1,5 +1,15 @@
 ﻿@page "/"
 
+    <AuthorizeView>
+        <Authorized>
+            Hello, @context.User.Identity.Name!
+            <a href="/.auth/logout?post_logout_redirect_uri=/">Log out</a>
+        </Authorized>
+        <NotAuthorized>
+            <a href="/login-providers">Log in</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
 @if (!isPageReady)
 {
     <MatH4 Class="text-center">Loading required assemblies</MatH4>
@@ -64,9 +74,13 @@ else
         <MatTab Label="Watch C# Videos">
             <VideoHome />
         </MatTab>
-        <MatTab Label="Add C# Challenge">
-            <ChallengeAddUser />
-        </MatTab>
+        <AuthorizeView>
+            <Authorized>
+                <MatTab Label="Add C# Challenge">
+                    <ChallengeAddUser />
+                </MatTab>
+            </Authorized>
+        </AuthorizeView>
     </MatTabGroup>
 }
 

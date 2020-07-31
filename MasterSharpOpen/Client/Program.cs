@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using AzureStaticWebApps.Blazor.Authentication;
 using Blazor.ModalDialog;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
@@ -27,6 +28,7 @@ namespace MasterSharpOpen.Client
             builder.Services.AddSingleton<AppStateService>();
             builder.Services.InjectClipboard();
             builder.Services.AddModalDialog();
+            builder.Services.AddStaticWebAppsAuthentication();
             await builder.Build().RunAsync();
         }
     }
