@@ -11,21 +11,30 @@ namespace MasterSharpOpen.Shared
     {
         public CodeChallenges CodeChallenges { get; private set; }
         public Videos Videos { get; private set; }
-        //public IEnumerable<MetadataReference> References { get; private set; }
         public string UserName { get; private set; }
         public CodeOutputModel CodeOutput { get; private set; }
         public event Action OnChange;
         public event Action<int> OnTabChange;
 
-        public void SetCodeChallenges(CodeChallenges codeChallenges/*, IEnumerable<MetadataReference> assemblyReferences*/)
+        public void SetCodeChallenges(CodeChallenges codeChallenges)
         {
             CodeChallenges = codeChallenges;
-            //References = assemblyReferences;
             NotifyStateHasChanged();
         }
 
         public void SetVideos(Videos videos)
         {
+            Videos = videos;
+            NotifyStateHasChanged();
+        }
+
+        public void AddVideo(Video video)
+        {
+            var videos = Videos;
+            foreach (var section in videos.VideoSections.Where(section => section.ID == video.VideoSectionID))
+            {
+                section.Videos.Add(video);
+            }
             Videos = videos;
             NotifyStateHasChanged();
         }

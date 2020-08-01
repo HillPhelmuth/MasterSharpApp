@@ -23,7 +23,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
             Videos = AppStateService.Videos;
             Videos ??= await PublicClient.GetVideos();
             AppStateService.SetVideos(Videos);
-            AppStateService.OnChange += StateHasChanged;
+            AppStateService.OnChange += UpdateVideos;
             IsPageVideosReady = true;
         }
         protected void HandleVideoEnd(bool isEnd)
@@ -48,10 +48,15 @@ namespace MasterSharpOpen.Client.Pages.Videos
             return PlayVideos();
         }
 
+        private void UpdateVideos()
+        {
+            Videos = AppStateService.Videos;
+            StateHasChanged();
+        }
         public void Dispose()
         {
             Console.WriteLine("VideoHome.razor disposed");
-            AppStateService.OnChange -= StateHasChanged;
+            AppStateService.OnChange -= UpdateVideos;
         }
     }
 }

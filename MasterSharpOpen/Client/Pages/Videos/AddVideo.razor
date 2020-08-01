@@ -6,8 +6,8 @@
 
     <MatTextField Style="width:100%" @bind-Value="title" Label="YouTube Video Title"></MatTextField><br />
     <MatTextField Style="width:100%" @bind-Value="videoUrl" Label="Paste video URL here"></MatTextField><br />
-    <MatSelectItem Style="width: 100%" @bind-Value="sectionName" Items="@VideoSectionNames" Label="Topic section" >
-        <ItemTemplate><span>@context.name-@context.subheader</span></ItemTemplate>
+    <MatSelectItem Style="width: 120%"  @bind-Value="selectedSection" Items="@VideoSections" Label="Topic section" >
+        <ItemTemplate><span>@context.Name -- @context.SubHeader</span></ItemTemplate>
     </MatSelectItem><br />
     <MatButton Raised="true" OnClick="SubmitVideo">View the video above</MatButton><br />
 
