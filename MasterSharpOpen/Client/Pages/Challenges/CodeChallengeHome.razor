@@ -18,8 +18,12 @@
 }
 @if (!isChallengeReady)
 {
-    <p>loading challenges...</p>
-    <SpinKitRotatingPlane />
+<div style="margin-left:auto; margin-right:auto">
+    <MatH4 class="text-center">Loading challenges</MatH4>
+    <SpinKitFadingCircle />
+    <div class="mainIcon fade-in" style="background-image: url('Icons/challengeIcon.png')"></div>
+    
+</div>
 }
 @if (isChallengeReady)
 {

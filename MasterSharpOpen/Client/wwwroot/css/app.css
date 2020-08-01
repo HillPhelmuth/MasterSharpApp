@@ -282,3 +282,16 @@ app {
         opacity: 0;
     }
 }
+.fade-in {
+    animation: opac 1.8s
+}
+
+@keyframes opac {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}

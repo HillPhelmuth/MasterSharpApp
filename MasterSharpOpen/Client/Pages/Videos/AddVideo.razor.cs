@@ -16,13 +16,26 @@ namespace MasterSharpOpen.Client.Pages.Videos
         [Inject]
         protected PublicClient PublicClient { get; set; }
         private Video Video { get; set; }
+        protected List<(string name, string subheader)> VideoSectionNames { get; set; }
         private string title;
         private string videoUrl;
+        private (string name, string subheader) sectionName;
         private bool isSubmitReady;
         private string userMessage;
         private string apiResponse;
         [Parameter]
         public EventCallback<string> TryPlayVideo { get; set; }
+
+        protected override Task OnInitializedAsync()
+        {
+            var videoSections = AppStateService?.Videos?.VideoSections;
+            VideoSectionNames = new List<(string, string)>();
+            foreach (var section in videoSections ?? new List<VideoSection>())
+            {
+                VideoSectionNames.Add((section.Name, section.SubHeader));
+            }
+            return base.OnInitializedAsync();
+        }
 
         private void SubmitVideo()
         {
@@ -37,7 +50,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
                 userMessage = "<p class=\"pageError\">Please provide a full YouTube Url. </p>";
                 return;
             }
-            Video = new Video { Title = title, VideoId = videoId };
+            Video = new Video { Title = title, VideoId = videoId, SectionName = $"{sectionName.name}-{sectionName.subheader}"};
             isSubmitReady = true;
             TryPlayVideo.InvokeAsync(videoId);
             StateHasChanged();
@@ -53,7 +66,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
                 videoUrl = "";
                 Video = null;
                 StateHasChanged();
-                await Task.Delay(3000);
+                await Task.Delay(2000);
                 isSubmitReady = !isSubmitReady;
                 StateHasChanged();
             }

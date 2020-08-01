@@ -17,6 +17,7 @@ namespace MasterSharpOpen.Client
 {
     public class PublicClient
     {
+        //local http://localhost:7071/api
         private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
         private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net/api";
 
