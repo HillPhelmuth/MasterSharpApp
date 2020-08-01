@@ -38,7 +38,7 @@ namespace MasterSharpOpen.Shared.VideoModels
         [JsonProperty("videoId")]
         public string VideoId { get; set; }
         [JsonProperty("section")]
-        public string SectionName { get; set; }
+        public string Section { get; set; }
 
     }
 }
