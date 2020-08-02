@@ -20,32 +20,16 @@ namespace MasterSharpOpen.Client.Pages.Practice
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
         [Inject]
-        public AppStateService AppState { get; set; }
-        [Inject]
         protected IModalDialogService ModalService { get; set; }
-        [Inject]
-        public HttpClient Client { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
         private bool isCodeCompiling;
-        private bool isAnimate = true;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
-        private string CodeOutput = "";
+        private string codeOutput = "";
         private string codeSnippet;
-        private string readlinePattern { get; set; } = "Console.ReadLine()";
-
-        //protected override Task OnInitializedAsync()
-        //{
-        //    CodeEditorService.OnChange += StateHasChanged;
-        //    return base.OnInitializedAsync();
-        //}
-        protected void HandleOutputChange(string output)
-        {
-            CodeOutput += $"<p>{output}</p>";
-            isCodeCompiling = false;
-            StateHasChanged();
-        }
+        private string ReadlinePattern { get; } = "Console.ReadLine()";
+        
         protected async Task UpdateCodeSnippet(string snippet, bool isConsole = false)
         {
             isConsoleOpen = isConsole;
@@ -70,13 +54,13 @@ namespace MasterSharpOpen.Client.Pages.Practice
 
             string result;
             var sw = new Stopwatch();
-            if (codeInput.Contains(readlinePattern))
+            if (codeInput.Contains(ReadlinePattern))
             {
                 string code = await ReplaceConsoleInput(codeInput);
                 sw.Start();
                 result = await PublicClient.SubmitConsole(code);
 
-                CodeOutput += $"<p>{result}</p>";
+                codeOutput += $"<p>{result}</p>";
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
@@ -87,7 +71,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
             {
                 sw.Start();
                 result = await PublicClient.SubmitCode(codeInput);
-                CodeOutput += $"<p>{result}</p>";
+                codeOutput += $"<p>{result}</p>";
                 sw.Stop();
                 Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
                 isCodeCompiling = false;
@@ -96,7 +80,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
             }
             sw.Start();
             result = await PublicClient.SubmitConsole(codeInput);
-            CodeOutput += $"<p>{result}</p>";
+            codeOutput += $"<p>{result}</p>";
             sw.Stop();
             Console.WriteLine($"console function: {sw.ElapsedMilliseconds}ms");
             isCodeCompiling = false;
@@ -107,15 +91,15 @@ namespace MasterSharpOpen.Client.Pages.Practice
         {
             var tempCode = codeInput;
             var inputDictionary = new Dictionary<int, DataInputFormStringField>();
-            var readLineIndexes = tempCode.AllIndexesOf(readlinePattern);
-            var regex = new Regex(Regex.Escape(readlinePattern));
+            var readLineIndexes = tempCode.AllIndexesOf(ReadlinePattern);
+            var regex = new Regex(Regex.Escape(ReadlinePattern));
             var inputForm = new ModalDataInputForm("User Inputs", "User console input");
 
             for (int i = 1; i <= readLineIndexes.Count(); i++)
             {
                 string userInput = "";
                 var inputField1 =
-                    inputForm.AddStringField($"Input{i}", $"{readlinePattern} {i}", userInput, "The user's input.");
+                    inputForm.AddStringField($"Input{i}", $"{ReadlinePattern} {i}", userInput, "The user's input.");
                 inputDictionary.Add(i, inputField1);
             }
 
@@ -137,7 +121,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
 
         private void ClearOutput()
         {
-            CodeOutput = "";
+            codeOutput = "";
             StateHasChanged();
         }
         public void Dispose()

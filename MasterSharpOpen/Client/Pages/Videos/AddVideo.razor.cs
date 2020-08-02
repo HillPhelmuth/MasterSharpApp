@@ -18,10 +18,10 @@ namespace MasterSharpOpen.Client.Pages.Videos
         private Video Video { get; set; }
         private List<VideoSection> VideoSections { get; set; }
         private VideoSection selectedSection;
-        //protected List<(string name, string subheader)> VideoSectionNames { get; set; }
+        
         private string title;
         private string videoUrl;
-        //private (string name, string subheader) sectionName;
+       
         private bool isSubmitReady;
         private string userMessage;
         private string apiResponse;
@@ -31,11 +31,6 @@ namespace MasterSharpOpen.Client.Pages.Videos
         protected override Task OnInitializedAsync()
         {
             VideoSections = AppStateService?.Videos?.VideoSections;
-            //VideoSectionNames = new List<(string, string)>();
-            //foreach (var section in VideoSections ?? new List<VideoSection>())
-            //{
-            //    VideoSectionNames.Add((section.Name, section.SubHeader));
-            //}
             return base.OnInitializedAsync();
         }
 
@@ -52,7 +47,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
                 userMessage = "<p class=\"pageError\">Please provide a full YouTube Url. </p>";
                 return;
             }
-
+            Console.WriteLine($"Selected Section:\nName:{selectedSection.Name},\nSubHeader:{selectedSection.SubHeader},\nSectionID:{selectedSection.ID}");
             Video = new Video { Title = title, VideoId = videoId, VideoSectionID = selectedSection.ID};
             isSubmitReady = true;
             TryPlayVideo.InvokeAsync(videoId);
@@ -65,11 +60,11 @@ namespace MasterSharpOpen.Client.Pages.Videos
             apiResponse = apiResult ? "Submission Successful!" : "Sorry, something went wrong. Submission failed";
             if (apiResult)
             {
+                AppStateService.AddVideo(Video);
                 title = "";
                 videoUrl = "";
                 Video = null;
                 StateHasChanged();
-                AppStateService.AddVideo(Video);
                 await Task.Delay(2000);
                 isSubmitReady = !isSubmitReady;
                 StateHasChanged();

@@ -22,7 +22,7 @@
                                     <MatH4>@videos.Name</MatH4>
                                     @foreach (var video in videos.Videos)
                                     {
-                                        <MatButton Style="font-weight:600" @onmousedown="@(() => selectedVideoId = video.VideoId)" @onmouseup="PlayVideos">@video.Title</MatButton>
+                                        <MatButton Icon="ondemand_video" Style="font-weight:600;height:auto" @onmousedown="@(() => selectedVideoId = video.VideoId)" @onmouseup="PlayVideos">@video.Title</MatButton>
                                         <br />
                                     }
                                 </MatExpansionPanelDetails>
@@ -54,15 +54,15 @@
                 <div class="text-center">
                     <AuthorizeView>
                         <Authorized>
-                            <MatButton OnClick="@(() => IsCodeAlong = !IsCodeAlong)">Add Video</MatButton>
+                            <MatButton OnClick="@(() => IsAddVideo = !IsAddVideo)">Add Video</MatButton>
                         </Authorized>
                         <NotAuthorized>
-                            <MatButton Link="/login-providers">Log in</MatButton>
+                            <MatButton Link="/login-providers">Log in to add videos</MatButton>
                         </NotAuthorized>
                     </AuthorizeView>
                    
                 </div>
-                @if (IsCodeAlong)
+                @if (IsAddVideo)
                 {
                     <AddVideo TryPlayVideo="HandleTryPlay" />
                 }

@@ -17,7 +17,7 @@ namespace MasterSharpOpen.Client.Pages.Videos
         protected string selectedVideoId { get; set; }
         protected bool IsVideoReady;
         protected bool IsPageVideosReady;
-        protected bool IsCodeAlong;
+        protected bool IsAddVideo;
         protected override async Task OnInitializedAsync()
         {
             Videos = AppStateService.Videos;

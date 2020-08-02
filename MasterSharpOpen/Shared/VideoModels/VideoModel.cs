@@ -13,7 +13,7 @@ namespace MasterSharpOpen.Shared.VideoModels
     [Serializable]
     public class VideoSection
     {
-        [JsonIgnore]
+        [JsonProperty]
         public int ID { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }

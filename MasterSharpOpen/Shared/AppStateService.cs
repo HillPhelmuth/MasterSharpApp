@@ -30,10 +30,11 @@ namespace MasterSharpOpen.Shared
 
         public void AddVideo(Video video)
         {
+            if (video.VideoSectionID == 0) return;
             var videos = Videos;
             foreach (var section in videos.VideoSections.Where(section => section.ID == video.VideoSectionID))
             {
-                section.Videos.Add(video);
+                section.Videos?.Add(video);
             }
             Videos = videos;
             NotifyStateHasChanged();

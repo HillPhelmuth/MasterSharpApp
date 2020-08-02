@@ -147,7 +147,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             };
         }
 
-        protected async Task EditorOnDidInit(MonacoEditor editor)
+        protected async Task EditorOnDidInit(MonacoEditorBase editor)
         {
             await Editor.AddCommand((int)KeyMode.CtrlCmd | (int)KeyCode.KEY_H, (editor, keyCode) =>
             {
