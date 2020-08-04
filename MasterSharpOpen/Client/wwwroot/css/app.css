@@ -273,6 +273,12 @@ app {
     background-color: green;
     color:black
 }
+.small-modal {
+    background-color: lightgray;
+    height:auto;
+    width:auto;
+    padding:5px 10px 5px 10px
+}
 .blink_me {
     animation: blinker 1s linear infinite;
 }

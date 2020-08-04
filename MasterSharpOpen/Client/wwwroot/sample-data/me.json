@@ -1,7 +1,11 @@
 {
-  "identityProvider": "github",
-  "userId": "HillPhelmuth", 
-  //"userId": "d75b260a64504067bfc5b2905e3b8182",
-  "userDetails": "adam dev user",
-  "userRoles": [ "anonymous", "authenticated" ]
+  "clientPrincipal": {
+    "identityProvider": "github",
+    "userId": "HellPhel",
+    "userDetails": "HillPhelmuth",
+    "userRoles": [
+      "anonymous",
+      "authenticated"
+    ]
+  }
 }

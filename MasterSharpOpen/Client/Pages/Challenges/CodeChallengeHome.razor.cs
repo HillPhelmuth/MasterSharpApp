@@ -6,6 +6,7 @@ using BlazorMonaco.Bridge;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using TextCopy;
@@ -24,14 +25,16 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public PublicClient PublicClient { get; set; }
 
         public CodeChallenges CodeChallenges { get; set; }
-        public Challenge selectedChallenge { get; set; }
-        protected CodeOutputModel outputModel;
-        protected string CodeSnippet;
+        public Challenge SelectedChallenge { get; set; }
+        public UserAppData UserAppData { get; set; }
+        
+        private string codeSnippet;
         private bool takeChallenge = false;
         private bool isCodeCompiling;
-        protected bool isChallengeSucceed;
-        protected bool isChallengeFail;
-        protected bool isChallengeReady;
+        private bool isChallengeSucceed;
+        private bool isChallengeFail;
+        private bool isChallengeReady;
+
 
         [Parameter]
         public EventCallback<int> OnNotReady { get; set; }
@@ -39,14 +42,19 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         protected override async Task OnInitializedAsync()
         {
             CodeChallenges ??= await PublicClient.GetChallenges();
+            UserAppData = AppStateService.UserAppData;
+            foreach (var challenge in CodeChallenges.Challenges)
+            {
+                Console.WriteLine($"user challenges found: {UserAppData.ChallengeSuccessData}");
+                if (UserAppData.ChallengeSuccessIds?.Any(x => x == challenge.ID) ?? false)
+                {
+                    challenge.UserCompleted = true;
+                }
+            }
+
             AppStateService.SetCodeChallenges(CodeChallenges);
-            CodeChallenges = AppStateService.CodeChallenges;
-            AppStateService.OnChange += StateHasChanged;
-            //if ((CodeChallenges?.Challenges) == null)
-            //{
-            //    await OnNotReady.InvokeAsync(0);
-            //    return;
-            //}
+            AppStateService.OnChange += UpdateUserChallenges;
+           
             isChallengeReady = true;
         }
 
@@ -69,7 +77,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             var submitChallenge = new Challenge
             {
                 Solution = code,
-                Tests = selectedChallenge.Tests
+                Tests = SelectedChallenge.Tests
             };
             var output = await PublicClient.SubmitChallenge(submitChallenge);
             AppStateService.UpdateCodeOutput(output);
@@ -80,31 +88,38 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             isChallengeSucceed = output.Outputs.All(x => x.TestResult);
             isChallengeFail = !isChallengeSucceed;
             isCodeCompiling = false;
+            if (isChallengeSucceed)
+            {
+                SelectedChallenge.UserCompleted = true;
+                UserAppData.ChallengeSuccessIds.Add(SelectedChallenge.ID);
+                await PublicClient.AddSuccessfulChallenge(AppStateService.UserName, SelectedChallenge.ID);
+                AppStateService.UpdateUserAppData(UserAppData);
+            }
             StateHasChanged();
         }
 
         protected async Task HandleChallengeChanged(Challenge challenge)
         {
             Console.WriteLine($"Challenge from handler: {challenge.Name}");
-            selectedChallenge = challenge;
+            SelectedChallenge = challenge;
             await UpdateSnippet();
             takeChallenge = false;
             StateHasChanged();
         }
         protected Task UpdateSnippet()
         {
-            var challenge = selectedChallenge;
-            CodeSnippet = challenge.Snippet;
-            CodeEditorService.UpdateSnippet(CodeSnippet);
-            Editor.SetValue(CodeSnippet);
+            var challenge = SelectedChallenge;
+            codeSnippet = challenge.Snippet;
+            CodeEditorService.UpdateSnippet(codeSnippet);
+            Editor.SetValue(codeSnippet);
             return Task.CompletedTask;
         }
 
         protected Task ShowAnswer()
         {
-            CodeSnippet = selectedChallenge.Solution;
-            Editor.SetValue(CodeSnippet);
-            CodeEditorService.UpdateSnippet(CodeSnippet);
+            codeSnippet = SelectedChallenge.Solution;
+            Editor.SetValue(codeSnippet);
+            CodeEditorService.UpdateSnippet(codeSnippet);
             return Task.CompletedTask;
         }
 
@@ -127,6 +142,15 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             await Editor.SetValue(content);
             StateHasChanged();
         }
+        protected void UpdateUserChallenges()
+        {
+            CodeChallenges = AppStateService.CodeChallenges;
+            UserAppData = AppStateService.UserAppData;
+            StateHasChanged();
+        }
+
+        #region Monaco Editor
+
         // Monaco Editor Settings
         protected MonacoEditor Editor { get; set; }
         protected StandaloneEditorConstructionOptions EditorOptionsPuzzle(MonacoEditor editor)
@@ -137,7 +161,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 AutoIndent = true,
                 HighlightActiveIndentGuide = true,
                 Language = "csharp",
-                Value = CodeSnippet ?? "private string MyProgram() \n" +
+                Value = codeSnippet ?? "private string MyProgram() \n" +
                     "{\n" +
                     "    string input = \"this does not\"; \n" +
                     "    string modify = input + \" suck!\"; \n" +
@@ -160,10 +184,11 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
         }
 
+        #endregion
         public void Dispose()
         {
             Console.WriteLine("CodeChallengeHome.razor Disposed");
-            AppStateService.OnChange -= StateHasChanged;
+            AppStateService.OnChange -= UpdateUserChallenges;
         }
     }
 }

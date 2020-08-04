@@ -3,10 +3,12 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
-using AzureStaticWebApps.Blazor.Authentication;
 using Blazor.ModalDialog;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.StaticAuth;
+using MasterSharpOpen.Shared.StaticAuth.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,13 +24,14 @@ namespace MasterSharpOpen.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }); 
             builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+            builder.Services.AddAuthentication();
             builder.Services.AddSingleton<CodeEditorService>();
             builder.Services.AddSingleton<AppStateService>();
             builder.Services.InjectClipboard();
             builder.Services.AddModalDialog();
-            builder.Services.AddStaticWebAppsAuthentication();
+            builder.Services.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
             await builder.Build().RunAsync();
         }
     }

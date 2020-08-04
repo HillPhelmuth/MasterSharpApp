@@ -41,7 +41,7 @@ namespace MasterSharpOpen.Shared.CodeModels
         private const string QUEUE = "Queue qt = new Queue();\nqt.Enqueue(1);\nqt.Enqueue(2);\nqt.Enqueue(3);\nreturn qt;";
 
         private const string HASHTABLE =
-            "Hashtable ht = new Hashtable();\nht.Add(\"001\",\".Net\");\nht.Add(\"002\",\"C#\");\nht.Add(\"003\",\"ASP.Net\");\nreturn ht;";
+            "Hashtable ht = new Hashtable();\nht.Add(\"001\",\".Net\");\nht.Add(\"002\",\"c#\");\nht.Add(\"003\",\"ASP.Net\");\nreturn ht;";
 
         private const string LIST = "List<string> list = new List<string>();\nlist.Add(\"item 1\");\nlist.Add(\"item 2\");\nlist.Add(\"item 3\");\nreturn list;";
         private const string DICTIONARY = "Dictionary<int, string> dict = new Dictionary<int, string>();\ndict.Add(1, \"item 1\");\ndict.Add(2, \"item 2\");\ndict.Add(3, \"item 3\");\nreturn dict;";
@@ -60,7 +60,7 @@ namespace MasterSharpOpen.Shared.CodeModels
         private const string ARRAYTOSTRING =
             "char[] chars = { 'C', 'S', 'h', 'a', 'r', 'p' };\nstring name = new string(chars);\nreturn name;";
 
-        private const string STRINGTOARRAY = "string sentence = \"Mahesh Chand is an author and founder of C# Corner\";\n" +
+        private const string STRINGTOARRAY = "string sentence = \"Adam Holm is the author and founder of mastercsharp\";\n" +
                                              "char[] charArr = sentence.ToCharArray();\nreturn charArr;";
 
         private const string IFCONDITIONAL = "char[] chars = { 'C', 'S', 'h', 'a', 'r', 'p' };\nstring name = new string(chars);\nif (name.Length > 5)\n{\n\tname = $\"{name} is sometimes easy\";\n}\nreturn name;";

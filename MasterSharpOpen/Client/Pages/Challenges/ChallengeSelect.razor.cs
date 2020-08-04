@@ -10,13 +10,13 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private string description;
         private string examples;
         private bool isChallengeSelected;
-        public MasterSharpOpen.Shared.CodeModels.Challenge selectedChallenge { get; set; }
+        public Challenge selectedChallenge { get; set; }
         [Parameter]
         public CodeChallenges CodeChallenges { get; set; }
         [Parameter]
-        public EventCallback<MasterSharpOpen.Shared.CodeModels.Challenge> OnChallengeChanged { get; set; }
+        public EventCallback<Challenge> OnChallengeChanged { get; set; }
 
-        protected Task SelectChallenge(MasterSharpOpen.Shared.CodeModels.Challenge challenge)
+        protected Task SelectChallenge(Challenge challenge)
         {
             selectedChallenge = challenge;
             var challengeName = challenge.Name;

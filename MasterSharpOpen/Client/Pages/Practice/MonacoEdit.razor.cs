@@ -5,6 +5,7 @@ using BlazorMonaco;
 using BlazorMonaco.Bridge;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using TextCopy;
@@ -18,29 +19,19 @@ namespace MasterSharpOpen.Client.Pages.Practice
 
         [Inject]
         public CodeEditorService CodeEditorService { get; set; }
-        //[Inject]
-        //public CompilerService CompilerService { get; set; }
-        [Inject]
-        protected AppStateService AppState { get; set; }
         [Inject]
         public IClipboard Clipboard { get; set; }
         [Inject]
-        public PublicClient PublicClient { get; set; }
-        protected bool IsCodeReady { get; set; }
+        protected AppStateService AppStateService { get; set; }
         protected MonacoEditor Editor { get; set; }
-        protected string ValueToSet { get; set; }
-        //protected IEnumerable<MetadataReference> References;
+      
         [Parameter]
-        public EventCallback<string> OnOutputChange { get; set; }
+        public EventCallback<string> OnSaveUserSnippet { get; set; }
         [Parameter]
         public string CodeSnippet { get; set; }
         [Parameter]
         public EventCallback<string> OnCodeSubmit { get; set; }
-        [Parameter]
-        public EventCallback<bool> OnIsCodeCompiling { get; set; }
-        [Parameter]
-        public bool IsConsole { get; set; }
-
+       
         private string currentCode = "";
         protected override Task OnInitializedAsync()
         {
@@ -62,7 +53,11 @@ namespace MasterSharpOpen.Client.Pages.Practice
             Console.WriteLine("Snippet Updated");
             StateHasChanged();
         }
-
+        private async Task AddSnippetToUser()
+        {
+            var snippetClip = await Editor.GetValue();
+            await OnSaveUserSnippet.InvokeAsync(snippetClip);
+        }
         protected StandaloneEditorConstructionOptions EditorOptionsRoslyn(MonacoEditor editor)
         {
             return new StandaloneEditorConstructionOptions
@@ -94,6 +89,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
         }
 
+       
         public async Task CopyCodeToClipboard()
         {
             var snippetClip = await Editor.GetValue();

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using MasterSharpOpen.Shared.CodeModels;
+using MasterSharpOpen.Shared.UserModels;
 using MasterSharpOpen.Shared.VideoModels;
 using Newtonsoft.Json;
 
@@ -18,7 +19,8 @@ namespace MasterSharpOpen.Client
     public class PublicClient
     {
         //local http://localhost:7071/api
-        private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
+        //private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
+        private const string CHALLENGE_FUNCTION_URL = " http://localhost:7071/api";
         private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net/api";
 
         public HttpClient Client { get; }
@@ -46,10 +48,32 @@ namespace MasterSharpOpen.Client
             sw.Start();
             var videos = await Client.GetFromJsonAsync<List<VideoSection>>($"{CHALLENGE_FUNCTION_URL}/videos");
             sw.Stop();
-            Console.WriteLine($"videos from server: {sw.ElapsedMilliseconds}ms");
+            Console.WriteLine($"videos from function: {sw.ElapsedMilliseconds}ms");
             return new Videos { VideoSections = videos };
         }
+        public async Task<UserAppData> GetOrAddUserAppData(string userName)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var userstring = await Client.GetStringAsync($"{CHALLENGE_FUNCTION_URL}/users/{userName}");
+            Console.WriteLine($"userData = {userstring}");
+            var userData = JsonConvert.DeserializeObject<UserAppData>(userstring);
+           
+            sw.Stop();
+            Console.WriteLine($"User from function: {sw.ElapsedMilliseconds}ms");
+            return userData;
+        }
+        public async Task<bool> AddUserSnippet(string userName, UserSnippet snippet)
+        {
+            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addSnippet/{userName}", snippet);
+            return apiResult.IsSuccessStatusCode;
+        }
 
+        public async Task<bool> AddSuccessfulChallenge(string userName, int challengeId)
+        {
+            var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addSnippet/{userName}/{challengeId}","");
+            return apiResult.IsSuccessStatusCode;
+        }
         public async Task<bool> PostChallenge(Challenge challenge)
         {
             var apiResult = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/challenge", challenge);

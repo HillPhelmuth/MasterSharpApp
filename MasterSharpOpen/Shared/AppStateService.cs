@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MasterSharpOpen.Shared.CodeModels;
+using MasterSharpOpen.Shared.UserModels;
 using MasterSharpOpen.Shared.VideoModels;
 using Microsoft.CodeAnalysis;
 
@@ -11,8 +12,10 @@ namespace MasterSharpOpen.Shared
     {
         public CodeChallenges CodeChallenges { get; private set; }
         public Videos Videos { get; private set; }
+        public UserAppData UserAppData { get; private set; }
         public string UserName { get; private set; }
         public CodeOutputModel CodeOutput { get; private set; }
+        public bool HasUser { get; private set; }
         public event Action OnChange;
         public event Action<int> OnTabChange;
 
@@ -47,9 +50,17 @@ namespace MasterSharpOpen.Shared
         public void UpdateUserName(string name)
         {
             UserName = name;
+            HasUser = true;
             NotifyStateHasChanged();
         }
 
+        public void UpdateUserAppData(UserAppData userData)
+        {
+            UserAppData = userData;
+            UserName = userData.Name;
+            HasUser = true;
+            NotifyStateHasChanged();
+        }
         public void UpdateCodeOutput(CodeOutputModel codeOutput)
         {
             foreach (var output in codeOutput.Outputs ?? new List<Output>())

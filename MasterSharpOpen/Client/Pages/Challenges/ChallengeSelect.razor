@@ -14,6 +14,10 @@
                                     <MatListDivider></MatListDivider>
                                     <MatListItem>
                                         <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(easy))">@easy.Name</MatButton>
+                                        @if (easy.UserCompleted)
+                                        {
+                                            <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                        }
                                     </MatListItem>
                     
                                 }
@@ -30,7 +34,13 @@
                                 @foreach (var medium in CodeChallenges.Challenges.Where(x => x.Difficulty == "Mid"))
                                 {
                                     <MatListDivider></MatListDivider>
-                                    <MatListItem><MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(medium))">@medium.Name</MatButton></MatListItem>
+                                    <MatListItem>
+                                        <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(medium))">@medium.Name</MatButton>
+                                        @if (medium.UserCompleted)
+                                        {
+                                            <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                        }
+                                    </MatListItem>
                    
                                 }
                             </MatList>
@@ -46,7 +56,13 @@
                                 @foreach (var hard in CodeChallenges.Challenges.Where(x => x.Difficulty == "Hard"))
                                 {
                                     <MatListDivider></MatListDivider>
-                                    <MatListItem> <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton></MatListItem>
+                                    <MatListItem>
+                                        <MatButton Style="font-weight:600" @onclick="@(() => SelectChallenge(hard))">@hard.Name</MatButton>
+                                        @if (hard.UserCompleted)
+                                        {
+                                            <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                                        }
+                                    </MatListItem>
                    
                                 }
                             </MatList>

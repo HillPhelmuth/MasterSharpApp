@@ -36,7 +36,8 @@ namespace MasterSharpOpen.Shared.CodeModels
         [JsonProperty("tests")]
         public virtual List<Test> Tests { get; set; }
         public string AddedBy { get; set; }
-       
+        [NotMapped]
+        public bool UserCompleted { get; set; }
 
     }
     public class Test

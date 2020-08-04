@@ -34,16 +34,16 @@
             </div>
 
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-                @if (!takeChallenge && selectedChallenge == null)
+                @if (!takeChallenge && SelectedChallenge == null)
                 {
                     <div class="mainIcon" style="background-image: url('Icons/challengeIcon.png')"></div>
                 }
-                @if (!takeChallenge && selectedChallenge != null)
+                @if (!takeChallenge && SelectedChallenge != null)
                 {
                     <div class="text-center">
-                        <MatH5>@selectedChallenge.Name</MatH5>
+                        <MatH5>@SelectedChallenge.Name</MatH5>
                     </div>
-                    <ChallengeInfo description="@selectedChallenge.Description" examples="@selectedChallenge.Examples" /><br />
+                    <ChallengeInfo IsUserComplete="@SelectedChallenge.UserCompleted" description="@SelectedChallenge.Description" examples="@SelectedChallenge.Examples" /><br />
                     <MatButton Raised="true" Label="Solve" OnClick="SolveChallenge"></MatButton>
                 }
                 @if (isCodeCompiling)

@@ -12,12 +12,12 @@ else
     <MatTabGroup @bind-ActiveIndex="tabIndex">
         <MatTab Label="Home">
             <div>
-                <MatH4>Check out some C# learning tools, including:</MatH4>
+                <MatH4>Check out some c# learning tools, including:</MatH4>
                 <div class="backgroundIcon">
                     <MatList SingleSelection="true" TwoLine="true">
                         <MatListItem OnClick="@(() => tabIndex = 1)">
                             <MatListItemText>
-                                <MatListItemPrimaryText Class="listPrimary">C# Challenges</MatListItemPrimaryText>
+                                <MatListItemPrimaryText Class="listPrimary">c# Challenges</MatListItemPrimaryText>
                                 <MatListItemSecondaryText>
                                     <div class="listSecondary">Practice c# by taking some basic coding challenges</div>
                                 </MatListItemSecondaryText>
@@ -35,7 +35,7 @@ else
                         <MatListDivider></MatListDivider>
                         <MatListItem OnClick="@(() => tabIndex = 3)">
                             <MatListItemText>
-                                <MatListItemPrimaryText Class="listPrimary">Watch C# Videos</MatListItemPrimaryText>
+                                <MatListItemPrimaryText Class="listPrimary">Watch c# Videos</MatListItemPrimaryText>
                                 <MatListItemSecondaryText Class="listSecondary">
                                     <div class="listSecondary">Select from a variety of Topics to watch YouTube training videos</div>
                                 </MatListItemSecondaryText>
@@ -46,9 +46,9 @@ else
                             <Authorized>
                                 <MatListItem OnClick="@(() => tabIndex = 4)">
                                     <MatListItemText>
-                                        <MatListItemPrimaryText Class="listPrimary">Create C# Challenge</MatListItemPrimaryText>
+                                        <MatListItemPrimaryText Class="listPrimary">Create c# Challenge</MatListItemPrimaryText>
                                         <MatListItemSecondaryText>
-                                            <div class="listSecondary">Create and solve your own C# challenge, and add it to our database for others to solve</div>
+                                            <div class="listSecondary">Create and solve your own c# challenge, and add it to our database for others to solve</div>
                                         </MatListItemSecondaryText>
                                     </MatListItemText>
                                 </MatListItem>
@@ -71,15 +71,15 @@ else
         <MatTab Label="Code Challenges">
             <CodeChallengeHome />
         </MatTab>
-        <MatTab Label="Practice C#(Shell and Monaco)">
+        <MatTab Label="Practice c#">
             <CodeHome />
         </MatTab>
-        <MatTab Label="Watch C# Videos">
+        <MatTab Label="Watch c# Videos">
             <VideoHome />
         </MatTab>
         <AuthorizeView>
             <Authorized>
-                <MatTab Label="Add C# Challenge">
+                <MatTab Label="Add c# Challenge">
                     <ChallengeAddUser />
                 </MatTab>
             </Authorized>
@@ -91,4 +91,4 @@ else
         </AuthorizeView>
     </MatTabGroup>
 }
-
+<div style="font-size: .7rem; bottom:0; right:100%; position: sticky; margin-top:10em">Icons made by <a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a><a href="https://icons8.com/icon/67343/checkmark">Checkmark icon by Icons8</a></div>

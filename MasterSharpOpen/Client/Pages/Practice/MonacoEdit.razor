@@ -1,11 +1,12 @@
 ﻿
 @inherits ComponentBase
 <div class="text-left">
-    <MatDivider/>
+    <MatDivider />
     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Compile and run</MatButton>
     <MatButton Style="margin-left:40%" Icon="file_copy" OnClick="CopyCodeToClipboard">Copy to clipboard</MatButton>
-    <hr/>
+    <MatButton Icon="save" OnClick="AddSnippetToUser">Save snippet</MatButton>
+    <hr />
     <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="learnCsharp"
                                ConstructionOptions="EditorOptionsRoslyn"
-                               OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu"/>
+                               OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />
 </div>

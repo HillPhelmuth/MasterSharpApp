@@ -11,6 +11,9 @@ using MasterSharpOpen.Client.ExtensionMethods;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.StaticAuth;
+using MasterSharpOpen.Shared.StaticAuth.Interfaces;
+using MasterSharpOpen.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
 
 namespace MasterSharpOpen.Client.Pages.Practice
@@ -23,11 +26,17 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected IModalDialogService ModalService { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
+        [Inject]
+        protected AppStateService AppStateService { get; set; }
+        //[Inject]
+        //private ICustomAuthenticationStateProvider AuthProvider { get; set; }
         private bool isCodeCompiling;
         private bool isConsoleOpen;
         private bool isMonacoOpen;
+        private bool isSnippetSaving;
         private string codeOutput = "";
         private string codeSnippet;
+        private string message;
         private string ReadlinePattern { get; } = "Console.ReadLine()";
         
         protected async Task UpdateCodeSnippet(string snippet, bool isConsole = false)
@@ -41,6 +50,46 @@ namespace MasterSharpOpen.Client.Pages.Practice
             StateHasChanged();
         }
 
+        private void HandleSaveSnippet(string snippet)
+        {
+            Console.WriteLine("Handle Save Snippet");
+            isSnippetSaving = true;
+            StateHasChanged();
+            _ = SaveUserSnippet(snippet);
+        }
+
+        private async Task SaveUserSnippet(string snippet)
+        {
+            if (!AppStateService.HasUser)
+            {
+                var result = await ModalService.ShowDialogAsync<LoginProvider>("Sign-in to Save");
+                if (!result.Success)
+                    return;
+            }
+            var inputForm = new ModalDataInputForm("Save User Snippet", "what should we call this code snippet?");
+            var snippetField = inputForm.AddStringField("Name", "Snippet Name", "");
+            string snippetName = "";
+            var options = new ModalDialogOptions()
+            {
+                Style = "small-modal"
+            };
+            if (await inputForm.ShowAsync(ModalService, options))
+            {
+                snippetName = snippetField.Value;
+            }
+            var newSnippet = new UserSnippet
+            {
+                Name = snippetName,
+                Snippet = snippet
+            };
+            var userData = AppStateService.UserAppData;
+            userData.Snippets.Add(newSnippet);
+            AppStateService.UpdateUserAppData(userData);
+            var requestResult = await PublicClient.AddUserSnippet(AppStateService.UserName, newSnippet);
+            isSnippetSaving = false;
+            message = requestResult ? $"Successfully saved snippet: {snippetName}" : "Save snippet failed";
+            StateHasChanged();
+        }
         protected void HandeSubmit(string input)
         {
             Console.WriteLine("Handle Submit");
