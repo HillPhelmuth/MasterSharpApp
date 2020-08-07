@@ -45,8 +45,8 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             UserAppData = AppStateService.UserAppData;
             foreach (var challenge in CodeChallenges.Challenges)
             {
-                Console.WriteLine($"user challenges found: {UserAppData.ChallengeSuccessData}");
-                if (UserAppData.ChallengeSuccessIds?.Any(x => x == challenge.ID) ?? false)
+                Console.WriteLine($"user challenges found: {UserAppData?.ChallengeSuccessData}");
+                if (UserAppData?.ChallengeSuccessIds?.Any(x => x == challenge.ID) ?? false)
                 {
                     challenge.UserCompleted = true;
                 }
