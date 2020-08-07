@@ -3,8 +3,8 @@
 <div class="text-left">
     <MatDivider />
     <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Compile and run</MatButton>
-    <MatButton Style="margin-left:40%" Icon="file_copy" OnClick="CopyCodeToClipboard">Copy to clipboard</MatButton>
-    <MatButton Icon="save" OnClick="AddSnippetToUser">Save snippet</MatButton>
+    <MatButton Style="margin-left:30%" Icon="file_copy" OnClick="CopyCodeToClipboard">Copy</MatButton>
+    <MatButton Icon="save" OnClick="AddSnippetToUser">Save</MatButton>
     <hr />
     <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="learnCsharp"
                                ConstructionOptions="EditorOptionsRoslyn"

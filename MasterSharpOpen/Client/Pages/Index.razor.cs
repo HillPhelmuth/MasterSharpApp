@@ -36,7 +36,7 @@ namespace MasterSharpOpen.Client.Pages
                 var userName = authInfo.User.Identity.Name;
                 Console.WriteLine($"user {userName} found");
                 var currentUser = await PublicClient.GetOrAddUserAppData(userName);
-                Console.WriteLine($"retrieved user profile for {currentUser.Name} with challenges {string.Join(',', currentUser.ChallengeSuccessIds)} and snippets {currentUser.Snippets}");
+                Console.WriteLine($"retrieved user profile for {currentUser.Name}");
                 AppStateService.UpdateUserAppData(currentUser);
             }
            
