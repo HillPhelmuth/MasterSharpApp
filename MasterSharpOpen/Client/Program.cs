@@ -14,13 +14,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TextCopy;
+using PostSharp.Patterns.Diagnostics;
+using PostSharp.Patterns.Diagnostics.Backends.Console;
 
 namespace MasterSharpOpen.Client
 {
+    [Log(AttributeExclude = true)]
     public class Program
     {
         public static async Task Main(string[] args)
         {
+            LoggingServices.DefaultBackend = new ConsoleLoggingBackend();
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 

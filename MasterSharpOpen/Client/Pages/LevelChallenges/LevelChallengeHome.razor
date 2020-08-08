@@ -1,0 +1,43 @@
+﻿<MatH4 Class="text-center">Level-up your c# skills!</MatH4>
+<p style="font-size:1.2em">Complete at least 3 challenges on each level to unlock the next</p>
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            @if (isChallengeReady)
+            {
+                <LevelSelect OnChallengeSelected="HandleChallengeChanged"/>
+            }
+            @if (isChallengeSucceed || isChallengeFail)
+            {
+                <ChallengeOutput/>
+            }
+        </div>
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+            @if (!takeChallenge && SelectedChallenge == null)
+            {
+                <div class="mainIcon" style="background-image: url('Icons/challengeIcon.png')"></div>
+            }
+            @if (!takeChallenge && SelectedChallenge != null)
+            {
+                <div class="text-center">
+                    <MatH5>@SelectedChallenge.Name</MatH5>
+                </div>
+                <ChallengeInfo IsUserComplete="@SelectedChallenge.UserCompleted" Description="@SelectedChallenge.Description" Examples="@SelectedChallenge.Examples" /><br />
+                <MatButton Raised="true" Label="Solve" OnClick="SolveChallenge"></MatButton>
+            }
+            @if (isCodeCompiling)
+            {
+                <hr />
+                <MatH4 Class="text-center" Style="color:blue">Executing...</MatH4>
+                <SpinKitFadingCircle />
+            }
+            @if (takeChallenge)
+            {
+                <LevelEditor OnCodeSubmit="HandleSubmit"/>
+            }
+        </div>
+    </div>
+</div>
+@code {
+
+}

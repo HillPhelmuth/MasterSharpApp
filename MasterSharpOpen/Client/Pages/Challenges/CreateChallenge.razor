@@ -22,7 +22,7 @@
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6 text-center">
                     <p>Method Name</p>
-                    <MatTextField Required="true" Label="IsPrime" @bind-Value="@NewChallengeForm.MethodName"></MatTextField>
+                    <MatTextField Required="true" Label="ex: IsPrime" @bind-Value="@NewChallengeForm.MethodName"></MatTextField>
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
                     <p>Method Inputs</p>
@@ -44,7 +44,11 @@
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                     <p>Provide some examples to supplement your description</p>
-                    <MatTextField Style="width: 100%" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@NewChallengeForm.Examples"></MatTextField>
+                    @foreach (var example in FormExamples)
+                    {
+                        <MatTextField Style="width: 80%; height:1.5em" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@example.Example"></MatTextField><MatIconButton Icon="add_circle_outline" OnClick="@AddExample"></MatIconButton>
+                    }
+                   
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                     <MatH6>Provide at least two tests to determine success/failure</MatH6>

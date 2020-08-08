@@ -15,6 +15,7 @@ namespace MasterSharpOpen.Shared.UserModels
         public string Name { get; set; }
         [JsonProperty("challengeSuccessData")]
         public string ChallengeSuccessData { get; set; }
+        
         [JsonProperty("snippets")]
         public List<UserSnippet> Snippets { get; set; }
         [JsonProperty("challengeSuccessIds")]
@@ -44,5 +45,14 @@ namespace MasterSharpOpen.Shared.UserModels
         public string Name { get; set; }
         [JsonProperty("snippet")]
         public string Snippet { get; set; }
+    }
+
+    public class UserChallengeData
+    {
+        public int ID { get; set; }
+        public int UserAppDataID { get; set; }
+        public int ChallengeId { get; set; }
+        public string ChallengeName { get; set; }
+        public bool HasCompleted { get; set; }
     }
 }

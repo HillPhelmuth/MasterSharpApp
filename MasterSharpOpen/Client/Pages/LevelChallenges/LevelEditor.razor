@@ -1,0 +1,5 @@
+﻿
+<MatButton Icon="input" OnClick="SubmitCode" Raised="true">Compile and run</MatButton>
+<BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="levelUp"
+                           ConstructionOptions="EditorOptionsRoslyn"
+                           OnDidInit="EditorOnDidInit" OnContextMenu="OnContextMenu" />

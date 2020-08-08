@@ -1,0 +1,18 @@
+﻿<div>
+    <div class="text-center">
+        <MatH4>Current Level: @maxLevel</MatH4>
+        <MatH6>Complete 3 challenges from below to advance</MatH6>
+        <MatList>
+            @foreach (var challenge in DisplayChallenges)
+            {
+                <MatListItem>
+                    <MatButton OnClick="@(() => SelectChallenge(challenge))" >@challenge.Name</MatButton>
+                </MatListItem>
+                @if (challenge.UserCompleted)
+                {
+                    <img src="https://img.icons8.com/plasticine/32/000000/checkmark.png" />
+                }
+            }
+        </MatList>
+    </div>
+</div>

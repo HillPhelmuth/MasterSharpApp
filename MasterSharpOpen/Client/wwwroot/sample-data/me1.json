@@ -2,7 +2,7 @@
   "clientPrincipal": {
     "identityProvider": "github",
     "userId": "HellPhel",
-    "userDetails": "HillPhelmuth",
+    "userDetails": "Adam Dev",
     "userRoles": [
       "anonymous",
       "authenticated"

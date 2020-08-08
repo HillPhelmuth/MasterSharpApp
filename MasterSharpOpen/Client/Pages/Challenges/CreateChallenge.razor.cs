@@ -18,9 +18,19 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm();
+        private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm {ExampleList = new List<string> {""}};
         private Challenge Challenge { get; set; }
         private List<Test> InputTests { get; set; } = new List<Test>();
+
+        public class Examples
+        {
+            public Examples()
+            {
+                Example = "";
+            }
+            public string Example { get; set; }
+        }
+        private List<Examples> FormExamples { get; set; } = new List<Examples>() {new Examples()};
         private bool addTests;
         private bool solveTest;
         private bool isSolved;
@@ -46,6 +56,11 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             StateHasChanged();
         }
 
+        private void AddExample()
+        {
+            FormExamples.Add(new Examples {Example = ""});
+            StateHasChanged();
+        }
         private void SubmitForm()
         {
             if (!AreTestsValid())
@@ -60,7 +75,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 Name = NewChallengeForm.Name,
                 Difficulty = NewChallengeForm.Difficulty,
                 Description = $"<p>{NewChallengeForm.Description}</p>",
-                Examples = NewChallengeForm.Examples,
+                Examples = string.Join("::", FormExamples.Select(x => x.Example)),
                 Snippet = $"public static {returnTypeFull} {NewChallengeForm.MethodName}({NewChallengeForm.MethodInputs})" + "\n{\n\t//solution here\n}",
                 AddedBy = userName
             };
