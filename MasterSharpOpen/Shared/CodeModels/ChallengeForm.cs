@@ -34,7 +34,7 @@ namespace MasterSharpOpen.Shared.CodeModels
 
         private enum DifficultyType
         {
-            Easy,Mid,Hard
+           Easiest, Easier, Easy,Mid,Hard, Harder,Hardest
         }
     }
 }

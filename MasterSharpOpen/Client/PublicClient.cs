@@ -13,9 +13,11 @@ using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.UserModels;
 using MasterSharpOpen.Shared.VideoModels;
 using Newtonsoft.Json;
+using PostSharp.Patterns.Diagnostics;
 
 namespace MasterSharpOpen.Client
 {
+    [Log]
     public class PublicClient
     {
         //local http://localhost:7071/api
