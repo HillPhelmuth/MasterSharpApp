@@ -18,7 +18,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected PublicClient PublicClient { get; set; }
-        private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm();
+        private ChallengeForm NewChallengeForm { get; set; } = new ChallengeForm { ExampleList = new List<string> { "" } };
         private Challenge Challenge { get; set; }
         private List<Test> InputTests { get; set; } = new List<Test>();
         private bool addTests;
@@ -29,7 +29,15 @@ namespace MasterSharpOpen.Client.Pages.Challenges
         private bool isSubmittedToDb;
         private string apiResponse;
         private string validationText = "";
-
+        public class ExampleModel
+        {
+            public ExampleModel()
+            {
+                Example = "";
+            }
+            public string Example { get; set; }
+        }
+        private List<ExampleModel> FormExamples { get; set; } = new List<ExampleModel>() { new ExampleModel() };
         private void StartTests()
         {
            
@@ -38,7 +46,11 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             addTests = true;
             StateHasChanged();
         }
-
+        private void AddExample()
+        {
+            FormExamples.Add(new ExampleModel { Example = "" });
+            StateHasChanged();
+        }
         private void NewTest()
         {
             var test = new Test { Append = "", TestAgainst = "" };
@@ -60,7 +72,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
                 Name = NewChallengeForm.Name,
                 Difficulty = NewChallengeForm.Difficulty,
                 Description = $"<p>{NewChallengeForm.Description}</p>",
-                Examples = NewChallengeForm.Examples,
+                Examples = string.Join(" ", FormExamples.Select(x => $"<p>{x.Example}</p>" )),
                 Snippet = $"public static {returnTypeFull} {NewChallengeForm.MethodName}({NewChallengeForm.MethodInputs})" + "\n{\n\t//solution here\n}",
                 AddedBy = userName
             };

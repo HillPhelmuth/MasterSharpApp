@@ -44,7 +44,12 @@
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                     <p>Provide some examples to supplement your description</p>
-                    <MatTextField Style="width: 100%" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@NewChallengeForm.Examples"></MatTextField>
+                    @foreach (var example in FormExamples)
+                    {
+                <div class="text-left">
+                    <MatTextField Style="width: 75%; height: 3em" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@example.Example"></MatTextField> <MatButton Icon="add_circle_outline" OnClick="@AddExample"><span style="font-size:.9em">Add</span></MatButton>
+                </div>
+                    }
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
                     <MatH6>Provide at least two tests to determine success/failure</MatH6>

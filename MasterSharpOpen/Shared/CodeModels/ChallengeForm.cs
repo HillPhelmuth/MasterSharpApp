@@ -22,6 +22,7 @@ namespace MasterSharpOpen.Shared.CodeModels
             Enum.GetNames(typeof(InputCollectionType)).ToArray();
 
         public readonly string[] DifficultyItems = Enum.GetNames(typeof(DifficultyType)).ToArray();
+        public List<string> ExampleList { get; set; }
         private enum InputCollectionType
         {
             None, Single, Array, List, Generic
