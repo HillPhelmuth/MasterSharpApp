@@ -47,7 +47,7 @@
                     @foreach (var example in FormExamples)
                     {
                 <div class="text-left">
-                    <MatTextField Style="width: 75%; height: 3em" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@example.Example"></MatTextField> <MatButton Icon="add_circle_outline" OnClick="@AddExample"><span style="font-size:.9em">Add</span></MatButton>
+                    <MatTextField Style="width: 75%; height: 3em" Outlined="true" TextArea="true" Label="Examples" @bind-Value="@example.Example"></MatTextField> <MatButton Type="button" Icon="add_circle_outline" OnClick="@AddExample"><span style="font-size:.9em">Add</span></MatButton>
                 </div>
                     }
                 </div>
@@ -126,6 +126,7 @@
                     <MatH6>It looks like something went wrong. See Unit Test Results for more info</MatH6>
                 }
                 <MatButton Icon="input" OnClick="SubmitCode" Raised="true">Submit Solution</MatButton>
+                <MatButton Style="margin-left:50%" OnClick="ResetEditor">reset</MatButton>
                 <div class="text-left">
 
                     <BlazorMonaco.MonacoEditor CssClass="editor" @ref="Editor" Id="create challenge"

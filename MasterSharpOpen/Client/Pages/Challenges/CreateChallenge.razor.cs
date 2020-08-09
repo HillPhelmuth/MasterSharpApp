@@ -161,6 +161,10 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             return true;
         }
 
+        private async Task ResetEditor()
+        {
+            await Editor.SetValue(Challenge.Snippet);
+        }
         #region Monaco Editor Settings
 
         protected MonacoEditor Editor { get; set; }
