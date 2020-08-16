@@ -68,7 +68,7 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             {
                 _ = HandleCodeSubmit();
             });
-            //await HandleCodeSubmit();
+            
         }
         public async Task HandleCodeSubmit()
         {
@@ -123,13 +123,6 @@ namespace MasterSharpOpen.Client.Pages.Challenges
             return Task.CompletedTask;
         }
 
-        protected void NewChallenge()
-        {
-            isChallengeFail = false;
-            isChallengeSucceed = false;
-            takeChallenge = false;
-            StateHasChanged();
-        }
         public async Task CopyCodeToClipboard()
         {
             var snippetClip = await Editor.GetValue();
