@@ -17,9 +17,15 @@
       "sizes": "256x256"
     },
     {
-      "src": "Icons/practiceIcon-128.png",
+      "src": "Icons/main-app-icon-196.png",
       "type": "image/png",
       "sizes": "128x128"
+    },
+    {
+      "src": "Icons/maskable_icon.png",
+      "type": "image/png",
+      "sizes": "196x196",
+      "purpose": "any maskable"
     }
   ]
 }
