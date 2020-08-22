@@ -26,22 +26,7 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
         private string teamname;
         private bool userSubmitted;
         private bool isSelectSnippet;
-        private bool isHideChat = false;
-        private void SubmitData()
-        {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(otherUser))
-                return;
-            AppStateService.UpdateShareUser(userName, otherUser);
-            if (!string.IsNullOrEmpty(teamname)) AppStateService.UpdateShareTeam(teamname);
-            userSubmitted = true;
-            StateHasChanged();
-        }
-
-        private void ResetData()
-        {
-            userSubmitted = false;
-            
-        }
+       
         private async void UpdateUser()
         {
             var result = await ModalService.ShowDialogAsync<HubSignIn>("Hub Sign-in");
@@ -82,7 +67,6 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
                 CodeSnippet = snippet;
                 CodeEditorService.UpdateSnippet(snippet);
                 isSelectSnippet = true;
-                isHideChat = false;
             }
             
             StateHasChanged();
