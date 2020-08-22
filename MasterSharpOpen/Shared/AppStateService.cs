@@ -16,8 +16,13 @@ namespace MasterSharpOpen.Shared
         public string UserName { get; private set; }
         public CodeOutputModel CodeOutput { get; private set; }
         public bool HasUser { get; private set; }
+        public string ShareUser { get; private set; }
+        public string OtherUser { get; private set; }
+        public string ShareTeam { get; private set; }
+        public bool IsInteractiveMode { get; private set; }
         public event Action OnChange;
         public event Action<int> OnTabChange;
+        public event Action OnInteractive;
 
         public void SetCodeChallenges(CodeChallenges codeChallenges)
         {
@@ -25,12 +30,39 @@ namespace MasterSharpOpen.Shared
             NotifyStateHasChanged();
         }
 
+        public void ToggleInteractiveMode()
+        {
+            IsInteractiveMode = !IsInteractiveMode;
+            if (IsInteractiveMode)
+                NotifyInteractiveMode();
+        }
         public void SetVideos(Videos videos)
         {
             Videos = videos;
             NotifyStateHasChanged();
         }
 
+        public void UpdateShareUser(string userName)
+        {
+            ShareUser = userName;
+            NotifyStateHasChanged();
+        }
+        public void UpdateShareUser(string shareUser, string otherUser)
+        {
+            ShareUser = shareUser;
+            OtherUser = otherUser;
+            NotifyStateHasChanged();
+        }
+        public void UpdatePrivateUser(string otherUser)
+        {
+            OtherUser = otherUser;
+            NotifyStateHasChanged();
+        }
+        public void UpdateShareTeam(string teamName)
+        {
+            ShareTeam = teamName;
+            NotifyStateHasChanged();
+        }
         public void AddVideo(Video video)
         {
             if (video.VideoSectionID == 0) return;
@@ -74,5 +106,6 @@ namespace MasterSharpOpen.Shared
 
         public void UpdateTabNavigation(int tab) => OnTabChange?.Invoke(tab);
         private void NotifyStateHasChanged() => OnChange?.Invoke();
+        private void NotifyInteractiveMode() => OnInteractive?.Invoke();
     }
 }
