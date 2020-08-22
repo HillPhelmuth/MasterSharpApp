@@ -25,12 +25,9 @@ namespace MasterSharpOpen.Client.Pages
         protected PublicClient PublicClient { get; set; }
         [Inject]
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
-        [Inject]
-        protected NavigationManager Url { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
-        private bool isShowChat;
-        private string consoleData;
+        
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,21 +38,11 @@ namespace MasterSharpOpen.Client.Pages
                 Console.WriteLine($"user {userName} found");
                 var currentUser = await PublicClient.GetOrAddUserAppData(userName);
                 Console.WriteLine($"retrieved user profile for {currentUser.Name}");
-                consoleData = string.Join(",",currentUser.Snippets.Select(x => x.Snippet));
                 AppStateService.UpdateUserAppData(currentUser);
             }
            
             AppStateService.OnTabChange += HandleTabNavigation;
             isPageReady = true;
-            StateHasChanged();
-        }
-
-        protected void HandleToggle(bool toggle) => isShowChat = !isShowChat;
-
-        protected void ShowChat()
-        {
-            isShowChat = true;
-            AppStateService.ToggleInteractiveMode();
             StateHasChanged();
         }
 

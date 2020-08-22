@@ -19,22 +19,13 @@ namespace MasterSharpOpen.Shared
         public string ShareUser { get; private set; }
         public string OtherUser { get; private set; }
         public string ShareTeam { get; private set; }
-        public bool IsInteractiveMode { get; private set; }
         public event Action OnChange;
         public event Action<int> OnTabChange;
-        public event Action OnInteractive;
 
         public void SetCodeChallenges(CodeChallenges codeChallenges)
         {
             CodeChallenges = codeChallenges;
             NotifyStateHasChanged();
-        }
-
-        public void ToggleInteractiveMode()
-        {
-            IsInteractiveMode = !IsInteractiveMode;
-            if (IsInteractiveMode)
-                NotifyInteractiveMode();
         }
         public void SetVideos(Videos videos)
         {
@@ -106,6 +97,5 @@ namespace MasterSharpOpen.Shared
 
         public void UpdateTabNavigation(int tab) => OnTabChange?.Invoke(tab);
         private void NotifyStateHasChanged() => OnChange?.Invoke();
-        private void NotifyInteractiveMode() => OnInteractive?.Invoke();
     }
 }
