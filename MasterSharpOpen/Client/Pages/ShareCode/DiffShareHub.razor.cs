@@ -49,7 +49,7 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
                 })
                 .Build();
 
-            hubConnection.On<string>("newMessage", (message) =>
+            hubConnection.On<object>("newMessage", (message) =>
             {
                 var encodedMsg = $"{message}";
                 Console.WriteLine($"received message: {encodedMsg}");

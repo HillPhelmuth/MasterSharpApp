@@ -91,7 +91,6 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
         {
             ValueToSetModified = CodeEditorService.SharedCodeSnippet;
             await DiffEditor.ModifiedEditor.SetValue(ValueToSetModified);
-
         }
 
         protected async void AddSnippetToUser()
@@ -116,6 +115,16 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
         }
         private void EditorOnKeyUpOriginal(KeyboardEvent keyboardEvent)
         {
+            switch (keyboardEvent.KeyCode)
+            {
+                case KeyCode.Enter when keyboardEvent.CtrlKey:
+                    SubmitCode();
+                    break;
+                case KeyCode.KEY_S when keyboardEvent.CtrlKey && keyboardEvent.ShiftKey:
+                    AddSnippetToUser();
+                    break;
+            }
+
             Console.WriteLine("OnKeyUpOriginal : " + keyboardEvent.Code);
         }
 

@@ -56,6 +56,7 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
             var userMessage = message.Split("::");
             ChatContent +=
                 $"<div class='user'>From: {userMessage[0]}<br/></div><div class='text'>{userMessage[1]}</div><br/>";
+
             InvokeAsync(StateHasChanged);
         }
         protected async void UpdateCodeSnippet()
