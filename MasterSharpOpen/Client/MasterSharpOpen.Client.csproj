@@ -17,16 +17,19 @@
   <ItemGroup>
     <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
     <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
+    <Compile Remove="Pages\TestChat.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Pages\Practice\ConsoleApp.razor" />
     <Content Remove="Pages\Practice\ReplShell.razor" />
+    <Content Remove="Pages\TestChat.razor" />
     <Content Remove="Shared\NavMenu.razor" />
     <Content Remove="wwwroot\online-education.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.7" />
     <PackageReference Include="PostSharp.Patterns.Diagnostics" Version="6.6.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />

@@ -2,6 +2,10 @@
     height: 30em;
     flex-direction: column
 }
+.diff-editor {
+    height:20em;
+    flex-direction:column
+}
 .newCode {
     height:15em;
     flex-direction:column
