@@ -15,13 +15,19 @@
     <None Remove="wwwroot\css\NavIcons\**" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Pages\Interactive\HubSource.razor.cs" />
+    <Compile Remove="Pages\Interactive\HubStart.razor.cs" />
     <Compile Remove="Pages\Practice\ConsoleApp.razor.cs" />
     <Compile Remove="Pages\Practice\ReplShell.razor.cs" />
+    <Compile Remove="Pages\TestChat.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Pages\Interactive\HubSource.razor" />
+    <Content Remove="Pages\Interactive\HubStart.razor" />
     <Content Remove="Pages\Practice\ConsoleApp.razor" />
     <Content Remove="Pages\Practice\ReplShell.razor" />
+    <Content Remove="Pages\TestChat.razor" />
     <Content Remove="Shared\NavMenu.razor" />
     <Content Remove="wwwroot\online-education.png" />
   </ItemGroup>
