@@ -1,10 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 
 namespace MasterSharpOpen.Shared.CodeModels
 {
     public static class CodeSnippets
     {
+        public static Dictionary<string, Dictionary<string, string>> AllSnippets()
+        {
+            var snippetsDictionary = new Dictionary<string, Dictionary<string, string>>();
+            snippetsDictionary.Add("Collections", CollectionsSnippets);
+            snippetsDictionary.Add("Strings",StringsSnippets);
+            snippetsDictionary.Add("Conditionals", ConditionalSnippets);
+            snippetsDictionary.Add("Extension methods", ExtensionSnippets);
+            return snippetsDictionary;
+        }
         public static readonly Dictionary<string, string> CollectionsSnippets = new Dictionary<string, string>
         {
             {"ArrayList", ARRAYLIST}, {"Stack", STACK}, {"Queue", QUEUE},

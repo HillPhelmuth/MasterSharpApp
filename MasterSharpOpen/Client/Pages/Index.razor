@@ -52,6 +52,16 @@ else
                                         </MatListItemSecondaryText>
                                     </MatListItemText>
                                 </MatListItem>
+                                <MatListItem Href="/diffShare">
+                                    <MatListItemText>
+                                        <MatListItemPrimaryText Class="listPrimary">
+                                            Dual Editor Mode (diff)
+                                        </MatListItemPrimaryText>
+                                        <MatListItemSecondaryText>
+                                            <div class="listSecondary">Team-up and code with a partner. Share your code instantly and see the highlighted diffs.(Experimental) </div>
+                                        </MatListItemSecondaryText>
+                                    </MatListItemText>
+                                </MatListItem>
                             </Authorized>
                             <NotAuthorized>
                                 <MatListItem OnClick="@(() => tabIndex = 4)">
@@ -68,6 +78,7 @@ else
                 </div>
             </div>
         </MatTab>
+       
         <MatTab Label="Code Challenges">
             <CodeChallengeHome />
         </MatTab>
@@ -90,5 +101,14 @@ else
             </NotAuthorized>
         </AuthorizeView>
     </MatTabGroup>
+
+    @*@if (isShowChat)
+    {
+        <HubStart ToggleChat="HandleToggle"/>
+    }
+    else
+    {
+        <MatFAB Class="app-fab-absolute" OnClick="ShowChat" Label="Start Interactive" Icon="chat"></MatFAB>
+    }*@
 }
 <div style="font-size: .7rem; bottom:0; right:100%; position: sticky; margin-top:10em">Icons made by <a href="https://www.flaticon.com/authors/catkuro" title="catkuro">catkuro</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a><a href="https://icons8.com/icon/67343/checkmark">Checkmark icon by Icons8</a></div>

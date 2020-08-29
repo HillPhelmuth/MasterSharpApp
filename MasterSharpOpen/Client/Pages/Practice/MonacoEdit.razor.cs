@@ -37,7 +37,7 @@ namespace MasterSharpOpen.Client.Pages.Practice
         {
             Editor = new MonacoEditor();
             CodeEditorService.OnSnippetChange += UpdateSnippet;
-            return Task.CompletedTask;
+            return base.OnInitializedAsync();
         }
         public async Task SubmitCode()
         {

@@ -27,6 +27,7 @@ namespace MasterSharpOpen.Client.Pages
         private ICustomAuthenticationStateProvider AuthProvider { get; set; }
         private int tabIndex = 0;
         private bool isPageReady;
+        
 
         protected override async Task OnInitializedAsync()
         {

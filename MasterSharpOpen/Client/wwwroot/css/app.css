@@ -250,35 +250,65 @@ app {
         z-index: -1;
         opacity: 0.15;
     }
+
 .listPrimary {
     font-weight: 800;
 }
+
 .listSecondary {
     font-weight: 600;
 }
+
 .mainIcon {
     height: 512px;
     width: 512px;
     margin-left: auto;
     margin-right: auto
 }
+
 .githubIcon {
     content: url('GitHub-Mark-32px.png')
 }
+
 .testFail {
-    background-color:red;
-    color:white;
+    background-color: red;
+    color: white;
 }
+
 .testPass {
     background-color: green;
-    color:black
+    color: black
 }
+
 .small-modal {
     background-color: lightgray;
-    height:auto;
-    width:auto;
-    padding:5px 10px 5px 10px
+    height: auto;
+    width: auto;
+    padding: 5px 10px 5px 10px
 }
+
+.chat-window {
+    width: 90%;
+    border: 2px solid black;
+    height: 100%;
+    line-height:1.2em;
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:6em;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+    .chat-window .user {
+        font-size:.9em;
+        color:blue
+    }
+
+    .chat-window .text {
+        font-size: 1em;
+        font-family: 'Lucida Console', Courier, monospace;
+    }
+
 .blink_me {
     animation: blinker 1s linear infinite;
 }
@@ -288,6 +318,7 @@ app {
         opacity: 0;
     }
 }
+
 .fade-in {
     animation: opac 1.8s
 }
