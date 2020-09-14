@@ -53,5 +53,7 @@ namespace MasterSharpOpen.Client.Pages
             tabIndex = tab;
             StateHasChanged();
         }
+
+       
     }
 }

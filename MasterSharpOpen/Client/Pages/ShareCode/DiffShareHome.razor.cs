@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Blazor.ModalDialog;
 using MasterSharpOpen.Client.Pages.Interactive;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Client.Pages.ShareCode
 {
@@ -18,6 +21,8 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
         protected IModalDialogService ModalService { get; set; }
         [Inject]
         protected AppStateService AppStateService { get; set; }
+        [Inject]
+        protected PublicClient PublicClient { get; set; }
         protected string CodeSnippet { get; set; }
         private string ChatContent { get; set; } = "";
 
@@ -73,5 +78,21 @@ namespace MasterSharpOpen.Client.Pages.ShareCode
             StateHasChanged();
         }
 
+        //private string TempMessage = "";
+        //private async Task AddToNewDb()
+        //{
+        //    var duel = new UserDuel();
+        //    var returned = await duel.TempCreateDuel();
+        //    foreach (var completedDuel in returned.CompletedDuelsList)
+        //    {
+        //        var response = await PublicClient.Client.PostAsJsonAsync($"http://localhost:7071/api/addUser/{returned.UserId}"/*"https://csharpduels.azurewebsites.net/api/updateAddUser"*/, completedDuel);
+        //        TempMessage += response.Content + " " + response.ReasonPhrase + " " +
+        //                      response.IsSuccessStatusCode;
+        //    }
+        //    //"http://localhost:7071/api/addUser"
+            
+           
+        //    await InvokeAsync(StateHasChanged);
+        //}
     }
 }

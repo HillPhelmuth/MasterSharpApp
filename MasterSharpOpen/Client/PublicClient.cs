@@ -1,34 +1,98 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using MasterSharpOpen.Shared.ArenaChallenge;
 using MasterSharpOpen.Shared.CodeModels;
 using MasterSharpOpen.Shared.UserModels;
 using MasterSharpOpen.Shared.VideoModels;
 using Newtonsoft.Json;
-using PostSharp.Patterns.Diagnostics;
 
 namespace MasterSharpOpen.Client
 {
-    [Log]
     public class PublicClient
     {
         //local http://localhost:7071/api
         private const string CHALLENGE_FUNCTION_URL = "https://challengefunction.azurewebsites.net/api";
         private const string COMPILE_FUNCTION_URL = "https://compilefunction.azurewebsites.net/api";
-
+        private const string REALTIME_FUNCTION_URL = "https://csharprealtimefunction.azurewebsites.net/api";
+        private const string DUELS_COSMOS_FUNCTION_URL = "https://csharpduels.azurewebsites.net/api";
+        //private const string DUELS_COSMOS_FUNCTION_URL = "http://localhost:7071/api";
         public HttpClient Client { get; }
 
         public PublicClient(HttpClient httpClient)
         {
             Client = httpClient;
+        }
+
+        public async Task<List<Arena>> GetActiveArenas()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var activeArenas = await Client.GetFromJsonAsync<List<Arena>>($"{DUELS_COSMOS_FUNCTION_URL}/getAllArenas");
+            var challenges = await GetChallenges();
+            foreach (var activeArena in activeArenas)
+            {
+                activeArena.CurrentChallenge =
+                    challenges.Challenges.FirstOrDefault(x => x.Name == activeArena.ChallengeName);
+            }
+            sw.Stop();
+            Console.WriteLine($"GetActiveArenas: {sw.ElapsedMilliseconds}ms");
+            return activeArenas;
+        }
+
+        //public async Task<List<Arena>> GetUserActiveArenas(int userId)
+        //{
+        //    var sw = new Stopwatch();
+        //    sw.Start();
+        //    var activeArenas = await Client.GetFromJsonAsync<List<Arena>>($"{DUELS_COSMOS_FUNCTION_URL}//{userId}");
+
+        //    sw.Stop();
+        //    Console.WriteLine($"GetUserActiveArenas {sw.ElapsedMilliseconds}ms");
+        //}
+
+        public async Task<bool> UpdateActiveArena(Arena arena)
+        {
+            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/joinArena/{arena.Id}/{arena.Name}", arena);
+            return apiResult.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> CreateActiveArena(Arena arena)
+        {
+            var random = new Random();
+            var id = random.Next(1, 999999);
+            arena.Id = id.ToString();
+            arena.ChallengeName = arena.CurrentChallenge.Name;
+            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/addArena", arena);
+            return apiResult.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteActiveArena(Arena arena)
+        {
+            var arenaId = arena.Id;
+            var arenaName = arena.Name;
+            var apiResult = await Client.PostAsJsonAsync($"{DUELS_COSMOS_FUNCTION_URL}/removeArena/{arenaId}/{arenaName}", arenaId);
+            return  apiResult.IsSuccessStatusCode;
+        }
+        public async Task<bool> AddCompleteDuel(Arena arena, bool isWon)
+        {
+            var completedDuel = new ArenaDuel
+            {
+                ChallengeName = arena.CurrentChallenge?.Name,
+                WonDuel = isWon,
+                Solution = arena.CurrentChallenge?.Solution,
+                DuelName = arena.Name,
+                RivalId = arena.Opponent,
+                TimeCompleted = DateTime.Now
+            };
+            
+            var result = await Client.PostAsJsonAsync($"{CHALLENGE_FUNCTION_URL}/addDuel/{arena.Creator}/{arena.Name}", completedDuel);
+
+            return result.IsSuccessStatusCode;
         }
 
         public async Task<CodeChallenges> GetChallenges()
@@ -119,5 +183,6 @@ namespace MasterSharpOpen.Client
             Console.WriteLine($"code submit too {sw.ElapsedMilliseconds}ms");
             return result;
         }
+
     }
 }

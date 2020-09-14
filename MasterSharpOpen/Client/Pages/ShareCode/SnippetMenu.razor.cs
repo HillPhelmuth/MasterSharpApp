@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace MasterSharpOpen.Client.Pages.ShareCode
 {
-    public partial class SnippetMenu
+    public partial class SnippetMenu : ComponentBase
     {
         [Inject]
         protected AppStateService AppStateService { get; set; }

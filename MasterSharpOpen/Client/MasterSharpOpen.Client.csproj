@@ -23,6 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\AdamKira\.nuget\packages\blazormonaco\1.4.0\contentFiles\any\netstandard2.0\libman.json" />
+    <Content Remove="libman.json" />
     <Content Remove="Pages\Interactive\HubSource.razor" />
     <Content Remove="Pages\Interactive\HubStart.razor" />
     <Content Remove="Pages\Practice\ConsoleApp.razor" />
@@ -34,7 +36,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.7" />
-    <PackageReference Include="PostSharp.Patterns.Diagnostics" Version="6.6.12" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Build" Version="3.2.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="3.2.1" PrivateAssets="all" />

@@ -17,6 +17,7 @@ namespace MasterSharpOpen.Shared.UserModels
         public string ChallengeSuccessData { get; set; }
         [JsonProperty("snippets")]
         public List<UserSnippet> Snippets { get; set; }
+        public List<ArenaDuel> CompletedDuelsList { get; set; }
         [JsonProperty("challengeSuccessIds")]
         public List<int> ChallengeSuccessIds
         {
