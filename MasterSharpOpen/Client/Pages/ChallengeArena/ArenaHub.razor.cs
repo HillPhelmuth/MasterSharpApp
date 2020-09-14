@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MasterSharpOpen.Shared;
 using MasterSharpOpen.Shared.ArenaChallenge;
 using MasterSharpOpen.Shared.CodeServices;
+using MasterSharpOpen.Shared.StaticAuth.Interfaces;
 using MasterSharpOpen.Shared.UserModels;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
@@ -25,26 +26,28 @@ namespace MasterSharpOpen.Client.Pages.ChallengeArena
         public AppStateService AppStateService { get; set; }
         [Inject]
         protected IMatToaster Toaster { get; set; }
+        [Inject]
+        public ICustomAuthenticationStateProvider AuthenticationState { get; set; }
         [Parameter]
         public EventCallback<string> OnNewMessage { get; set; }
         [Parameter]
         public string UserName { get; set; }
         public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
         //local http://localhost:7071/api
-        //private const string FunctionBaseUrl = "http://localhost:7071/api";
         private const string FunctionBaseUrl = "https://csharpduelshubfunction.azurewebsites.net/api";
-
         private HubConnection hubConnection;
         private List<string> messages = new List<string>();
-        private List<string> arenaList = new List<string>();
         private string messageInput;
-      
         private bool showChat;
-        //private string addArena;
-
+        
         protected override async Task OnInitializedAsync()
         {
-            //var userName = AppStateService.UserName;
+            UserName = AppStateService.UserName;
+            if (string.IsNullOrEmpty(UserName))
+            {
+                var auth = await AuthenticationState.GetAuthenticationStateAsync();
+                UserName = auth?.User?.Identity?.Name;
+            }
             //Temp for testing
             //var random = new Random();
             //UserName = $"{userName}{random.Next(1, 999)}";
@@ -120,12 +123,8 @@ namespace MasterSharpOpen.Client.Pages.ChallengeArena
                 var user = jObj["user"]?.ToString();
                 var groupobj = jObj["group"]?.ToString();
                 var chalObj = jObj["challenge"]?.ToString();
-                //Console.WriteLine($"from JObject values: {user},{groupobj},{chalObj}");
-                //var challenges = AppStateService.CodeChallenges ?? await PublicClient.GetChallenges();
-
-                Toaster.Add($"User {user} joined Arena: {groupobj} with Challenge: {chalObj}", MatToastType.Info);
-                
-                messages.Add(group.ToString());
+               Toaster.Add($"User {user} joined Arena: {groupobj} with Challenge: {chalObj}", MatToastType.Info);
+               messages.Add($"User {user} joined Arena: {groupobj} with Challenge: {chalObj}");
                 StateHasChanged();
             });
             
@@ -133,8 +132,6 @@ namespace MasterSharpOpen.Client.Pages.ChallengeArena
             var arenasInit = await PublicClient.GetActiveArenas();
             ArenaService.UpdateArenas(arenasInit);
             
-            //ArenaService.OnArenaCreate += CreateArena;
-            //ArenaService.OnArenaJoined += JoinArena;
         }
         
        
