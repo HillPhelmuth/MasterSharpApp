@@ -44,10 +44,10 @@ namespace MasterSharpOpen.Client.Pages.ChallengeArena
 
         protected override async Task OnInitializedAsync()
         {
-            var userName = AppStateService.UserName;
+            //var userName = AppStateService.UserName;
             //Temp for testing
-            var random = new Random();
-            UserName = $"{userName}{random.Next(1, 999)}";
+            //var random = new Random();
+            //UserName = $"{userName}{random.Next(1, 999)}";
             hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{FunctionBaseUrl}/", options =>
                 {
