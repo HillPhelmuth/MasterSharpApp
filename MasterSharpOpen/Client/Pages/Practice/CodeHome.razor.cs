@@ -15,6 +15,7 @@ using MasterSharpOpen.Shared.StaticAuth;
 using MasterSharpOpen.Shared.StaticAuth.Interfaces;
 using MasterSharpOpen.Shared.UserModels;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 
 namespace MasterSharpOpen.Client.Pages.Practice
 {
@@ -26,6 +27,8 @@ namespace MasterSharpOpen.Client.Pages.Practice
         protected IModalDialogService ModalService { get; set; }
         [Inject]
         public PublicClient PublicClient { get; set; }
+        [Inject]
+        private PublicGithubClient GithubClient { get; set; }
         [Inject]
         protected AppStateService AppStateService { get; set; }
         //[Inject]
@@ -173,10 +176,30 @@ namespace MasterSharpOpen.Client.Pages.Practice
             codeOutput = "";
             StateHasChanged();
         }
+
+        public async Task GetCodeFromGitHubFile(string filename)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var code = await GithubClient.CodeFromGithub(filename);
+            sw.Stop();
+            Console.WriteLine($"GitHub file content retrieved in {sw.ElapsedMilliseconds}ms \r\n Returned: {code}");
+            await UpdateCodeSnippet(code);
+        }
+
+        public async Task DisplayCodeDescription(string content)
+        {
+            var parameters = new ModalDialogParameters
+            {
+                {"Description", content}
+            };
+            await ModalService.ShowDialogAsync<CodeDescription>("More about this code", parameters: parameters);
+        }
         public void Dispose()
         {
             Console.WriteLine("CodeHome.razor Disposed");
             //CodeEditorService.OnChange -= StateHasChanged;
         }
     }
+    
 }

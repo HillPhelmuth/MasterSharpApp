@@ -89,7 +89,6 @@ namespace MasterSharpOpen.Client.Pages.Practice
             Console.WriteLine("OnContextMenu : " + System.Text.Json.JsonSerializer.Serialize(eventArg));
         }
 
-       
         public async Task CopyCodeToClipboard()
         {
             var snippetClip = await Editor.GetValue();

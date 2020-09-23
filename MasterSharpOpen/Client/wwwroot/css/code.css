@@ -1,5 +1,5 @@
 ﻿.editor {
-    height: 30em;
+    height: 40em;
     flex-direction: column
 }
 .diff-editor {
@@ -12,6 +12,8 @@
 }
 .console {
     min-height: 30em;
+    max-height:40em;
+    overflow: scroll;
     width:100%;
     flex-direction: column;
     background-color: black;

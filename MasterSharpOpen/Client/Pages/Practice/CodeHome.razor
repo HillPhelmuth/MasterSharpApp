@@ -1,9 +1,9 @@
 ﻿@page "/codeHome"
 @using MasterSharpOpen.Shared.CodeModels
 <MatH4 Class="text-center">Practice your c#</MatH4>
-
+@*<MatButton OnClick="GetCodeFromGitHubFile">Try Get Gihub</MatButton>*@
 <MatAccordion>
-   
+
     <MatExpansionPanel Expanded="true">
         <MatExpansionPanelSummary>
             <MatExpansionPanelHeader>
@@ -18,33 +18,53 @@
 
                 <MatTab Label="Collections">
                     <hr />
-                    @foreach (var snippet in (CodeSnippets.CollectionsSnippets))
+                    @foreach (var snippet in (CodeSnippets.CollectionSamples.Samples))
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
                     }
 
                 </MatTab>
                 <MatTab Label="Strings">
                     <hr />
-                    @foreach (var snippet in (CodeSnippets.StringsSnippets))
+                    @foreach (var snippet in (CodeSnippets.StringSamples.Samples))
                     {
-                        <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        var tooltip = snippet.ToolTip;
+                        <MatTooltip Tooltip="@tooltip">
+                             <MatButton RefBack="@context" Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        </MatTooltip>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
                     }
 
                 </MatTab>
                 <MatTab Label="Conditionals and Loops">
                     <hr />
-                    @foreach (var snippet in (CodeSnippets.ConditionalSnippets))
+                    @foreach (var snippet in (CodeSnippets.ConditionalSamples.Samples))
                     {
+
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+
                     }
 
                 </MatTab>
+                <MatTab Label="Linq Examples">
+                    <hr />
+                    @foreach (var snippet in CodeSnippets.LinqFromGithubSamples.Samples)
+                    {
+                        var toolTip = snippet.ToolTip;
+                        <MatTooltip Tooltip="@toolTip">
+                            <MatButton RefBack="@context" Label="@snippet.Key" OnClick="@(() => GetCodeFromGitHubFile(snippet.Value))"></MatButton>
+                            <MatIconButton RefBack="@context" Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
+                        </MatTooltip>
+                    }
+                </MatTab>
                 <MatTab Label="Extension Methods">
                     <hr />
-                    @foreach (var snippet in (CodeSnippets.ExtensionSnippets))
+                    @foreach (var snippet in (CodeSnippets.ExtensionSamples.Samples))
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value))"></MatButton>
+                        <MatIconButton Icon="contact_support" OnClick="@(() => DisplayCodeDescription(snippet.Description))"></MatIconButton>
                     }
 
                 </MatTab>
@@ -53,8 +73,10 @@
                     @foreach (var snippet in (CodeSnippets.ConsoleSnippets))
                     {
                         <MatButton Label="@snippet.Key" @onclick="@(() => UpdateCodeSnippet(snippet.Value, true))"></MatButton>
+
                     }
                 </MatTab>
+
                 <AuthorizeView>
                     <Authorized>
                         @if (AppStateService.UserAppData?.Snippets?.Any() ?? false)
@@ -76,7 +98,7 @@
                 <div class="mat-layout-grid">
                     <div class="mat-layout-grid-inner">
                         <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-                            
+
                             @if (isCodeCompiling)
                             {
                                 <hr />
